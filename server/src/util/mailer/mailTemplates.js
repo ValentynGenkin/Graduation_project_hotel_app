@@ -1,4 +1,4 @@
-export const registirationEmail = (firstname) => {
+export const registrationEmail = (firstname) => {
   return String.raw`
   Welcome ${firstname},
   You have registered succesfully!
