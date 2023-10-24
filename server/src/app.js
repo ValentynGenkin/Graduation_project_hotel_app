@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import userRouter from "./routes/user.js";
+import serverErrorHandler from "./middlewares/error/serverErrorHandler.js";
 
 // Create an express server
 const app = express();
@@ -17,5 +18,8 @@ app.use(cors());
  * As we also host our client code on heroku we want to separate the API endpoints.
  */
 app.use("/api/user", userRouter);
+
+// Tell express to use "serverErrorHandler(err,req,res)" function as error handler
+app.use(serverErrorHandler);
 
 export default app;
