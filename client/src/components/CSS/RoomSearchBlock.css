@@ -1,0 +1,59 @@
+.search-block-container {
+  /* position: absolute; */
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  top: 15%;
+  left: 0;
+  right: 0;
+  width: 80%;
+}
+
+.search-options-title {
+  width: 100%;
+  margin: 0;
+}
+
+.search-options {
+  width: 250px;
+}
+.search-options p {
+  color: white;
+}
+
+.search-options-counter {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+
+.counter {
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 8px;
+  width: 50px;
+  height: 36px;
+  margin: auto 10px;
+  text-align: center;
+  line-height: 36px;
+  color: white;
+}
+
+.search-dates p {
+  margin: 10px;
+}
+
+.search-dates {
+  display: flex;
+
+  justify-content: space-evenly;
+}
+.counter-btn {
+  padding: 2px 8px;
+}
+
+.accordion-body {
+  background-color: rgba(0, 0, 0, 0.419);
+}
