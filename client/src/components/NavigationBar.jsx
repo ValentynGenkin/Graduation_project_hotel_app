@@ -24,7 +24,7 @@ function NavigationBar() {
               Rooms
             </Nav.Link>
             <Nav.Link as={Link} to={"/"}>
-              Cervices
+              Services
             </Nav.Link>
             <Nav.Link as={Link} to={"/"}>
               About

@@ -7,7 +7,12 @@ import "./CSS/LoginDropdownMenu.css";
 
 const LoginDropdownMenu = () => {
   return (
-    <NavDropdown title="Login" id="basic-nav-dropdown" align={{ sm: "end" }}>
+    <NavDropdown
+      className="login-dropdown-menu"
+      title="Login"
+      id="basic-nav-dropdown"
+      align={{ sm: "end" }}
+    >
       <InputGroup className="mb-3 login-input">
         <InputGroup.Text id="inputGroup-sizing-default">Email</InputGroup.Text>
         <Form.Control

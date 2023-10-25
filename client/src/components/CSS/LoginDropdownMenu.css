@@ -1,10 +1,17 @@
 .login-input {
-  width: 250px;
+  width: 350px;
   margin: 5px;
 }
 
+.login-input span {
+  width: 30%;
+}
+.email-input span {
+  width: 30%;
+}
+
 .email-input {
-  width: 250px;
+  width: 350px;
   margin: 5px;
 }
 
@@ -27,4 +34,20 @@
 
 #basic-nav-dropdown:hover {
   color: rgb(142, 142, 142);
+}
+
+@media screen and (max-width: 991px) {
+  .dropdown-menu {
+    border: none;
+  }
+
+  .login-input {
+    width: 100%;
+    margin: 5px;
+  }
+
+  .email-input {
+    width: 100%;
+    margin: 5px;
+  }
 }
