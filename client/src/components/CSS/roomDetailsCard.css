@@ -1,0 +1,31 @@
+.imgs{
+    display: flex;
+    justify-content: center;
+    
+}
+
+.flex-column{
+    justify-content: center;
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.container{
+    display: block;
+    background-color: rgba(13, 153, 255, 0.2);
+    border: 1px solid #0D99FF;
+    border-radius: 0.4rem;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    
+ }
+ .room-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items:last baseline;
+    margin-top: 10px;
+ }
