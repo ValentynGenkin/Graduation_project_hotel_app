@@ -165,3 +165,17 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
     message: "Password is changed successfully",
   });
 });
+
+export const logout = asyncHandler(async (req, res) => {
+  return res
+    .status(200)
+    .cookie("customer_access_token", "", {
+      httpOnly: true,
+      expires: new Date(Date.now()),
+      secure: false,
+    })
+    .json({
+      success: true,
+      message: "You have logged out successfully",
+    });
+});

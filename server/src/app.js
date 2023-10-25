@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import authRouter from "./routes/auth.js";
 import serverErrorHandler from "./middlewares/error/serverErrorHandler.js";
@@ -11,6 +12,8 @@ const app = express();
 app.use(express.json());
 // Allow everyone to access our API. In a real application, we would need to restrict this!
 app.use(cors());
+//cookie parser middleware
+app.use(cookieParser());
 
 /****** Attach routes ******/
 /**

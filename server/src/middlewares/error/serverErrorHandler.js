@@ -13,7 +13,7 @@ const serverErrorHandler = (err, req, res, next) => {
         "There is already an account associated with this email. Please login or try another email.";
     }
   }
-  logError(`${err.name}: ${err.message}`);
+  logError(err);
   return res.status(err.status || 500).json({
     success: false,
     message: err.message || "Internal Server Error",

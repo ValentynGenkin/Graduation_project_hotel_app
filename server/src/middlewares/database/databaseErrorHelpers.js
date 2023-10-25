@@ -2,8 +2,8 @@ import asyncHandler from "express-async-handler";
 import {
   isTokenIncluded,
   verifyCustomerToken,
-} from "../../util/authorization/auth";
-import ServerError from "../../util/error/ServerError";
+} from "../../util/authorization/auth.js";
+import ServerError from "../../util/error/ServerError.js";
 
 export const getCustomerAccess = asyncHandler(async (req, res, next) => {
   //get customer_access_token from cookies
@@ -17,6 +17,7 @@ export const getCustomerAccess = asyncHandler(async (req, res, next) => {
       )
     );
   }
+
   //verify customer_access_token
   const customer = verifyCustomerToken(token);
 

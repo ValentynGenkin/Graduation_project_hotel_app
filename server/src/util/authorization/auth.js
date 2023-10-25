@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-const { JWT_SECRET_KEY } = process.env;
 
 export const isTokenIncluded = (req) => {
   return req.cookies.customer_access_token
@@ -8,6 +7,7 @@ export const isTokenIncluded = (req) => {
 };
 
 export const verifyCustomerToken = (token) => {
+  const { JWT_SECRET_KEY } = process.env;
   const result = jwt.verify(token, JWT_SECRET_KEY, (err, decoded) => {
     if (err) {
       return false;
