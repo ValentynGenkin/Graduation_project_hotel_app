@@ -1,9 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import User, { validateUser } from "./models/User.js";
-
 import { logError } from "./util/logging.js";
-import validationErrorMessage from "./util/validationErrorMessage.js";
 
 const testRouter = express.Router();
 
@@ -20,42 +17,39 @@ testRouter.post("/seed", async (req, res) => {
   } else {
     await emptyDatabase();
 
-    const data = {
-      users: [
-        {
-          name: "Rob",
-          email: "rob@hackyourfuture.net",
-        },
-      ],
-    };
+    // const data = {
+    //   users: [
+    //     {
+    //       name: "Rob",
+    //       email: "rob@hackyourfuture.net",
+    //     },
+    //   ],
+    // };
 
-    // Validate users to the database
-    data.users.forEach((user) => {
-      const errorList = validateUser(user);
+    // // Validate users to the database
+    // data.users.forEach((user) => {
+    //   const errorList = validateUser(user);
 
-      if (errorList.length > 0) {
-        const err = new Error(
-          `Invalid user in seed data. Errors: ${validationErrorMessage(
-            errorList
-          )}. User attempting to be inserted: ${JSON.stringify(user)}`
-        );
+    //   if (errorList.length > 0) {
+    //     const err = new Error(
+    //       `Invalid user in seed data. Errors: ${validationErrorMessage(
+    //         errorList
+    //       )}. User attempting to be inserted: ${JSON.stringify(user)}`
+    //     );
 
-        logError(err);
-        throw err;
-      }
-    });
+    //     logError(err);
+    //     throw err;
+    //   }
+    // });
 
-    // Add users to the database
-    await User.create(data.users);
+    // // Add users to the database
+    // await User.create(data.users);
 
-    // Fetch to add to the return
-    const finalUsers = await User.find();
+    // // Fetch to add to the return
+    // const finalUsers = await User.find();
 
     res.status(201).json({
       success: true,
-      data: {
-        users: finalUsers,
-      },
     });
   }
 });
