@@ -1,0 +1,27 @@
+.footer {
+  justify-content: center;
+}
+.footer a {
+  color: white;
+}
+
+.footer-container p {
+  color: white;
+}
+
+.footer a:hover {
+  color: rgb(142, 142, 142);
+  font-weight: bold;
+}
+
+.footer-container {
+  background-color: rgb(68, 68, 68);
+  height: 100%;
+}
+
+#map {
+  height: 180px;
+}
+
+@media screen and (max-width: 991px) {
+}

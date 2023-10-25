@@ -1,13 +1,17 @@
 import React from "react";
+import MainScreenImg from "../../components/MainScreenImg";
+import RandomRoomsCard from "../../components/RandomRoomsCards";
+import RoomSearchBlock from "../../components/RoomSearchBlock";
 
-import TEST_ID from "./Home.testid";
+import "react-calendar/dist/Calendar.css";
 
 const Home = () => {
   return (
-    <div data-testid={TEST_ID.container}>
-      <h1>This is the homepage</h1>
-      <p>Good luck with the project, group C!</p>
-    </div>
+    <>
+      <MainScreenImg />
+      <RoomSearchBlock />
+      <RandomRoomsCard />
+    </>
   );
 };
 

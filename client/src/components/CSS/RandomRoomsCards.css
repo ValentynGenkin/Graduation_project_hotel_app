@@ -1,0 +1,31 @@
+.random-cards-container {
+  padding: 0;
+  margin: 10px auto;
+}
+
+.main-screen-card-item {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  width: 100%;
+  flex-direction: column;
+  border: 5px solid transparent;
+}
+
+.main-screen-card-img {
+  width: 100%;
+  height: auto;
+}
+
+.main-screen-cars-btn {
+  position: absolute;
+  bottom: 30px;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.random-cards-title {
+  margin: 20px 10px;
+}
