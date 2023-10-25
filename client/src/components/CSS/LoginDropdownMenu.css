@@ -1,0 +1,30 @@
+.login-input {
+  width: 250px;
+  margin: 5px;
+}
+
+.email-input {
+  width: 250px;
+  margin: 5px;
+}
+
+.login-btn {
+  display: flex;
+  text-align: center;
+}
+
+.login-forgot-password-btn {
+  text-align: center;
+}
+
+.dropdown-menu {
+  background-color: rgb(68, 68, 68);
+}
+
+#basic-nav-dropdown {
+  color: rgb(255, 255, 255);
+}
+
+#basic-nav-dropdown:hover {
+  color: rgb(142, 142, 142);
+}

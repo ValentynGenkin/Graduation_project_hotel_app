@@ -1,0 +1,60 @@
+.navigation-bar-container {
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.navigation-bar a {
+  color: white;
+  font-size: 1.2rem;
+}
+
+.navigation-bar {
+  background-color: rgba(0, 0, 0, 0.388) !important;
+}
+.navigation-bar a:hover {
+  color: rgb(142, 142, 142);
+  font-weight: bold;
+}
+
+.navigation-bar .nav-link.active {
+  color: rgb(142, 142, 142);
+  font-weight: bold;
+}
+
+.navigation-bar-title {
+  margin-left: 20px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.navigation-bar-links {
+  margin-right: 20px;
+}
+
+@media screen and (max-width: 991px) {
+  .navigation-bar-container {
+    position: static;
+  }
+
+  .navigation-bar {
+    background-color: rgb(68, 68, 68) !important;
+  }
+
+  .navigation-bar a {
+    color: rgb(255, 255, 255);
+    font-size: 1.2rem;
+  }
+
+  .navbar-toggler {
+    margin-right: 8px;
+    background-color: rgb(134, 134, 134);
+    box-shadow: none !important;
+  }
+
+  .navigation-bar-links a {
+    margin-left: 10px;
+  }
+}
