@@ -143,6 +143,9 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
     resetPasswordToken: resetPasswordToken,
     resetPasswordExpire: { $gt: Date.now() },
   });
+  if (!user) {
+    return next(new ServerError("Invalid token or session expired", 401));
+  }
 
   user.password = password;
   user.resetPasswordToken = undefined;
