@@ -40,30 +40,24 @@ const RoomSearchBlock = () => {
   }, [value]);
 
   return (
-    <Container>
-      <Accordion defaultActiveKey="0">
+    <Container className="search-accordion-container">
+      <Accordion>
         <Accordion.Item eventKey="0">
-          <Accordion.Header>
+          <Accordion.Header className="header">
             <div className="search-dates">
-              <p className="h5">
-                {" "}
-                {value.length === 2 ? date[0] : "Check-in date"}{" "}
-              </p>
-              <p className="h5">
-                {" "}
-                {value.length === 2 ? date[1] : "Check-out date"}{" "}
-              </p>
+              <p>{value.length === 2 ? date[0] : "Check-in date"} </p>
+              <p>{value.length === 2 ? date[1] : "Check-out date"} </p>
             </div>
             <div className="search-dates">
-              <p className="h5">
+              <p>
                 <span>{adult}</span> adults
               </p>
 
-              <p className="h5">
+              <p>
                 <span>{childe}</span> children
               </p>
 
-              <p className="h5">
+              <p>
                 <span>{room}</span> rooms
               </p>
             </div>
@@ -76,7 +70,7 @@ const RoomSearchBlock = () => {
 
                   <Button
                     className="counter-btn"
-                    variant="outline-light"
+                    variant="outline-secondary"
                     onClick={() => {
                       increment(setAdult, adult);
                     }}
@@ -86,7 +80,7 @@ const RoomSearchBlock = () => {
                   <span className="counter">{adult}</span>
                   <Button
                     className="counter-btn"
-                    variant="outline-light"
+                    variant="outline-secondary"
                     onClick={() => {
                       decrement(setAdult, adult);
                     }}
@@ -99,7 +93,7 @@ const RoomSearchBlock = () => {
 
                   <Button
                     className="counter-btn"
-                    variant="outline-light"
+                    variant="outline-secondary"
                     onClick={() => {
                       increment(setChilde, childe);
                     }}
@@ -109,7 +103,7 @@ const RoomSearchBlock = () => {
                   <span className="counter">{childe}</span>
                   <Button
                     className="counter-btn"
-                    variant="outline-light"
+                    variant="outline-secondary"
                     onClick={() => {
                       decrement(setChilde, childe);
                     }}
@@ -122,7 +116,7 @@ const RoomSearchBlock = () => {
 
                   <Button
                     className="counter-btn"
-                    variant="outline-light"
+                    variant="outline-secondary"
                     onClick={() => {
                       increment(setRoom, room);
                     }}
@@ -132,7 +126,7 @@ const RoomSearchBlock = () => {
                   <span className="counter">{room}</span>
                   <Button
                     className="counter-btn"
-                    variant="outline-light"
+                    variant="outline-secondary"
                     onClick={() => {
                       decrement(setRoom, room);
                     }}
@@ -151,8 +145,16 @@ const RoomSearchBlock = () => {
                 minDetail={"year"}
                 locale={"en-EN"}
               />
-              <Button variant="light">Search</Button>
             </Container>
+            <div className="search-btn-block">
+              <Button
+                className="search-btn"
+                variant="outline-success"
+                size="lg"
+              >
+                Search
+              </Button>
+            </div>
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
