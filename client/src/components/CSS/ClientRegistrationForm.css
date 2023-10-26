@@ -1,6 +1,7 @@
 .payment-method-container {
   width: 90%;
   margin-top: 100px;
+  z-index: 1;
 }
 
 .registration-form-title {
