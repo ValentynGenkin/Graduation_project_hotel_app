@@ -1,0 +1,80 @@
+.payment-method-container {
+  width: 90%;
+  margin-top: 100px;
+}
+
+.registration-form-title {
+  text-align: center;
+  margin: 15px;
+}
+
+.payment-method-select {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.payment-method-select-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-method-select-component img {
+  width: 80%;
+}
+.registration-form-inputs {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.registration-form-inputs span {
+  width: 9rem;
+}
+
+.payment-method-title {
+  justify-content: center;
+}
+
+.payment-method-title span {
+  width: 300px;
+  justify-content: center;
+}
+
+.form-check-input {
+  margin-top: 10px;
+  box-shadow: 0 0 6px 1px blue;
+}
+
+.form-check-inline {
+  margin: 0;
+}
+
+.sign-in-cancel-btn-block {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.sign-in-cancel-btn-block button {
+  width: 200px;
+}
+
+.show-password-btn {
+  height: 22px;
+  margin: auto 0;
+  padding-left: 5px;
+  cursor: pointer;
+}
+#custom-switch {
+  margin-top: 5px;
+}
+
+@media screen and (max-width: 991px) {
+  .payment-method-container {
+    margin-top: 50px;
+  }
+}
