@@ -46,3 +46,31 @@ export const validateAddRoomInput = (req, next) => {
     images,
   };
 };
+
+export const validateEditRoomInput = (req, next) => {
+  const validKeys = [
+    "roomNo",
+    "roomDescription",
+    "roomType",
+    "bedCount",
+    "roomPrice",
+    "facilities",
+  ];
+  const updateInputsObj = {};
+  Object.keys(req.body).forEach((input) => {
+    if (input && validKeys.includes(input)) {
+      updateInputsObj[input] = req.body[input];
+    }
+  });
+  if (req.images) {
+    updateInputsObj.images = req.images;
+  }
+
+  if (Object.keys(updateInputsObj).length === 0) {
+    return next(
+      new ServerError("Please provide at least one room input to update.", 400)
+    );
+  }
+
+  return updateInputsObj;
+};
