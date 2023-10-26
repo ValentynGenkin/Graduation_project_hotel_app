@@ -6,6 +6,7 @@ import LoginDropdownMenu from "./LoginDropdownMenu";
 import { Link } from "react-router-dom";
 
 import "./CSS/NavigationBar.css";
+import LoggedDropdownMenu from "./LoggedDropdownMenu";
 
 function NavigationBar() {
   return (
@@ -33,6 +34,7 @@ function NavigationBar() {
               Contact
             </Nav.Link>
             <LoginDropdownMenu />
+            <LoggedDropdownMenu />
           </Nav>
         </Navbar.Collapse>
       </Navbar>
