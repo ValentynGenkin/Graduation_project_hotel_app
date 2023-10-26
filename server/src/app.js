@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
+import roomRouter from "./routes/room.js";
 import authRouter from "./routes/auth.js";
 import serverErrorHandler from "./middlewares/error/serverErrorHandler.js";
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
  * As we also host our client code on heroku we want to separate the API endpoints.
  */
 app.use("/api/auth", authRouter);
+app.use("/api/rooms", roomRouter);
 
 // Tell express to use "serverErrorHandler(err,req,res)" function as error handler
 app.use(serverErrorHandler);

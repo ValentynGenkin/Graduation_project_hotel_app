@@ -19,3 +19,30 @@ export const validateUserLoginInput = (req, next) => {
 export const comparePassword = (password, hashedPassword) => {
   return bcrypt.compareSync(password, hashedPassword);
 };
+
+export const validateAddRoomInput = (req, next) => {
+  const { roomNo, roomDescription, roomType, bedCount, roomPrice, facilities } =
+    req.body;
+  if (
+    !(
+      roomNo &&
+      roomDescription &&
+      roomType &&
+      bedCount &&
+      roomPrice &&
+      facilities
+    )
+  ) {
+    return next(new ServerError("Please provide all required inputs", 400));
+  }
+  const images = req.images ? req.images : [];
+  return {
+    roomNo,
+    roomDescription,
+    roomType,
+    bedCount,
+    roomPrice,
+    facilities,
+    images,
+  };
+};
