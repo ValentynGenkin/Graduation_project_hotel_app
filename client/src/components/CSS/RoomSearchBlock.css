@@ -55,10 +55,6 @@
   padding: 2px 8px;
 }
 
-.accordion-body {
-  /* background-color: rgba(0, 0, 0, 0.419); */
-}
-
 .accordion-button {
   display: flex;
   flex-wrap: wrap;
