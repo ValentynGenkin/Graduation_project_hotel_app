@@ -64,7 +64,7 @@ const RandomRoomsCard = () => {
       </Button>
     </div>,
     <div className="main-screen-card-item" data-value="4" key={"5"}>
-      <img src="assets/room1.jpg" alt="" className="main-screen-card-img" />
+      <img src={Room2Image} alt="" className="main-screen-card-img" />
       <Button
         className="main-screen-cars-btn"
         variant="info"

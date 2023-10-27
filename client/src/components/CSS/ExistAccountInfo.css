@@ -1,0 +1,31 @@
+.exist-account-container {
+  width: 90%;
+  margin-top: 100px;
+  z-index: 1;
+}
+
+.exist-account-title {
+  text-align: center;
+  margin: 15px;
+}
+
+.exist-account-form-inputs {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.exist-account-form-inputs span {
+  width: 9rem;
+}
+
+.exist-account-btn-block {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.exist-account-btn-block button {
+  width: 200px;
+}
