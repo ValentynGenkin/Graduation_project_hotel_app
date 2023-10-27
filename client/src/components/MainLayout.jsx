@@ -3,6 +3,7 @@ import NavigationBar from "./NavigationBar";
 import React from "react";
 import ScrollToTop from "react-scroll-to-top";
 import Footer from "./Footer";
+import ToTopImage from "../assets/to-top.png";
 
 const MainLayout = () => {
   return (
@@ -14,7 +15,7 @@ const MainLayout = () => {
       <ScrollToTop
         className="scroll-btn"
         smooth
-        component={<img src={"assets/to-top.png"} alt="top-btn" />}
+        component={<img src={ToTopImage} alt="top-btn" />}
       />
 
       <Footer />

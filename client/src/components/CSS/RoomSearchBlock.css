@@ -1,0 +1,113 @@
+.search-block-container {
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+}
+
+.search-options-title {
+  width: 100%;
+  margin: 0;
+}
+
+.search-options {
+  margin: 15px;
+}
+
+.search-options-counter {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+
+.counter {
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 8px;
+  width: 50px;
+  height: 36px;
+  margin: auto 10px;
+  text-align: center;
+  line-height: 36px;
+  /* color: white; */
+}
+
+.search-dates p {
+  margin: 10px;
+  font-size: 1.2rem;
+}
+
+.search-dates {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 35rem;
+  height: 5rem;
+  border: 1px solid rgba(0, 0, 0, 0);
+  box-shadow: 0 0 6px 1px rgb(150, 150, 150);
+  background-color: white;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 10px;
+}
+.counter-btn {
+  padding: 2px 8px;
+}
+
+.accordion-button {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+}
+.accordion-button::after {
+  display: none;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: transparent;
+  box-shadow: none;
+  color: none;
+}
+
+.accordion-button.collapsed {
+  background-color: transparent;
+  box-shadow: none;
+  color: none;
+}
+
+.accordion-item {
+  border: none;
+}
+.search-accordion-container {
+  margin-top: -150px;
+  margin-bottom: 75px;
+}
+.search-btn-block {
+  width: 100%;
+  text-align: center;
+}
+.search-btn {
+  margin-top: 30px;
+  width: 20%;
+  min-width: 150px;
+}
+
+@media screen and (max-width: 1400px) {
+  .search-dates {
+    width: 30rem;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .search-dates {
+    width: 28rem;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .search-accordion-container {
+    margin-bottom: 15px;
+  }
+}
