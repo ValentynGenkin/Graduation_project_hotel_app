@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 function PopUp(props) {
-  const { PopUpInfo, Title, ButtonTitle } = props;
+  const { body, title, btn } = props;
 
   return (
     <Modal
@@ -14,12 +14,12 @@ function PopUp(props) {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">{Title}</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{PopUpInfo}</Modal.Body>
+      <Modal.Body>{body}</Modal.Body>
       <Modal.Footer>
         <Button variant="outline-secondary" onClick={props.onHide}>
-          {ButtonTitle}
+          {btn}
         </Button>
       </Modal.Footer>
     </Modal>
@@ -29,8 +29,8 @@ function PopUp(props) {
 export default PopUp;
 
 PopUp.propTypes = {
-  PopUpInfo: PropTypes.element.isRequired,
-  Title: PropTypes.string.isRequired,
-  ButtonTitle: PropTypes.string.isRequired,
+  body: PropTypes.element.isRequired,
+  title: PropTypes.string.isRequired,
+  btn: PropTypes.string.isRequired,
   onHide: PropTypes.func.isRequired,
 };

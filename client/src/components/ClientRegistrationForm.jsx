@@ -3,8 +3,13 @@ import { Container } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
+import iDealImg from "../assets/ideal.png";
+import PayPalImg from "../assets/paypal.png";
+import CreditCardImg from "../assets/credit-card.png";
+import Input from "./Input";
 
 import "./CSS/ClientRegistrationForm.css";
+import ShowPasswordBtn from "./ShowPasswordBtn";
 
 const ClientRegistrationForm = () => {
   const [showPassword, setShowPassword] = useState("password");
@@ -19,46 +24,11 @@ const ClientRegistrationForm = () => {
       <h5 className="registration-form-title">Registration form</h5>
 
       <div className="registration-form-inputs">
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">First name</InputGroup.Text>
-          <Form.Control
-            type="text"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-          />
-        </InputGroup>
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">Last name</InputGroup.Text>
-          <Form.Control
-            type="text"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-          />
-        </InputGroup>
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">E-mail</InputGroup.Text>
-          <Form.Control
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            type="email"
-          />
-        </InputGroup>
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">Phone number</InputGroup.Text>
-          <Form.Control
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            type="tel"
-          />
-        </InputGroup>
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">Date of Birth</InputGroup.Text>
-          <Form.Control
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            type="date"
-          />
-        </InputGroup>
+        <Input type={"text"} label={"Username"} text={"First name"} />
+        <Input type={"text"} label={"Username"} text={"Last name"} />
+        <Input type={"email"} label={"E-mail"} text={"E-mail"} />
+        <Input type={"tel"} label={"Phone number"} text={"Phone number"} />
+        <Input type={"date"} label={"Date of Birth"} text={"Date of Birth"} />
 
         <InputGroup className="mb-3 payment-method-title">
           <InputGroup.Text id="basic-addon1">Payment method</InputGroup.Text>
@@ -67,45 +37,27 @@ const ClientRegistrationForm = () => {
       <Form>
         <div key="inline-radio" className="mb-3 payment-method-select">
           <div className="payment-method-select-component">
-            <img src="./assets/ideal.png" alt="ideal" />
+            <img src={iDealImg} alt="ideal" />
             <Form.Check inline name="group1" type="radio" id="inline-radio-1" />
           </div>
           <div className="payment-method-select-component">
-            <img src="./assets/paypal.png" alt="paypal" />
+            <img src={PayPalImg} alt="paypal" />
             <Form.Check inline name="group1" type="radio" id="inline-radio-2" />
           </div>
           <div className="payment-method-select-component">
-            <img src="./assets/credit-card.png" alt="credit card" />
+            <img src={CreditCardImg} alt="credit card" />
             <Form.Check inline name="group1" type="radio" id="inline-radio-3" />
           </div>
         </div>
       </Form>
       <div className="registration-form-inputs">
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">Password</InputGroup.Text>
-          <Form.Control
-            type={showPassword}
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-          />
-        </InputGroup>
-
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">Repeat password</InputGroup.Text>
-          <Form.Control
-            type={showPassword}
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-          />
-          <img
-            src="./assets/show-password.png"
-            alt="show password"
-            className="show-password-btn"
-            onClick={() => {
-              showPasswordSwitch();
-            }}
-          />
-        </InputGroup>
+        <Input type={showPassword} label={"Password"} text={"Password"} />
+        <Input
+          type={showPassword}
+          label={"Password"}
+          text={"Repeat password"}
+          btn={<ShowPasswordBtn cb={showPasswordSwitch} />}
+        />
 
         <Form>
           <Form.Check
