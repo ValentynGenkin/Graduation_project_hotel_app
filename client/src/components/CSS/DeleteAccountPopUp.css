@@ -1,0 +1,8 @@
+.delete-account {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.delete-account span {
+  width: 12rem;
+}

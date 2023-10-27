@@ -3,6 +3,10 @@ import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import { Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Room1Image from "../assets/room1.jpg";
+import Room2Image from "../assets/room2.jpg";
+import Room3Image from "../assets/room3.jpg";
+import Room4Image from "../assets/room4.jpg";
 
 import "./CSS/RandomRoomsCards.css";
 
@@ -16,7 +20,7 @@ const responsive = {
 const RandomRoomsCard = () => {
   const items = [
     <div className="main-screen-card-item" data-value="1" key={"1"}>
-      <img src="assets/room1.jpg" alt="" className="main-screen-card-img" />
+      <img src={Room1Image} alt="" className="main-screen-card-img" />
       <Button
         className="main-screen-cars-btn"
         variant="info"
@@ -27,7 +31,7 @@ const RandomRoomsCard = () => {
       </Button>
     </div>,
     <div className="main-screen-card-item" data-value="2" key={"2"}>
-      <img src="assets/room2.jpg" alt="" className="main-screen-card-img" />
+      <img src={Room2Image} alt="" className="main-screen-card-img" />
       <Button
         className="main-screen-cars-btn"
         variant="info"
@@ -38,7 +42,7 @@ const RandomRoomsCard = () => {
       </Button>
     </div>,
     <div className="main-screen-card-item" data-value="3" key={"3"}>
-      <img src="assets/room3.jpg" alt="" className="main-screen-card-img" />
+      <img src={Room3Image} alt="" className="main-screen-card-img" />
       <Button
         className="main-screen-cars-btn"
         variant="info"
@@ -49,7 +53,7 @@ const RandomRoomsCard = () => {
       </Button>
     </div>,
     <div className="main-screen-card-item" data-value="4" key={"4"}>
-      <img src="assets/room4.jpg" alt="" className="main-screen-card-img" />
+      <img src={Room4Image} alt="" className="main-screen-card-img" />
       <Button
         className="main-screen-cars-btn"
         variant="info"
@@ -60,7 +64,7 @@ const RandomRoomsCard = () => {
       </Button>
     </div>,
     <div className="main-screen-card-item" data-value="4" key={"5"}>
-      <img src="assets/room1.jpg" alt="" className="main-screen-card-img" />
+      <img src={Room2Image} alt="" className="main-screen-card-img" />
       <Button
         className="main-screen-cars-btn"
         variant="info"

@@ -33,7 +33,7 @@ const LoginDropdownMenu = () => {
         <NavDropdown.Item as={Link} to={"/"}>
           Sing in
         </NavDropdown.Item>
-        <NavDropdown.Item as={Link} to={"/"}>
+        <NavDropdown.Item as={Link} to={"/registration"}>
           Sign up
         </NavDropdown.Item>
       </div>
