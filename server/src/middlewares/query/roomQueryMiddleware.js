@@ -3,7 +3,6 @@ import Room from "../../models/Room.js";
 import { filterRooms } from "../../util/query/roomQueryHelper.js";
 
 export const roomQueryMiddleware = asyncHandler(async (req, res, next) => {
-  console.log(req.query);
   // create filterStages array by user req.query
   const filterStages = filterRooms(req);
   // we group same rooms here.
