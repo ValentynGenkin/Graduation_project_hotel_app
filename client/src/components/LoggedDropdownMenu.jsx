@@ -12,7 +12,7 @@ const LoggedDropdownMenu = () => {
       id="basic-nav-dropdown"
       align={{ sm: "end" }}
     >
-      <NavDropdown.Item as={Link} to={"/"}>
+      <NavDropdown.Item as={Link} to={"/account-info"}>
         Account
       </NavDropdown.Item>
       <NavDropdown.Item as={Link} to={"/"}>

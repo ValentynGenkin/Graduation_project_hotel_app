@@ -17,6 +17,7 @@ const ClientRegistrationForm = () => {
   return (
     <Container className="payment-method-container">
       <h5 className="registration-form-title">Registration form</h5>
+
       <div className="registration-form-inputs">
         <InputGroup className="mb-3">
           <InputGroup.Text id="basic-addon1">First name</InputGroup.Text>

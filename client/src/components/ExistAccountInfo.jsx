@@ -1,23 +1,36 @@
 import { Container } from "react-bootstrap";
-import React from "react";
-
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
+import PopUp from "./PopUp";
+
+import "./CSS/ExistAccountInfo.css";
+import ChangePasswordInputs from "./ChangePasswordInputs";
+import DeleteAccountConfirmation from "./DeleteAccountConfirmation";
 
 const ExistAccountInfo = () => {
+  const [update, setUpdate] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
+  const [popUpProp, setPopUpProp] = useState("");
+  const [popUpTitle, setPopUpTitle] = useState("");
+  const [btnTitle, setBtnTitle] = useState("");
+
+  const accountUpdate = () => {
+    setUpdate(!update);
+  };
+
   return (
-    <Container className="payment-method-container">
-      <h5 className="registration-form-title">Account info</h5>
-      <div className="registration-form-inputs">
+    <Container className="exist-account-container">
+      <h5 className="exist-account-title">Account info</h5>
+      <div className="exist-account-form-inputs">
         <InputGroup className="mb-3">
           <InputGroup.Text id="basic-addon1">First name</InputGroup.Text>
           <Form.Control
             type="text"
             aria-label="Username"
             aria-describedby="basic-addon1"
-            disabled
-            readOnly
+            disabled={update}
             placeholder="First name"
           />
         </InputGroup>
@@ -27,8 +40,7 @@ const ExistAccountInfo = () => {
             type="text"
             aria-label="Username"
             aria-describedby="basic-addon1"
-            disabled
-            readOnly
+            disabled={update}
             placeholder="Last name"
           />
         </InputGroup>
@@ -38,8 +50,7 @@ const ExistAccountInfo = () => {
             aria-label="Username"
             aria-describedby="basic-addon1"
             type="email"
-            disabled
-            readOnly
+            disabled={update}
             placeholder="qwerty@qwerty.com"
           />
         </InputGroup>
@@ -49,8 +60,7 @@ const ExistAccountInfo = () => {
             aria-label="Username"
             aria-describedby="basic-addon1"
             type="tel"
-            disabled
-            readOnly
+            disabled={update}
             placeholder="0681234567"
           />
         </InputGroup>
@@ -60,8 +70,8 @@ const ExistAccountInfo = () => {
             aria-label="Username"
             aria-describedby="basic-addon1"
             type="text"
-            disabled
-            readOnly
+            disabled={update}
+            maxlength="11"
             placeholder="12.07.1987"
           />
         </InputGroup>
@@ -72,20 +82,54 @@ const ExistAccountInfo = () => {
             aria-label="Username"
             aria-describedby="basic-addon1"
             type="text"
-            disabled
-            readOnly
+            disabled={update}
             placeholder="iDeal"
           />
         </InputGroup>
       </div>
 
-      <div className="registration-form-inputs">
-        <div className="sign-in-cancel-btn-block">
-          <Button variant="outline-secondary">Update</Button>
-          <Button variant="outline-secondary">Change password</Button>
-          <Button variant="outline-danger">Delete account</Button>
+      <div className="exist-account-form-inputs">
+        <div className="exist-account-btn-block">
+          <Button
+            variant="outline-secondary"
+            onClick={() => {
+              accountUpdate();
+            }}
+          >
+            {!update ? "Save" : "Update"}
+          </Button>
+          <Button
+            variant="outline-secondary"
+            onClick={() => {
+              setPopUpTitle("Change password");
+              setPopUpProp(<ChangePasswordInputs />);
+              setBtnTitle("Save");
+              setModalShow(true);
+            }}
+          >
+            Change password
+          </Button>
+          <Button
+            variant="outline-danger"
+            onClick={() => {
+              setPopUpTitle("Delete account");
+              setPopUpProp(<DeleteAccountConfirmation />);
+              setBtnTitle("Delete");
+              setModalShow(true);
+            }}
+          >
+            Delete account
+          </Button>
         </div>
       </div>
+
+      <PopUp
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        PopUpInfo={popUpProp}
+        Title={popUpTitle}
+        ButtonTitle={btnTitle}
+      />
     </Container>
   );
 };
