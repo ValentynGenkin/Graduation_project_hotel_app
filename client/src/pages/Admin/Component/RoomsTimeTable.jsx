@@ -89,46 +89,6 @@ const RoomTable = () => {
     setCurrentDate(newDate);
   };
 
-  const handleReservation = (room, date, period) => {
-    let currentDate = new Date(date);
-
-    if (period === "m") {
-      currentDate.setHours(6, 0, 0, 0);
-    } else if (period === "e") {
-      currentDate.setHours(18, 0, 0, 0);
-    }
-
-    // Format the date in the desired format
-    const options = {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      timeZoneName: "short",
-    };
-
-    const formattedDate = currentDate.toLocaleString("en-US", options);
-
-    // Convert dates to Unix timestamps in seconds
-    const currentTimestamp = Math.floor(currentDate.getTime() / 1000);
-    const checkinTimestamp = Math.floor(new Date(room.from).getTime() / 1000);
-    const checkoutTimestamp = Math.floor(new Date(room.to).getTime() / 1000);
-
-    // Calculate the time differences in seconds
-    const timeDiffToCheckin = Math.abs(currentTimestamp - checkinTimestamp);
-    const timeDiffToCheckout = Math.abs(currentTimestamp - checkoutTimestamp);
-
-    if (timeDiffToCheckin < timeDiffToCheckout) {
-      console.log("Current date is closer to checkIn.");
-      const newReservations = [...roomAvailability];
-    } else {
-      console.log("Current date is closer to checkout.");
-    }
-  };
-
   return (
     <div className="body-wrapper wrapper">
       <div className="date-navigation">
@@ -175,7 +135,6 @@ const RoomTable = () => {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    onClick={() => handleReservation(room, date, "m")}
                   >
                     {/* Content for the 'morning' cell */}
                   </div>
@@ -192,7 +151,6 @@ const RoomTable = () => {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    onClick={() => handleReservation(room, date, "e")}
                   >
                     {/* Content for the 'evening' cell */}
                   </div>
