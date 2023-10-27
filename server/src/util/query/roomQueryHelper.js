@@ -3,21 +3,17 @@ export const filterRooms = (req) => {
   const stages = [];
 
   // filter rooms by the specified types.
-  if (
-    filterInputs.roomType &&
-    Array.isArray(filterInputs.roomType) &&
-    filterInputs.roomType.every((item) => typeof item === "string")
-  ) {
-    stages.push({ $match: { roomType: { $in: filterInputs.roomType } } });
+  if (filterInputs.roomType) {
+    stages.push({
+      $match: { roomType: { $in: filterInputs.roomType.split(",") } },
+    });
   }
 
   // filter rooms match all specified facilities.
-  if (
-    filterInputs.facilities &&
-    Array.isArray(filterInputs.facilities) &&
-    filterInputs.facilities.every((item) => typeof item === "string")
-  ) {
-    stages.push({ $match: { facilities: { $all: filterInputs.facilities } } });
+  if (filterInputs.facilities) {
+    stages.push({
+      $match: { facilities: { $all: filterInputs.facilities.split(",") } },
+    });
   }
 
   // filter rooms with a bed count equal to or greater
