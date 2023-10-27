@@ -1,10 +1,10 @@
 import asyncHandler from "express-async-handler";
-import User from "../models/User";
-import { validateUserRegisterInput } from "../util/input/inputValidator";
-import sendEmail from "../util/mailer/sendEmail";
-import { adminRegistrationEmail } from "../util/mailer/mailTemplates";
+import User from "../models/User.js";
+import { validateUserRegisterInput } from "../util/input/inputValidator.js";
+import sendEmail from "../util/mailer/sendEmail.js";
+import { adminRegistrationEmail } from "../util/mailer/mailTemplates.js";
 
-export const addAdmin = asyncHandler(async (req, res, next) => {
+export const registerAdmin = asyncHandler(async (req, res, next) => {
   const userObject = validateUserRegisterInput(req, next);
   userObject.role = "admin";
 
