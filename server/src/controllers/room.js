@@ -39,3 +39,11 @@ export const getSingleRoom = asyncHandler(async (req, res) => {
     room: room,
   });
 });
+
+export const getRooms = asyncHandler(async (req, res) => {
+  const rooms = await req.rooms.exec();
+  return res.status(200).json({
+    success: true,
+    rooms: rooms,
+  });
+});
