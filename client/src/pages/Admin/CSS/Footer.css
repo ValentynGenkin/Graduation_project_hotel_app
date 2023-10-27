@@ -1,0 +1,25 @@
+.footer {
+  justify-content: center;
+}
+.footer a {
+  color: white;
+}
+
+.footer-container {
+  background-color: rgb(68, 68, 68);
+  height: 100%;
+  width: 100%; /* Set the width to 100% */
+}
+
+.footer-container p {
+  color: white;
+}
+
+.footer a:hover {
+  color: rgb(142, 142, 142);
+  font-weight: bold;
+}
+
+#map {
+  height: 280px;
+}

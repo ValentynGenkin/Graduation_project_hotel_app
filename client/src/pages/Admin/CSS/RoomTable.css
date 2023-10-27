@@ -7,6 +7,8 @@
   border-radius: 10px;
   width: 80%;
   max-width: 800px;
+  margin-top: 100px;
+  margin-bottom: 500px;
 }
 
 /* Define the styles for table headers */
@@ -45,13 +47,11 @@
 
 .body-wrapper {
   width: 100vw;
-  height: calc(100vh - 98px);
   display: flex;
   justify-content: start;
   align-items: start;
   flex-direction: column;
   gap: 10px;
-  background-color: whitesmoke;
 }
 .room-input {
   width: 100%;
