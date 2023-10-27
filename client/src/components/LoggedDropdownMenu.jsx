@@ -15,7 +15,7 @@ const LoggedDropdownMenu = () => {
       <NavDropdown.Item as={Link} to={"/account-info"}>
         Account
       </NavDropdown.Item>
-      <NavDropdown.Item as={Link} to={"/"}>
+      <NavDropdown.Item as={Link} to={"/current-bookings"}>
         Bookings
       </NavDropdown.Item>
 

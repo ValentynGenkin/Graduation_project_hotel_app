@@ -25,7 +25,7 @@ function RoomInfoCard({ data }) {
           className="arrow arrow-left"
           onClick={prevSlide}
         />
-        {data.map((item, idx) => {
+        {data.slides.map((item, idx) => {
           return (
             <img
               src={item.src}

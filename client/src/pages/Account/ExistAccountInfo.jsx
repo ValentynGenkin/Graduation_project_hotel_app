@@ -1,12 +1,12 @@
 import { Container } from "react-bootstrap";
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
-import PopUp from "./PopUp";
+import PopUp from "../../components/PopUp";
 
-import "./CSS/ExistAccountInfo.css";
-import ChangePasswordInputs from "./ChangePasswordInputs";
-import DeleteAccountConfirmation from "./DeleteAccountConfirmation";
-import Input from "./Input";
+import "../../components/CSS/ExistAccountInfo.css";
+import ChangePasswordInputs from "../../components/ChangePasswordInputs";
+import DeleteAccountConfirmation from "../../components/DeleteAccountConfirmation";
+import Input from "../../components/Input";
 
 const ExistAccountInfo = () => {
   const [update, setUpdate] = useState(true);

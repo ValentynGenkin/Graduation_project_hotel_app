@@ -2,8 +2,9 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home/Home";
-import ClientRegistrationForm from "./components/ClientRegistrationForm";
-import ExistAccountInfo from "./components/ExistAccountInfo";
+import ClientRegistrationForm from "./pages/RegistrationForm/ClientRegistrationForm";
+import ExistAccountInfo from "./pages/Account/ExistAccountInfo";
+import ClientBookings from "./pages/Bookings/ClientBookings";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="registration" element={<ClientRegistrationForm />} />
           <Route path="account-info" element={<ExistAccountInfo />} />
+          <Route path="current-bookings" element={<ClientBookings />} />
         </Route>
       </Routes>
     </>

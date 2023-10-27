@@ -3,13 +3,13 @@ import { Container } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-import iDealImg from "../assets/ideal.png";
-import PayPalImg from "../assets/paypal.png";
-import CreditCardImg from "../assets/credit-card.png";
-import Input from "./Input";
+import iDealImg from "../../assets/ideal.png";
+import PayPalImg from "../../assets/paypal.png";
+import CreditCardImg from "../../assets/credit-card.png";
+import Input from "../../components/Input";
 
-import "./CSS/ClientRegistrationForm.css";
-import ShowPasswordBtn from "./ShowPasswordBtn";
+import "../../components/CSS/ClientRegistrationForm.css";
+import ShowPasswordBtn from "../../components/ShowPasswordBtn";
 
 const ClientRegistrationForm = () => {
   const [showPassword, setShowPassword] = useState("password");
