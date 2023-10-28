@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Input from "./Input";
+import Input from "./InputComponent";
 
 import "./CSS/ChangePasswordPopUp.css";
 import ShowPasswordBtn from "./ShowPasswordBtn";

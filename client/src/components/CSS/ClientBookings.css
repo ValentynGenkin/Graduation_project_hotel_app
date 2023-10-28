@@ -1,0 +1,48 @@
+.client-booking-container {
+  width: 90%;
+  margin-top: 100px;
+  z-index: 1;
+  min-height: calc(100vh - 164px);
+}
+
+.bookings-img-carousel {
+  width: 300px;
+}
+
+.booking-table-number {
+  width: 50px;
+}
+
+.booking-table-status {
+  width: 200px;
+}
+
+.booking-information-block {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.booking-information-block div {
+  margin: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  border: 1px solid lightgrey;
+  width: 240px;
+  border-radius: 5px;
+}
+
+.bookings-description-block {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.bookings-accordion {
+  background-color: rgba(10, 202, 219, 0.704);
+  width: 80%;
+  margin: 10px auto;
+}
+
+.bookings-accordion-header button {
+  height: 70px;
+}

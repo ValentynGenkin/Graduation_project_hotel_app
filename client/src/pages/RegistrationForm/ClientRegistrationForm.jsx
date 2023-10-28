@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import iDealImg from "../../assets/ideal.png";
 import PayPalImg from "../../assets/paypal.png";
 import CreditCardImg from "../../assets/credit-card.png";
-import Input from "../../components/Input";
+import Input from "../../components/InputComponent";
 
 import "../../components/CSS/ClientRegistrationForm.css";
 import ShowPasswordBtn from "../../components/ShowPasswordBtn";

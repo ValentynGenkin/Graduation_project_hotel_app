@@ -6,7 +6,7 @@ import PopUp from "../../components/PopUp";
 import "../../components/CSS/ExistAccountInfo.css";
 import ChangePasswordInputs from "../../components/ChangePasswordInputs";
 import DeleteAccountConfirmation from "../../components/DeleteAccountConfirmation";
-import Input from "../../components/Input";
+import Input from "../../components/InputComponent";
 
 const ExistAccountInfo = () => {
   const [update, setUpdate] = useState(true);

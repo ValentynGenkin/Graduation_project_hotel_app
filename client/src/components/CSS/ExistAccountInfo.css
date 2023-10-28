@@ -2,6 +2,7 @@
   width: 90%;
   margin-top: 100px;
   z-index: 1;
+  min-height: calc(100vh - 164px);
 }
 
 .exist-account-title {
