@@ -1,8 +1,12 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/User.js";
-import { validateUserRegisterInput } from "../util/input/inputValidator.js";
+import {
+  comparePassword,
+  validateUserRegisterInput,
+} from "../util/input/inputValidator.js";
 import sendEmail from "../util/mailer/sendEmail.js";
 import { adminRegistrationEmail } from "../util/mailer/mailTemplates.js";
+import ServerError from "../util/error/ServerError.js";
 
 export const registerAdmin = asyncHandler(async (req, res, next) => {
   const userObject = validateUserRegisterInput(req, next);
@@ -26,4 +30,48 @@ export const registerAdmin = asyncHandler(async (req, res, next) => {
     message:
       "Admin registered successfully and login credentials sent as email.",
   });
+});
+
+export const login = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  const admin = await User.where({ email: email, role: "admin" }).select(
+    "+password"
+  );
+  if (!admin || !comparePassword(password, admin.password)) {
+    return next(
+      new ServerError(
+        "Invalid username or password. Please check your credentials.",
+        401
+      )
+    );
+  }
+  const token = await admin.generateJwtFromUser();
+  return res
+    .status(200)
+    .cookie("admin_access_token", token, {
+      httpOnly: true,
+      expires: new Date(
+        Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
+      ),
+      secure: false,
+    })
+    .json({
+      success: true,
+      message: "Admin logged in",
+    });
+});
+
+export const logout = asyncHandler(async (req, res) => {
+  return res
+    .status(200)
+    .cookie("admin_access_token", "", {
+      httpOnly: true,
+      expires: new Date(Date.now()),
+      secure: false,
+    })
+    .json({
+      success: true,
+      message: "You have logged out successfully",
+    });
 });
