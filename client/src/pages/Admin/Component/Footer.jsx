@@ -1,40 +1,40 @@
-import Nav from "react-bootstrap/Nav";
 import React from "react";
+import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 import "../CSS/Footer.css";
-import { Container } from "react-bootstrap";
 
 const Footer = () => {
   return (
-    <Container className="footer-container">
-      <Nav className=" footer" activeKey="/home">
+    <div className="footer-container-admin">
+      <Nav className="footer">
         <Nav.Item>
-          <Nav.Link as={Link} to={"/"}>
-            Home
+          <Nav.Link as={Link} to="https://www.facebook.com">
+            <FaFacebook className="icon-footer" />
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={Link} to={"/"}>
-            Rooms
+          <Nav.Link as={Link} to="https://www.instagram.com">
+            <FaInstagram className="icon-footer" />
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={Link} to={"/"}>
-            Services
+          <Nav.Link as={Link} to="https://twitter.com/home">
+            <FaTwitter className="icon-footer" />
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={Link} to={"/"}></Nav.Link>
+          <Nav.Link as={Link} to="https://www.linkedin.com">
+            <FaLinkedin className="icon-footer" />
+          </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={Link} to={"/"}>
-            Contact
+          <Nav.Link as={Link} to="/">
+            Our Website
           </Nav.Link>
         </Nav.Item>
       </Nav>
-      <p className="text-center mt-4 mb-4">Or right-aligned HYF 2023</p>
-    </Container>
+    </div>
   );
 };
 

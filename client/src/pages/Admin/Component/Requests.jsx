@@ -9,7 +9,8 @@ const RoomTable = () => {
       clientName: "John Doe",
       clientEmail: "john@example.com",
       clientNumber: "555-123-4567",
-      clientRequest: "I need a towel",
+      clientRequest:
+        "Hello, I have a reservation under the name john kennedy for November 20th to November 25th. Due to my flight's arrival time, I kindly request an early check-in around 12:00 PM on the arrival date. Furthermore, I would also like to request a late check-out at around 2:00 PM on the departure date to align with my travel schedule. Your flexibility and assistance with these timing adjustments would be of great help. Thank you in advance for your consideration",
       status: "approved",
     },
     {
@@ -18,7 +19,8 @@ const RoomTable = () => {
       clientName: "Alice Smith",
       clientEmail: "alice@example.com",
       clientNumber: "555-987-6543",
-      clientRequest: "Request 2",
+      clientRequest:
+        "To Whom It May Concern, I will be staying at your hotel from November 12th to November 15th and require some special accommodations due to dietary restrictions. I am allergic to nuts and gluten, and it would be greatly appreciated if the hotel restaurant could provide meal options that cater to these restrictions. Additionally, I would like to request hypoallergenic bedding to ensure a comfortable stay. Your attention to these details is highly valued. Thank you for your assistance",
       status: "in progress",
     },
     {
@@ -27,7 +29,8 @@ const RoomTable = () => {
       clientName: "Bob Johnson",
       clientEmail: "bob@example.com",
       clientNumber: "555-234-5678",
-      clientRequest: "Request 3",
+      clientRequest:
+        "Dear Hotel Management, I am writing to request a specific room preference for my upcoming stay from October 30th to November 5th. I have a preference for a room with a view overlooking the city skyline or a room on a higher floor to minimize outside noise. Additionally, if possible, I would appreciate a non-smoking room. Your assistance in accommodating these preferences would be greatly appreciated. Thank you.",
       status: "canceled",
     },
   ]);

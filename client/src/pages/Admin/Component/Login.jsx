@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Remove the useHistory import
-import "../CSS/Loginform.css";
+import { useNavigate } from "react-router-dom";
+import "../CSS/LoginForm.css";
 
-function App() {
+const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -16,84 +19,55 @@ function App() {
     });
   };
 
-  const navigate = useNavigate();
+  const handleLogin = (e) => {
+    e.preventDefault();
 
-  const handleLogin = () => {
-    // Replace this with your actual login logic.
     const { email, password } = formData;
 
     if (email === "HYF@gmail.com" && password === "admin") {
-      // Use navigate to redirect to "/Admin" on successful login
+      // Redirect to "/Admin" if email and password match
       navigate("/Admin");
     } else {
-      alert("Invalid email or password");
+      setError("Invalid email or password.");
     }
   };
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-sm-6">
-          <div className="d-flex flex-row ps-5 pt-5">
-            <i
-              className="fas fa-crow fa-3x me-3"
-              style={{ color: "#709085" }}
-            ></i>
+    <div>
+      <div className="container-admin-from">
+        <h2 className="login-title-admin">Login</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleLogin} className="login-form-admin">
+          <div className="form-group-admin">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="form-input-admin"
+            />
           </div>
-          <div className="d-flex flex-column justify-content-center h-custom-2 w-75 pt-4">
-            <h3
-              className="fw-normal mb-3 ps-5 pb-3"
-              style={{ letterSpacing: "1px" }}
-            >
-              Login Form
-            </h3>
-            <div className="mb-4 mx-5 w-100">
-              <label>Email address</label>
-              <input
-                className="form-control"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="mb-4 mx-5 w-100">
-              <label>Password</label>
-              <input
-                className="form-control"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-              />
-            </div>
-            <button className="btn" onClick={handleLogin}>
-              Login
-            </button>
-            <p className="small mb-5 pb-lg-3 ms-5">
-              <a className="text-muted" href="#!">
-                Forgot password?
-              </a>
-            </p>
-            <p className="ms-5">
-              Do not have an account?{" "}
-              <Link to="/Register" className="link-info">
-                Register here
-              </Link>
-            </p>
+          <div className="form-group-admin">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className="form-input-admin"
+            />
           </div>
-        </div>
-        <div className="col-sm-6 d-none d-sm-block px-0">
-          <img
-            src={require("../Icons/hotel reception.jpg").default}
-            alt="Login image"
-            className="w-100"
-            style={{ objectFit: "cover", objectPosition: "left" }}
-          />
-        </div>
+          <button type="submit" className="login-button-admin">
+            Login
+          </button>
+        </form>
+      </div>
+      <div className="message-container-admin">
+        <p></p>
       </div>
     </div>
   );
-}
+};
 
-export default App;
+export default LoginForm;

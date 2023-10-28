@@ -7,8 +7,8 @@
   border-radius: 10px;
   width: 80%;
   max-width: 800px;
-  margin-top: 100px;
-  margin-bottom: 500px;
+  margin-top: 20px;
+  margin-bottom: 50px;
 }
 
 /* Define the styles for table headers */
@@ -21,26 +21,19 @@
 
 /* Define the styles for table cells */
 .wrapper table td {
-  background-color: #00b4d8;
+  background-color: white;
   border: 1px solid #0096c7;
   padding: 10px;
   text-align: center;
-  cursor: pointer;
   user-select: none;
   transition: background-color 0.2s ease;
+  color: black;
 }
 
-/* Define the styles for table cells on hover */
-.wrapper table td:hover {
-  background-color: #023e8a;
-}
-
-/* Define the styles for green cells */
 .wrapper table td.green {
   background-color: #00cc71;
 }
 
-/* Define the styles for red cells */
 .wrapper table td.red {
   background-color: #ff5722;
 }
@@ -52,17 +45,9 @@
   align-items: start;
   flex-direction: column;
   gap: 10px;
+  margin: 0px 20px;
 }
-.room-input {
-  width: 100%;
-  height: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  margin: 10px 40px;
-  gap: 10px;
-  flex-direction: column;
-}
+
 .table-wrapper {
   width: 100%;
   display: flex;

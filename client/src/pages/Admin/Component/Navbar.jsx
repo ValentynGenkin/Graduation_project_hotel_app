@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../CSS/Navbar.css";
-import AdminIcon from "../Icons/profile.png";
-import RoomsIcon from "../Icons/AddRooms.png";
-import ClientsIcon from "../Icons/clients.png";
-import StatisticsIcon from "../Icons/Statestic.png"; // Import Statistics icon PNG
-import ReviewsIcon from "../Icons/Reviews.png"; // Import Reviews icon PNG
-import LogoutIcon from "../Icons/Logout.png";
+import Manager from "../Icons/Manager.png";
+import { FcStatistics } from "react-icons/fc"; // Import FcStatistics from react-icons/fc
+import { LuLogOut } from "react-icons/lu"; // Import LuLogOut from react-icons/lu
+import { MdReviews } from "react-icons/md"; // Import MdReviews from react-icons/md
+import { HiOutlineUsers } from "react-icons/hi"; // Import HiOutlineUsers from react-icons/hi
+import { MdOutlineBedroomParent } from "react-icons/md"; // Import MdOutlineBedroomParent from react-icons/md
 
 const Navbar = () => {
   return (
@@ -14,31 +14,36 @@ const Navbar = () => {
       <div className="nav-center">
         <Link to="/Admin" className="nav-link">
           <div className="logo">
-            <img src={AdminIcon} alt="Admin Icon" className="icon" />
-            chouaib
+            <img
+              src={Manager}
+              alt="Description of the image"
+              className="image"
+            />
+            Chouaib Atrous
           </div>
         </Link>
         <div className="nav-links">
           <Link to="/AddRooms" className="nav-link">
-            <img src={RoomsIcon} alt="Rooms Icon" className="icon" />
+            <MdOutlineBedroomParent className="icon" />{" "}
+            {/* Use MdOutlineBedroomParent icon */}
             Add Rooms
           </Link>
           <Link to="/Clients" className="nav-link">
-            <img src={ClientsIcon} alt="Clients Icon" className="icon" />
+            <HiOutlineUsers className="icon" /> {/* Use HiOutlineUsers icon */}
             Clients
           </Link>
           {/* Add Statistics Link */}
           <Link to="/Statistics" className="nav-link">
-            <img src={StatisticsIcon} alt="Statistics Icon" className="icon" />
+            <FcStatistics className="icon" /> {/* Use FcStatistics icon */}
             Statistics
           </Link>
           <Link to="/Reviews" className="nav-link">
-            <img src={ReviewsIcon} alt="Reviews Icon" className="icon" />
+            <MdReviews className="icon" /> {/* Use MdReviews icon */}
             Reviews
           </Link>
 
           <Link to="/Login" className="nav-link">
-            <img src={LogoutIcon} alt="Logout Icon" className="icon" />
+            <LuLogOut className="icon" /> {/* Use LuLogOut icon */}
             Logout
           </Link>
         </div>

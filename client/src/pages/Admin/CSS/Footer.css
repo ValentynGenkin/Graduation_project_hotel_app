@@ -1,14 +1,15 @@
 .footer {
   justify-content: center;
+  width: 100vw;
+  height: 100px;
 }
 .footer a {
   color: white;
+  margin-left: 30px;
 }
 
-.footer-container {
-  background-color: rgb(68, 68, 68);
-  height: 100%;
-  width: 100%; /* Set the width to 100% */
+.footer-container-admin {
+  background-color: #1a053d;
 }
 
 .footer-container p {
@@ -22,4 +23,7 @@
 
 #map {
   height: 280px;
+}
+.icon-footer {
+  font-size: 30px;
 }

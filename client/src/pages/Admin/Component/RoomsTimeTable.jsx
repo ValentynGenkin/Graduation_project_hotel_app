@@ -117,9 +117,9 @@ const RoomTable = () => {
               >
                 <div
                   style={{
-                    width: "100%",
                     height: "100%",
                     display: "flex",
+                    width: "120px",
                   }}
                 >
                   <div
@@ -135,9 +135,7 @@ const RoomTable = () => {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                  >
-                    {/* Content for the 'morning' cell */}
-                  </div>
+                  ></div>
                   <div
                     style={{
                       backgroundColor: getCellBackgroundColor(
@@ -151,9 +149,7 @@ const RoomTable = () => {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                  >
-                    {/* Content for the 'evening' cell */}
-                  </div>
+                  ></div>
                 </div>
               </td>
             ))}

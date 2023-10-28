@@ -5,12 +5,12 @@ import Requests from "./Admin/Component/Requests";
 import Footer from "./Admin/Component/Footer";
 const Admin = () => {
   return (
-    <>
+    <div style={{ overflowX: "hidden" }}>
       <Navbar />
       <RoomTable />
       <Requests />
       <Footer />
-    </>
+    </div>
   );
 };
 

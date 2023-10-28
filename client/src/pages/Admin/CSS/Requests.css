@@ -1,35 +1,30 @@
-/* Requests.css */
-
-/* Body styling */
 .body-request {
   font-family: Arial, sans-serif;
   margin: 20px;
   border: 2px solid #023e8a;
 }
 
-/* Table styling */
 table {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* Table header row styling */
 th {
   background-color: #00a8cc;
   font-weight: bold;
   text-align: left;
   padding: 8px;
   border: 1px solid #ccc;
+  color: white;
 }
 
-/* Table data row styling */
 td {
   text-align: left;
   padding: 8px;
   border: 1px solid #ccc;
+  font-weight: bold;
 }
 
-/* Client number and phone icon styling */
 a {
   text-decoration: none;
   color: #333;
