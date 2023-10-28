@@ -15,6 +15,7 @@ export const roomQueryMiddleware = asyncHandler(async (req, res, next) => {
         roomPrice: "$roomPrice",
       },
       count: { $sum: 1 },
+      roomIds: { $push: "$_id" },
       exampleRoom: { $first: "$$ROOT" },
     },
   };
