@@ -35,9 +35,10 @@ export const registerAdmin = asyncHandler(async (req, res, next) => {
 export const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
-  const admin = await User.where({ email: email, role: "admin" }).select(
-    "+password"
-  );
+  const admin = (
+    await User.where({ email: email, role: "admin" }).select("+password")
+  )[0];
+
   if (!admin || !comparePassword(password, admin.password)) {
     return next(
       new ServerError(

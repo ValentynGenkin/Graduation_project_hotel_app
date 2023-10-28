@@ -6,6 +6,6 @@ const adminRouter = express.Router();
 
 adminRouter.post("/register", getAdminAccess, registerAdmin);
 adminRouter.post("/login", login);
-adminRouter.post("/logout", getAdminAccess, logout);
+adminRouter.get("/logout", getAdminAccess, logout);
 
 export default adminRouter;
