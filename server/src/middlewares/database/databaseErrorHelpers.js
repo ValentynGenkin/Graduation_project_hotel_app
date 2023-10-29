@@ -7,7 +7,7 @@ import {
 import ServerError from "../../util/error/ServerError.js";
 import Room from "../../models/Room.js";
 import Booking from "../../models/Booking.js";
-import { findAvailableRoomAggregation } from "../../util/query/roomQueryHelper.js";
+import { chooseAvailableRoomAggregation } from "../../util/query/roomQueryHelper.js";
 
 export const getCustomerAccess = asyncHandler(async (req, res, next) => {
   //get customer_access_token from cookies
@@ -80,13 +80,16 @@ export const getAdminAccess = asyncHandler(async (req, res, next) => {
 
   next();
 });
+
 export const checkBookingExist = asyncHandler(async (req, res, next) => {
-  const guestcustomerId = req.body.guestCustomerId;
+  const guestCustomerId = req.body.guestCustomerId;
   let booking;
-  if (guestcustomerId) {
-    booking = await Booking.findOne({ guestCustomerId: guestcustomerId });
+
+  if (guestCustomerId) {
+    booking = await Booking.findOne({ guestCustomerId: guestCustomerId });
+
     if (!booking) {
-      booking = await Booking.create({ guestcustomerId: guestcustomerId });
+      booking = await Booking.create({ guestCustomerId: guestCustomerId });
     }
   } else {
     // at this step we create req.customer.id if guestCustomerId is not exist in request.
@@ -100,13 +103,15 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
 
 export const chooseFirstAvailableRoom = asyncHandler(async (req, res, next) => {
   const exampleRoom = req.room;
-  const { checkIn, checkOut } = req.body;
-  const aggregationStages = findAvailableRoomAggregation(
+  const checkIn = new Date(req.body.checkIn);
+  const checkOut = new Date(req.body.checkOut);
+  const aggregationStages = chooseAvailableRoomAggregation(
     exampleRoom,
     checkIn,
     checkOut
   );
   const availableRoom = await Room.aggregate(aggregationStages);
+
   if (availableRoom.length === 0) {
     next(
       new ServerError(

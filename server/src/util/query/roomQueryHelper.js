@@ -64,7 +64,7 @@ export const filterRooms = (req) => {
   return stages;
 };
 
-export const findAvailableRoomAggregation = (
+export const chooseAvailableRoomAggregation = (
   exampleRoom,
   checkIn,
   checkOut
@@ -80,28 +80,46 @@ export const findAvailableRoomAggregation = (
     },
     {
       $lookup: {
-        from: "BookingDetail",
+        from: "bookingdetails",
         localField: "_id",
         foreignField: "roomId",
         as: "bookings",
       },
     },
     {
-      $match: {
-        $or: [
-          { bookings: { $size: 0 } }, // No bookings for the room
-          {
-            $and: [
-              { "bookings.checkIn": { $gt: checkOut } },
-              { "bookings.checkOut": { $lt: checkIn } },
-            ],
+      $addFields: {
+        overlappingBookings: {
+          $filter: {
+            input: "$bookings",
+            as: "booking",
+            cond: {
+              $or: [
+                {
+                  $and: [
+                    { $lt: ["$$booking.checkIn", checkOut] },
+                    { $gt: ["$$booking.checkOut", checkIn] },
+                  ],
+                },
+                {
+                  $and: [
+                    { $gt: ["$$booking.checkIn", checkIn] },
+                    { $lt: ["$$booking.checkOut", checkOut] },
+                  ],
+                },
+              ],
+            },
           },
-        ],
+        },
       },
     },
     {
-      $limit: 1,
+      $match: {
+        overlappingBookings: { $size: 0 },
+      },
     },
+    // {
+    //   $limit: 1,
+    // },
   ];
 
   return stages;

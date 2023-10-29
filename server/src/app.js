@@ -6,6 +6,7 @@ import roomRouter from "./routes/room.js";
 import authRouter from "./routes/auth.js";
 import adminRouter from "./routes/admin.js";
 import serverErrorHandler from "./middlewares/error/serverErrorHandler.js";
+import bookingRouter from "./routes/booking.js";
 
 // Create an express server
 const app = express();
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/rooms", roomRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/booking", bookingRouter);
 
 // Tell express to use "serverErrorHandler(err,req,res)" function as error handler
 app.use(serverErrorHandler);

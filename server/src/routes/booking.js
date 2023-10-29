@@ -3,8 +3,8 @@ import {
   checkBookingExist,
   checkRoomExist,
   chooseFirstAvailableRoom,
-} from "../middlewares/database/databaseErrorHelpers";
-import { addRoomToBooking } from "../controllers/booking";
+} from "../middlewares/database/databaseErrorHelpers.js";
+import { addRoomToBooking } from "../controllers/booking.js";
 
 const bookingRouter = express.Router();
 
