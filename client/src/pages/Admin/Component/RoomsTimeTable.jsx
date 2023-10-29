@@ -54,7 +54,7 @@ const RoomTable = () => {
   ]);
   const [currentDate, setCurrentDate] = useState(new Date()); // Initialize currentDate state
 
-  const dateHeaders = Array.from({ length: 14 }, (_, index) => {
+  const dateHeaders = Array.from({ length: 13 }, (_, index) => {
     const date = new Date(currentDate);
     date.setDate(date.getDate() + index);
     return date.toISOString().split("T")[0];
@@ -119,7 +119,7 @@ const RoomTable = () => {
                   style={{
                     height: "100%",
                     display: "flex",
-                    width: "120px",
+                    width: "calc(100vw / 15)",
                   }}
                 >
                   <div

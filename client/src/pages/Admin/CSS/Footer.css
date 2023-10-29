@@ -2,6 +2,9 @@
   justify-content: center;
   width: 100vw;
   height: 100px;
+  display: flex;
+  align-items: center;
+  margin-top: 100px;
 }
 .footer a {
   color: white;
