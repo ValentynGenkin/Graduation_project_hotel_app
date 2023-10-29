@@ -101,7 +101,7 @@ const RevenueChart = () => {
           marginTop: "50px",
         }}
       >
-        Note:The revenue chart is calculated after deducting worker and
+        Note: The revenue chart is calculated after deducting worker and
         facilities payments.
       </p>
     </div>
