@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./CSS/roomDetailsCard.css";
 import PropTypes from "prop-types";
+import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
 
 function RoomDetailsCard() {
   RoomDetailsCard.propTypes = {
@@ -35,14 +36,27 @@ function RoomDetailsCard() {
     },
   ];
   const [sliderData, setSliderData] = useState(imgs[0]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [extraBed, setExtraBed] = useState("");
+  const [babyBed, setBabyBed] = useState("");
 
   const handleClick = (index) => {
-    // console.log(index)
     const slider = imgs[index];
     setSliderData(slider);
   };
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    setIsOpen(false);
+  };
+
   return (
-    <div className="container">
+    <div className="room-container">
       <div className="imgs">
         <img src={sliderData.value} height="500" width="70%" />
         <div className="flex-column">
@@ -58,10 +72,9 @@ function RoomDetailsCard() {
           ))}
         </div>
       </div>
-      <div className="room-info">
-        <div>
-          <h3>Description</h3>
-          <br />
+      <div>
+        <h3 className="desc">Description</h3>
+        <div className="room-info">
           <ul>
             <li>Bla</li>
             <li>Bla</li>
@@ -70,7 +83,82 @@ function RoomDetailsCard() {
             <li>Bla</li>
           </ul>
         </div>
-        <div className="buttons">
+      </div>
+
+      <div className="right-bar">
+        <div>
+          <div className="bed-option">
+            <h3>Extra bed</h3>
+            <label>
+              <input
+                type="checkbox"
+                name="ExtraBedYes"
+                checked={extraBed === "Yes"}
+                onChange={() => setExtraBed("Yes")}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="ExtraBedNo"
+                checked={extraBed === "No"}
+                onChange={() => setExtraBed("No")}
+              />
+              No
+            </label>
+          </div>
+
+          <div className="bed-option">
+            <h3>Baby bed</h3>
+            <label>
+              <input
+                type="checkbox"
+                name="BabyBedYes"
+                checked={babyBed === "Yes"}
+                onChange={() => setBabyBed("Yes")}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="BabyBedNo"
+                checked={babyBed === "No"}
+                onChange={() => setBabyBed("No")}
+              />
+              No
+            </label>
+          </div>
+
+          <div className="bed-type">
+            <div className="dropdown">
+              <button onClick={toggleDropdown} className="dropdown-btn">
+                Bed Type
+                {!isOpen ? <AiOutlineCaretDown /> : <AiOutlineCaretUp />}
+              </button>
+
+              {isOpen && (
+                <ul className="dropdown-menu">
+                  <li onClick={() => handleOptionSelect("Single bed")}>
+                    Single bed
+                  </li>
+                  <li onClick={() => handleOptionSelect("Two Single beds")}>
+                    Two Single beds
+                  </li>
+                  <li onClick={() => handleOptionSelect("King bed")}>
+                    King bed
+                  </li>
+                </ul>
+              )}
+            </div>
+            <h3 className={selectedOption ? "option" : "empty-box"}>
+              {selectedOption}
+            </h3>
+          </div>
+        </div>
+
+        <div className="book-buttons">
           <button>Total amount</button>
           <button>Book</button>
         </div>
