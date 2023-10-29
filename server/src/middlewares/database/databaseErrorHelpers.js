@@ -6,6 +6,7 @@ import {
 } from "../../util/authorization/auth.js";
 import ServerError from "../../util/error/ServerError.js";
 import Room from "../../models/Room.js";
+import Booking from "../../models/Booking.js";
 
 export const getCustomerAccess = asyncHandler(async (req, res, next) => {
   //get customer_access_token from cookies
@@ -84,5 +85,22 @@ export const getAdminAccess = asyncHandler(async (req, res, next) => {
 
   req.admin = admin;
 
+  next();
+});
+export const checkBookingExist = asyncHandler(async (req, res, next) => {
+  const guestcustomerId = req.body.guestCustomerId;
+  let booking;
+  if (guestcustomerId) {
+    booking = await Booking.findOne({ guestCustomerId: guestcustomerId });
+    if (!booking) {
+      booking = await Booking.create({ guestcustomerId: guestcustomerId });
+    }
+  } else {
+    // at this step we create req.customer.id if guestCustomerId is not exist in request.
+    await getCustomerAccess(req, res, next);
+    booking = await Booking.findOne({ guestCustomerId: req.customer.id });
+  }
+
+  req.booking = booking;
   next();
 });
