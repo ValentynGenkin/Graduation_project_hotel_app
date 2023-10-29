@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./CSS/room.infoCard.css";
+import "./CSS/roominfoCard.css";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
 import PropTypes from "prop-types";
 
