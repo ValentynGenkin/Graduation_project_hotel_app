@@ -1,18 +1,18 @@
 import React from "react";
-import Chart from "../Component/Chart";
-import Circle from "../Component/Circle";
+import Requests from "../Component/Requests";
+import RoomsTimeTable from "../Component/RoomsTimeTable";
 import Navbar from "../Component/Navbar";
 import Footer from "../Component/Footer";
 
-const Statistics = () => {
+const Status = () => {
   return (
     <div style={{ overflowX: "hidden" }}>
       <Navbar />
-      <Chart />
-      <Circle />
+      <RoomsTimeTable />
+      <Requests />
       <Footer />
     </div>
   );
 };
 
-export default Statistics;
+export default Status;

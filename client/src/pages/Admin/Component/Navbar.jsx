@@ -28,9 +28,9 @@ const Navbar = () => {
             Clients
           </Link>
 
-          <Link to="/Statistics" className="nav-link">
+          <Link to="/Status" className="nav-link">
             <FcStatistics className="Nav-icon" />
-            Statistics
+            Room Status
           </Link>
           <Link to="/Reviews" className="nav-link">
             <MdReviews className="Nav-icon" />

@@ -9,7 +9,7 @@ import Login from "./pages/Admin/Component/Login";
 import ClientRegistrationForm from "./pages/RegistrationForm/ClientRegistrationForm";
 import ExistAccountInfo from "./pages/Account/ExistAccountInfo";
 import ClientBookings from "./pages/Bookings/ClientBookings";
-import Statistics from "./pages/Admin/pages/Statistics";
+import RoomStatus from "./pages/Admin/pages/RoomStatus";
 
 const App = () => {
   return (
@@ -25,7 +25,7 @@ const App = () => {
         <Route path="clients" element={<Clients />} />
         <Route path="AddRooms" element={<AddRooms />} />
         <Route path="Login" element={<Login />} />
-        <Route path="/Statistics" element={<Statistics />} />
+        <Route path="/Status" element={<RoomStatus />} />
       </Routes>
     </>
   );

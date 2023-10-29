@@ -27,8 +27,16 @@ const RevenueChart = () => {
             {
               label: "Monthly Revenue",
               data: [
-                5000, 2000, 40000, 5000, 5000, 5000, 30000, 5000, 5000, 5000,
-                16000, 20000,
+                5000,
+                2000,
+                40000,
+                5000,
+                5000,
+                5000,
+                30000,
+                5000,
+                3300,
+                5500,
               ],
               borderColor: "blue",
               borderWidth: 5,
@@ -68,13 +76,6 @@ const RevenueChart = () => {
                   value: 25000,
                   borderColor: "black",
                   borderWidth: 2,
-                  label: {
-                    backgroundColor: "black",
-                    color: "white",
-                    content:
-                      "Net income after worker and facilities deductions",
-                    enabled: true,
-                  },
                 },
               },
             },
@@ -85,8 +86,24 @@ const RevenueChart = () => {
   }, []);
 
   return (
-    <div style={{ width: "800px", height: "600px" }}>
+    <div style={{ width: "50%", height: "500px" }}>
       <canvas ref={chartRef} />
+      <p
+        style={{
+          backgroundColor: "#f7f7f7",
+          borderLeft: "5px solid black",
+          padding: "10px",
+          fontStyle: "italic",
+          marginBottom: "20px",
+          fontFamily: "Arial, sans-serif",
+          fontSize: "10px",
+          width: "400px",
+          marginTop: "50px",
+        }}
+      >
+        Note:The revenue chart is calculated after deducting worker and
+        facilities payments.
+      </p>
     </div>
   );
 };
