@@ -50,6 +50,10 @@ const ClientBookings = () => {
             <span>15.11.2023 12:00</span>
           </div>
         </div>
+        <div className="client-bookings-btn-block">
+          <Button variant="danger">Cancel booking</Button>
+          <Button variant="secondary">Contact with Hotel</Button>
+        </div>
         <div className="bookings-description-block">
           <div className="bookings-img-carousel">
             <AliceCarousel
@@ -99,6 +103,7 @@ const ClientBookings = () => {
             <span>Confirmed</span>
           </div>
         </div>
+
         <Accordion>
           <Accordion.Item eventKey="0" className="bookings-accordion">
             <Accordion.Header className="bookings-accordion-header">

@@ -79,6 +79,14 @@
   float: right;
 }
 
+.client-bookings-btn-block {
+  display: flex;
+  justify-content: flex-end;
+}
+.client-bookings-btn-block button {
+  margin: 10px;
+}
+
 @media screen and (max-width: 1200px) {
   .bookings-description {
     max-width: 600px;
