@@ -11,10 +11,6 @@ import Room2Image from "../../assets/room2.jpg";
 import Room3Image from "../../assets/room3.jpg";
 import Room4Image from "../../assets/room4.jpg";
 
-// import RoomDetailsCard from "../../Components/RoomDetailsCard";
-// import RoomInfoCard from "../../Components/RoomInfoCard";
-// import DataImages from "../../data/DataImages.json";
-
 import "../../Components/CSS/ClientBookings.css";
 
 const responsive = {
@@ -41,8 +37,6 @@ const ClientBookings = () => {
   ];
   return (
     <Container className="client-booking-container">
-      {/* <RoomDetailsCard />
-      <RoomInfoCard data={DataImages} /> */}
       <div className="booking-information-block">
         <div>
           <span>Check-in: </span>
