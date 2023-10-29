@@ -27,16 +27,7 @@ const RevenueChart = () => {
             {
               label: "Monthly Revenue",
               data: [
-                5000,
-                2000,
-                40000,
-                5000,
-                5000,
-                5000,
-                30000,
-                5000,
-                3300,
-                5500,
+                5000, 2000, 40000, 5000, 5000, 5000, 30000, 5000, 3300, 5500,
               ],
               borderColor: "blue",
               borderWidth: 5,
