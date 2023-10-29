@@ -6,13 +6,24 @@ import {
   getRooms,
 } from "../controllers/room.js";
 import { imageUpload } from "../middlewares/imageUpload/imageUpload.js";
-import { checkRoomsExist } from "../middlewares/database/databaseErrorHelpers.js";
+import {
+  checkRoomsExist,
+  getAdminAccess,
+} from "../middlewares/database/databaseErrorHelpers.js";
 import { roomQueryMiddleware } from "../middlewares/query/roomQueryMiddleware.js";
 
 const roomRouter = express.Router();
 
-roomRouter.post("/add", imageUpload.array("roomImages", 10), addRoom);
-roomRouter.put("/:roomId/edit", imageUpload.array("roomImages", 10), editRoom);
+roomRouter.post(
+  "/add",
+  [getAdminAccess, imageUpload.array("roomImages", 10)],
+  addRoom
+);
+roomRouter.put(
+  "/:roomId/edit",
+  [getAdminAccess, imageUpload.array("roomImages", 10)],
+  editRoom
+);
 roomRouter.get("/:roomId", checkRoomsExist, getSingleRoom);
 roomRouter.get("/", roomQueryMiddleware, getRooms);
 

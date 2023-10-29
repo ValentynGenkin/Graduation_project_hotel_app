@@ -1,7 +1,8 @@
 import asyncHandler from "express-async-handler";
 import {
+  isAdminTokenIncluded,
   isTokenIncluded,
-  verifyCustomerToken,
+  verifyUserToken,
 } from "../../util/authorization/auth.js";
 import ServerError from "../../util/error/ServerError.js";
 import Room from "../../models/Room.js";
@@ -20,7 +21,7 @@ export const getCustomerAccess = asyncHandler(async (req, res, next) => {
   }
 
   //verify customer_access_token
-  const customer = verifyCustomerToken(token);
+  const customer = verifyUserToken(token);
 
   if (!customer) {
     next(
@@ -54,6 +55,34 @@ export const checkRoomsExist = asyncHandler(async (req, res, next) => {
   await Promise.all(rooms).then((rooms) => {
     req.rooms = rooms;
   });
+
+  next();
+});
+
+export const getAdminAccess = asyncHandler(async (req, res, next) => {
+  const token = isAdminTokenIncluded(req);
+
+  if (!token) {
+    next(
+      new ServerError(
+        "You do not have authorization to access this route.",
+        401
+      )
+    );
+  }
+
+  const admin = verifyUserToken(token);
+
+  if (!admin || admin.role !== "admin") {
+    next(
+      new ServerError(
+        "You do not have authorization to access this route.",
+        401
+      )
+    );
+  }
+
+  req.admin = admin;
 
   next();
 });
