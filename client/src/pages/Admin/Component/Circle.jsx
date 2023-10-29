@@ -5,7 +5,6 @@ import "../CSS/Circle.css";
 
 const HotelRoomCircle = () => {
   const occupiedPercentage = 70; // For example, 70% occupied rooms
-  const unoccupiedPercentage = 100 - occupiedPercentage;
 
   return (
     <div className="container">

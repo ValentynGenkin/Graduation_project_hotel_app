@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 
-const RevenuChart = () => {
+const RevenueChart = () => {
   const chartRef = useRef(null);
 
   useEffect(() => {
     if (chartRef && chartRef.current) {
-      const myChart = new Chart(chartRef.current, {
+      new Chart(chartRef.current, {
         type: "line",
         data: {
           labels: [
@@ -40,8 +40,8 @@ const RevenuChart = () => {
                 16000,
                 20000,
               ],
-              borderColor: "blue", // Color for the line
-              borderWidth: 5, // Width of the line
+              borderColor: "blue",
+              borderWidth: 5,
               fill: false,
             },
           ],
@@ -57,7 +57,7 @@ const RevenuChart = () => {
                 text: "Amount in $",
               },
               ticks: {
-                precision: 1, // Configure decimal precision for y-axis
+                precision: 1,
               },
             },
             x: {
@@ -101,4 +101,4 @@ const RevenuChart = () => {
   );
 };
 
-export default RevenuChart;
+export default RevenueChart;
