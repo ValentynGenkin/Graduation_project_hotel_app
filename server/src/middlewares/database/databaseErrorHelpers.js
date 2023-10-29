@@ -37,26 +37,18 @@ export const getCustomerAccess = asyncHandler(async (req, res, next) => {
   next();
 });
 
-export const checkRoomsExist = asyncHandler(async (req, res, next) => {
-  const { roomId } = req.params;
-  const roomIds = [roomId];
-  const rooms = roomIds.map(async (roomId) => {
-    const room = await Room.findById(roomId);
+export const checkRoomExist = asyncHandler(async (req, res, next) => {
+  const roomId = req.params.roomId ? req.params.roomId : req.body.roomId;
 
-    if (!room) {
-      next(
-        new ServerError(
-          `There is not any room with this id. id: ${roomId}`,
-          404
-        )
-      );
-    }
-    return room;
-  });
-  await Promise.all(rooms).then((rooms) => {
-    req.rooms = rooms;
-  });
+  const room = await Room.findById(roomId);
 
+  if (!room) {
+    next(
+      new ServerError(`There is not any room with this id. id: ${roomId}`, 404)
+    );
+  }
+
+  req.room = room;
   next();
 });
 
