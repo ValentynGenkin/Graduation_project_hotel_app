@@ -1,4 +1,4 @@
-export const filterRooms = (req) => {
+export const filterRoomsAggregation = (req) => {
   const filterInputs = req.query;
   const stages = [];
 
@@ -117,9 +117,9 @@ export const chooseAvailableRoomAggregation = (
         overlappingBookings: { $size: 0 },
       },
     },
-    // {
-    //   $limit: 1,
-    // },
+    {
+      $limit: 1,
+    },
   ];
 
   return stages;
