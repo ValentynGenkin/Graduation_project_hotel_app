@@ -63,3 +63,46 @@ export const filterRooms = (req) => {
 
   return stages;
 };
+
+export const findAvailableRoomAggregation = (
+  exampleRoom,
+  checkIn,
+  checkOut
+) => {
+  const stages = [
+    {
+      $match: {
+        roomType: exampleRoom.roomType,
+        bedCount: exampleRoom.bedCount,
+        facilities: exampleRoom.facilities,
+        roomPrice: exampleRoom.roomPrice,
+      },
+    },
+    {
+      $lookup: {
+        from: "BookingDetail",
+        localField: "_id",
+        foreignField: "roomId",
+        as: "bookings",
+      },
+    },
+    {
+      $match: {
+        $or: [
+          { bookings: { $size: 0 } }, // No bookings for the room
+          {
+            $and: [
+              { "bookings.checkIn": { $gt: checkOut } },
+              { "bookings.checkOut": { $lt: checkIn } },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      $limit: 1,
+    },
+  ];
+
+  return stages;
+};
