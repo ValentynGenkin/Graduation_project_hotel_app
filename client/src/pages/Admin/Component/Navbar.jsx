@@ -24,26 +24,25 @@ const Navbar = () => {
         </Link>
         <div className="nav-links">
           <Link to="/AddRooms" className="nav-link">
-            <MdOutlineBedroomParent className="icon" />{" "}
-            {/* Use MdOutlineBedroomParent icon */}
+            <MdOutlineBedroomParent className="icon" />
             Add Rooms
           </Link>
           <Link to="/Clients" className="nav-link">
-            <HiOutlineUsers className="icon" /> {/* Use HiOutlineUsers icon */}
+            <HiOutlineUsers className="icon" />
             Clients
           </Link>
-          {/* Add Statistics Link */}
+
           <Link to="/Statistics" className="nav-link">
-            <FcStatistics className="icon" /> {/* Use FcStatistics icon */}
+            <FcStatistics className="icon" />
             Statistics
           </Link>
           <Link to="/Reviews" className="nav-link">
-            <MdReviews className="icon" /> {/* Use MdReviews icon */}
+            <MdReviews className="icon" />
             Reviews
           </Link>
 
           <Link to="/Login" className="nav-link">
-            <LuLogOut className="icon" /> {/* Use LuLogOut icon */}
+            <LuLogOut className="icon" />
             Logout
           </Link>
         </div>
