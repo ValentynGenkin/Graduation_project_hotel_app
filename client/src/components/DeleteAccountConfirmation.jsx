@@ -20,6 +20,7 @@ const DeleteAccountConfirmation = () => {
       </h5>
 
       <Input
+        id={"delete-account-password"}
         type={showPassword}
         label={"Password"}
         text={"Password"}

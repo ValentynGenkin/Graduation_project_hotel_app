@@ -24,11 +24,36 @@ const ClientRegistrationForm = () => {
       <h5 className="registration-form-title">Registration form</h5>
 
       <div className="registration-form-inputs">
-        <Input type={"text"} label={"Username"} text={"First name"} />
-        <Input type={"text"} label={"Username"} text={"Last name"} />
-        <Input type={"email"} label={"E-mail"} text={"E-mail"} />
-        <Input type={"tel"} label={"Phone number"} text={"Phone number"} />
-        <Input type={"date"} label={"Date of Birth"} text={"Date of Birth"} />
+        <Input
+          id={"registration-form-first-name"}
+          type={"text"}
+          label={"Username"}
+          text={"First name"}
+        />
+        <Input
+          id={"registration-form-last-name"}
+          type={"text"}
+          label={"Username"}
+          text={"Last name"}
+        />
+        <Input
+          id={"registration-form-email"}
+          type={"email"}
+          label={"E-mail"}
+          text={"E-mail"}
+        />
+        <Input
+          id={"registration-form-phone-num"}
+          type={"tel"}
+          label={"Phone number"}
+          text={"Phone number"}
+        />
+        <Input
+          id={"registration-form-bday"}
+          type={"date"}
+          label={"Date of Birth"}
+          text={"Date of Birth"}
+        />
 
         <InputGroup className="mb-3 payment-method-title">
           <InputGroup.Text id="basic-addon1">Payment method</InputGroup.Text>
@@ -51,8 +76,14 @@ const ClientRegistrationForm = () => {
         </div>
       </Form>
       <div className="registration-form-inputs">
-        <Input type={showPassword} label={"Password"} text={"Password"} />
         <Input
+          id={"registration-form-password"}
+          type={showPassword}
+          label={"Password"}
+          text={"Password"}
+        />
+        <Input
+          id={"registration-form-repeat-password"}
           type={showPassword}
           label={"Password"}
           text={"Repeat password"}

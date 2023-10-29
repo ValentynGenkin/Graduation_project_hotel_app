@@ -24,6 +24,7 @@ const ExistAccountInfo = () => {
       <h5 className="exist-account-title">Account info</h5>
       <div className="exist-account-form-inputs">
         <Input
+          id={"account-first-name"}
           type={"text"}
           label={"Username"}
           text={"First name"}
@@ -31,6 +32,7 @@ const ExistAccountInfo = () => {
           changeability={update}
         />
         <Input
+          id={"account-last-name"}
           type={"text"}
           label={"Username"}
           text={"Last name"}
@@ -38,6 +40,7 @@ const ExistAccountInfo = () => {
           changeability={update}
         />
         <Input
+          id={"account-email"}
           type={"text"}
           label={"Email"}
           text={"E-mail"}
@@ -45,6 +48,7 @@ const ExistAccountInfo = () => {
           changeability={update}
         />
         <Input
+          id={"account-phone-num"}
           type={"tel"}
           label={"Phone number"}
           text={"Phone number"}
@@ -52,6 +56,7 @@ const ExistAccountInfo = () => {
           changeability={update}
         />
         <Input
+          id={"account-bday"}
           type={"text"}
           label={"Date of Birth"}
           text={"Date of Birth"}
@@ -59,6 +64,7 @@ const ExistAccountInfo = () => {
           changeability={update}
         />
         <Input
+          id={"account-payment-method"}
           type={"text"}
           label={"Payment method"}
           text={"Payment method"}
