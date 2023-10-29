@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../CSS/Loginform.css";
-
+import hotelReception from "../Icons/hotel reception.jpg";
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -25,7 +25,6 @@ const LoginForm = () => {
     const { email, password } = formData;
 
     if (email === "HYF@gmail.com" && password === "admin") {
-      // Redirect to "/Admin" if email and password match
       navigate("/Admin");
     } else {
       setError("Invalid email or password.");
@@ -33,11 +32,11 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
+    <div className="loginPageWrapper">
       <div className="container-admin-from">
-        <h2 className="login-title-admin">Login</h2>
-        {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleLogin} className="login-form-admin">
+          <h2 className="login-title-admin">Login</h2>
+          {error && <p className="error-message">{error}</p>}
           <div className="form-group-admin">
             <label htmlFor="email">Email:</label>
             <input
@@ -63,8 +62,13 @@ const LoginForm = () => {
           </button>
         </form>
       </div>
-      <div className="message-container-admin">
-        <p></p>
+      <div className="loginImgContainer">
+        <img
+          src={hotelReception}
+          alt="reception"
+          s
+          className="receptionImg"
+        ></img>
       </div>
     </div>
   );

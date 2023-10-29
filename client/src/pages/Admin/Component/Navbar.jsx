@@ -13,36 +13,32 @@ const Navbar = () => {
     <div className="nav-wrapper">
       <div className="nav-center">
         <Link to="/Admin" className="nav-link">
-          <div className="logo">
-            <img
-              src={Manager}
-              alt="Description of the image"
-              className="image"
-            />
+          <div className="Admin-name">
+            <img src={Manager} alt="admin logo" className="Nav-image" />
             Chouaib Atrous
           </div>
         </Link>
         <div className="nav-links">
           <Link to="/AddRooms" className="nav-link">
-            <MdOutlineBedroomParent className="icon" />
+            <MdOutlineBedroomParent className="Nav-icon" />
             Add Rooms
           </Link>
           <Link to="/Clients" className="nav-link">
-            <HiOutlineUsers className="icon" />
+            <HiOutlineUsers className="Nav-icon" />
             Clients
           </Link>
 
           <Link to="/Statistics" className="nav-link">
-            <FcStatistics className="icon" />
+            <FcStatistics className="Nav-icon" />
             Statistics
           </Link>
           <Link to="/Reviews" className="nav-link">
-            <MdReviews className="icon" />
+            <MdReviews className="Nav-icon" />
             Reviews
           </Link>
 
           <Link to="/Login" className="nav-link">
-            <LuLogOut className="icon" />
+            <LuLogOut className="Nav-icon" />
             Logout
           </Link>
         </div>

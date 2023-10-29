@@ -36,7 +36,6 @@ const RoomTable = () => {
   ]);
 
   const handleStatusChange = (roomId, newStatus) => {
-    // Create a new array with updated status
     const updatedRequests = roomRequests.map((request) => {
       if (request.roomId === roomId) {
         return { ...request, status: newStatus };
@@ -68,7 +67,10 @@ const RoomTable = () => {
               <td>{request.clientName}</td>
               <td>{request.clientEmail}</td>
               <td>
-                <a href={`tel: ${request.clientNumber}`}>
+                <a
+                  className="call-request"
+                  href={`tel: ${request.clientNumber}`}
+                >
                   <span role="img" aria-label="Phone Icon">
                     📞
                   </span>

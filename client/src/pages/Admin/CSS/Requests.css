@@ -26,7 +26,7 @@ td {
   font-weight: bold;
 }
 
-a {
+.call-request {
   text-decoration: none;
   color: #333;
   display: flex;
@@ -38,11 +38,8 @@ span[aria-label="Phone Icon"] {
   font-size: 18px;
 }
 
-/* Select input styling */
 select {
   padding: 5px;
   background-color: #fff; /* Set your desired background color */
   border: 1px solid #ccc;
 }
-
-/* Status-specific styles */

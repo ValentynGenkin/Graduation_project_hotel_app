@@ -1,12 +1,14 @@
-.container-admin-form {
+.container-admin-from {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
+  width: 450px;
 }
 
 .login-form-admin {
   width: 400px;
+  height: 500px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -15,13 +17,18 @@
 
 .form-group-admin {
   margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 10px;
+  flex-direction: column;
 }
 
 .form-input-admin {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  width: 50%;
+  width: 100%;
   transition: border-color 0.3s;
   font-size: 16px;
 }
@@ -45,6 +52,18 @@
   text-transform: uppercase;
 }
 
+.loginImgContainer {
+  height: 100vh;
+  width: calc(100vw - 450px);
+  overflow: hidden; /* Optional: To ensure the image doesn't overflow the container */
+}
+
+.receptionImg {
+  width: 100%; /* Make the image fill its container */
+  height: 100%; /* Maintain the aspect ratio; the height will not exceed the container height */
+  object-fit: cover; /* Ensures the image covers the container, maintaining aspect ratio and cropping if necessary */
+}
+
 .login-button-admin:hover {
   background-color: #0056b3;
 }
@@ -54,12 +73,20 @@
   margin-bottom: 15px;
   font-size: 14px;
 }
-
-/* .message-container-admin {
+.loginPageWrapper {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  width: 100vw;
+  height: 100vh;
+}
+.message-container-admin {
   padding: 20px;
+  width: 300px;
+  height: 50%;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #580202;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   color: #fff;
-} */
+}

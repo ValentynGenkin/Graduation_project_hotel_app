@@ -1,8 +1,7 @@
-/* styles.css */
-.icon {
-  width: 40px; /* Set the width of the icon */
-  height: 40px; /* Set the height of the icon */
-  margin-right: 8px; /* Add some right margin for spacing */
+.Nav-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
 }
 .nav-wrapper {
   background-color: #1a053d;
@@ -16,12 +15,17 @@
   flex-direction: column;
   padding: 1.5rem 2rem;
 }
-.image {
+.Nav-image {
   height: 20px;
   width: 20px;
   margin-right: 20px;
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: color 0.3s ease-in-out;
 }
-.logo {
+.Admin-name {
   font-size: 20px;
   color: white;
   font-weight: 700;
