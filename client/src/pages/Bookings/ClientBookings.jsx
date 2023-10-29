@@ -11,7 +11,7 @@ import Room2Image from "../../assets/room2.jpg";
 import Room3Image from "../../assets/room3.jpg";
 import Room4Image from "../../assets/room4.jpg";
 
-import "../../Components/CSS/ClientBookings.css";
+import "../../components/CSS/ClientBookings.css";
 
 const responsive = {
   1060: { items: 1 },
