@@ -2,15 +2,15 @@ import express from "express";
 import {
   checkBookingExist,
   checkRoomExist,
-  chooseFirstAvailableRoom,
 } from "../middlewares/database/databaseErrorHelpers.js";
 import { addRoomToBooking } from "../controllers/booking.js";
+import { chooseAvailableRoom } from "../middlewares/query/chooseAvailableRoom.js";
 
 const bookingRouter = express.Router();
 
 bookingRouter.post(
   "/addRoomToBooking",
-  [checkBookingExist, checkRoomExist, chooseFirstAvailableRoom],
+  [checkBookingExist, checkRoomExist, chooseAvailableRoom],
   addRoomToBooking
 );
 

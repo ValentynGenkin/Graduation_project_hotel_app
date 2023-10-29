@@ -7,7 +7,6 @@ import {
 import ServerError from "../../util/error/ServerError.js";
 import Room from "../../models/Room.js";
 import Booking from "../../models/Booking.js";
-import { chooseAvailableRoomAggregation } from "../../util/query/roomQueryHelper.js";
 
 export const getCustomerAccess = asyncHandler(async (req, res, next) => {
   //get customer_access_token from cookies
@@ -98,29 +97,5 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   }
 
   req.booking = booking;
-  next();
-});
-
-export const chooseFirstAvailableRoom = asyncHandler(async (req, res, next) => {
-  const exampleRoom = req.room;
-  const checkIn = new Date(req.body.checkIn);
-  const checkOut = new Date(req.body.checkOut);
-  const aggregationStages = chooseAvailableRoomAggregation(
-    exampleRoom,
-    checkIn,
-    checkOut
-  );
-  const availableRoom = await Room.aggregate(aggregationStages);
-
-  if (availableRoom.length === 0) {
-    next(
-      new ServerError(
-        "Currently there is no available room with these criterias",
-        400
-      )
-    );
-  }
-  req.availableRoom = availableRoom[0];
-
   next();
 });
