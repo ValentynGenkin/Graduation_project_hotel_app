@@ -22,6 +22,10 @@ const BookingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Decimal128,
     default: mongoose.Types.Decimal128.fromString("0"),
   },
+  status: {
+    type: String,
+    default: "open",
+  },
 });
 
 const Booking = mongoose.model("Booking", BookingSchema);
