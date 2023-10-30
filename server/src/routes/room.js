@@ -7,7 +7,7 @@ import {
 } from "../controllers/room.js";
 import { imageUpload } from "../middlewares/imageUpload/imageUpload.js";
 import {
-  checkRoomsExist,
+  checkRoomExist,
   getAdminAccess,
 } from "../middlewares/database/databaseErrorHelpers.js";
 import { roomQueryMiddleware } from "../middlewares/query/roomQueryMiddleware.js";
@@ -24,7 +24,7 @@ roomRouter.put(
   [getAdminAccess, imageUpload.array("roomImages", 10)],
   editRoom
 );
-roomRouter.get("/:roomId", checkRoomsExist, getSingleRoom);
+roomRouter.get("/:roomId", checkRoomExist, getSingleRoom);
 roomRouter.get("/", roomQueryMiddleware, getRooms);
 
 export default roomRouter;
