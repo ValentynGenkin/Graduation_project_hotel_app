@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Input from "./Input";
+import Input from "./InputComponent";
 
 import "./CSS/ChangePasswordPopUp.css";
 import ShowPasswordBtn from "./ShowPasswordBtn";
@@ -14,13 +14,24 @@ const ChangePasswordInputs = () => {
 
   return (
     <div className="change-password-inputs">
-      <Input type={showPassword} label={"Password"} text={"Current password"} />
+      <Input
+        id={"change-password-current"}
+        type={showPassword}
+        label={"Password"}
+        text={"Current password"}
+      />
 
       <br />
 
-      <Input type={showPassword} label={"Password"} text={"New password"} />
+      <Input
+        id={"change-password-new-pass"}
+        type={showPassword}
+        label={"Password"}
+        text={"New password"}
+      />
 
       <Input
+        id={"change-password-repeat-new-pass"}
         type={showPassword}
         label={"Password"}
         text={"Repeat new password"}

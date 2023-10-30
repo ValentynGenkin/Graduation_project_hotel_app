@@ -1,0 +1,107 @@
+.client-booking-container {
+  width: 90%;
+  margin-top: 100px;
+  z-index: 1;
+  min-height: calc(100vh - 164px);
+}
+
+.client-booking-item {
+  background-color: rgba(10, 202, 219, 0.449);
+  padding: 10px;
+  margin: 5px auto;
+}
+.bookings-img-carousel {
+  width: 300px;
+  margin: 5px;
+}
+
+.booking-table-number {
+  width: 50px;
+}
+
+.booking-table-status {
+  width: 20%;
+  max-width: 150px;
+}
+
+.booking-information-block {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.booking-date-information {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.booking-date-information div {
+  background-color: white;
+  margin: 10px;
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid lightgrey;
+  width: 240px;
+  border-radius: 5px;
+}
+.booking-information-block div {
+  background-color: white;
+  margin: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  border: 1px solid lightgrey;
+  width: 240px;
+  border-radius: 5px;
+}
+
+.bookings-description-block {
+  display: flex;
+  flex-wrap: wrap;
+}
+.bookings-description {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 700px;
+}
+
+.bookings-accordion {
+  width: 80%;
+  margin: 10px auto;
+}
+
+.bookings-accordion-header button {
+  height: 70px;
+}
+
+.request-send-btn {
+  margin: 10px;
+  float: right;
+}
+
+.client-bookings-btn-block {
+  display: flex;
+  justify-content: flex-end;
+}
+.client-bookings-btn-block button {
+  margin: 10px;
+}
+
+@media screen and (max-width: 1200px) {
+  .bookings-description {
+    max-width: 600px;
+  }
+}
+
+@media screen and (max-width: 1060px) {
+  .bookings-img-carousel {
+    width: 60%;
+    margin: 5px auto;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .bookings-img-carousel {
+    width: 80%;
+  }
+}
