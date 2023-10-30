@@ -16,6 +16,7 @@ const LoginDropdownMenu = () => {
       <InputGroup className="mb-3 login-input">
         <InputGroup.Text id="inputGroup-sizing-default">Email</InputGroup.Text>
         <Form.Control
+          id="sign-in-email-input"
           aria-label="Default"
           aria-describedby="inputGroup-sizing-default"
         />
@@ -25,6 +26,7 @@ const LoginDropdownMenu = () => {
           Password
         </InputGroup.Text>
         <Form.Control
+          id="sign-in-password-input"
           aria-label="Default"
           aria-describedby="inputGroup-sizing-default"
         />
