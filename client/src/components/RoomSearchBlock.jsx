@@ -1,5 +1,6 @@
 import { Button, Container } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Calendar from "react-calendar";
 import Accordion from "react-bootstrap/Accordion";
 import "react-calendar/dist/Calendar.css";
@@ -147,13 +148,15 @@ const RoomSearchBlock = () => {
               />
             </Container>
             <div className="search-btn-block">
-              <Button
-                className="search-btn"
-                variant="outline-success"
-                size="lg"
-              >
-                Search
-              </Button>
+              <Link to={"/RoomInfoCard"}>
+                <Button
+                  className="search-btn"
+                  variant="outline-success"
+                  size="lg"
+                >
+                  Search
+                </Button>
+              </Link>
             </div>
           </Accordion.Body>
         </Accordion.Item>

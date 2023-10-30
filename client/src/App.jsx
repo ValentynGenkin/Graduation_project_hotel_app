@@ -5,6 +5,9 @@ import Home from "./pages/Home/Home";
 import ClientRegistrationForm from "./pages/RegistrationForm/ClientRegistrationForm";
 import ExistAccountInfo from "./pages/Account/ExistAccountInfo";
 import ClientBookings from "./pages/Bookings/ClientBookings";
+import RoomInfoCard from "../src/components/RoomInfoCard";
+import slideData from "../src/data/DataImages.json";
+import RoomDetailsCard from "../src/components/RoomDetailsCard";
 
 const App = () => {
   return (
@@ -15,6 +18,11 @@ const App = () => {
           <Route path="registration" element={<ClientRegistrationForm />} />
           <Route path="account-info" element={<ExistAccountInfo />} />
           <Route path="current-bookings" element={<ClientBookings />} />
+          <Route
+            path="RoomInfoCard"
+            element={<RoomInfoCard data={slideData} />}
+          />
+          <Route path="RoomDetailsCard" element={<RoomDetailsCard />} />
         </Route>
       </Routes>
     </>

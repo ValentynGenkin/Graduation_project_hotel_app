@@ -1,0 +1,113 @@
+.carousel {
+  position: relative;
+  display: flex;
+  width: 30%;
+  height: 200px;
+  padding: 1rem;
+  margin-left: 1rem;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.slide-hidden {
+  display: none;
+}
+
+.arrow {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  color: white;
+  top: 6rem;
+}
+
+.arrow-left {
+  left: 1.5rem;
+}
+
+.arrow-right {
+  right: 1.5rem;
+}
+
+.info {
+  display: flex;
+  gap: 26rem;
+  align-items: center;
+  padding-right: 10px;
+}
+
+.block {
+  display: flex;
+  background-color: rgba(13, 153, 255, 0.2);
+  border: 1px solid #0d99ff;
+  border-radius: 0.4rem;
+  width: 100%;
+  margin: 100px auto;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+button {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  background-color: white;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 991px) {
+  .carousel {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 200px;
+    padding: 1rem;
+    margin-left: 0;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin: 1rem auto;
+  }
+
+  button {
+    font-size: 14px;
+  }
+
+  ul {
+    font-size: 14px;
+  }
+}
