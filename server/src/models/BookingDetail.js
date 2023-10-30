@@ -23,7 +23,7 @@ const BookingDetailSchema = new mongoose.Schema({
 
 BookingDetailSchema.post("save", async function (doc, next) {
   setTimeout(async () => {
-    //TODO: handle errors here //not sure setTimeOut
+    //TODO: handle errors here or transaction?//not sure setTimeOut
     const booking = await Booking.findById(doc.bookingId);
     if (booking.status === "open") {
       await doc.remove();

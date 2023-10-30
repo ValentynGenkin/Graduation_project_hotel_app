@@ -5,6 +5,7 @@ import {
 } from "../middlewares/database/databaseErrorHelpers.js";
 import {
   addRoomToBooking,
+  checkout,
   removeRoomFromBooking,
 } from "../controllers/booking.js";
 import { chooseAvailableRoom } from "../middlewares/query/chooseAvailableRoom.js";
@@ -21,5 +22,6 @@ bookingRouter.post(
   [checkBookingExist, checkRoomExist],
   removeRoomFromBooking
 );
+bookingRouter.post("/checkout", checkBookingExist, checkout);
 
 export default bookingRouter;

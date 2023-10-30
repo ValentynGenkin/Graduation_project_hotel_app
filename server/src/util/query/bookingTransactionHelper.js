@@ -107,6 +107,8 @@ export const removeRoomFromBookingTransaction = async (req, next) => {
 
     await booking.save({ session });
 
+    await session.commitTransaction();
+
     const updatedBooking = await Booking.findById(booking._id).populate(
       "bookingDetails"
     );

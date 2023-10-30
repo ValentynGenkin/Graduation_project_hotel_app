@@ -8,6 +8,8 @@ import ServerError from "../../util/error/ServerError.js";
 import Room from "../../models/Room.js";
 import Booking from "../../models/Booking.js";
 
+import { guestCustomerCheckOutHelper } from "../../util/checkout/guestCustomerCheckOutHelper.js";
+
 export const getCustomerAccess = asyncHandler(async (req, res, next) => {
   //get customer_access_token from cookies
   const token = isTokenIncluded(req);
@@ -89,7 +91,10 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   let booking;
 
   if (guestCustomerId) {
-    booking = await Booking.findOne({ guestCustomerId: guestCustomerId });
+    booking = await Booking.findOne({
+      guestCustomerId: guestCustomerId,
+      status: "open",
+    });
 
     if (!booking) {
       booking = await Booking.create({ guestCustomerId: guestCustomerId });
@@ -98,12 +103,18 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
     // at this step we create req.customer.id if guestCustomerId is not exist in request.
     await getCustomerAccess(req, null, next);
 
-    booking = await Booking.findOne({ customerId: req.customer.id });
+    booking = await Booking.findOne({
+      customerId: req.customer.id,
+      status: "open",
+    });
     if (!booking) {
       booking = await Booking.create({ customerId: req.customer.id });
     }
   }
 
+  if (guestCustomerId && req.originalUrl.includes("checkout")) {
+    booking = await guestCustomerCheckOutHelper(req, booking, next);
+  }
   req.booking = booking;
   next();
 });
