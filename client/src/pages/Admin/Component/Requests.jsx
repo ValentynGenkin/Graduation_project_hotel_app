@@ -46,48 +46,53 @@ const RoomTable = () => {
   };
 
   return (
-    <div className="body-request">
-      <table border="1">
+    <div className="custom-body-request">
+      <table className="custom-table" border="1">
         <thead>
           <tr>
-            <th>Room ID</th>
-            <th>Client ID</th>
-            <th>Client Name</th>
-            <th>Client Email</th>
-            <th>Client Number</th>
-            <th>Client Request</th>
-            <th>Request Status</th>
+            <th className="custom-th">Room ID</th>
+            <th className="custom-th">Client ID</th>
+            <th className="custom-th">Client Name</th>
+            <th className="custom-th">Client Email</th>
+            <th className="custom-th">Client Number</th>
+            <th className="custom-th">Client Request</th>
+            <th className="custom-th">Request Status</th>
           </tr>
         </thead>
         <tbody>
           {roomRequests.map((request) => (
             <tr key={request.roomId}>
-              <td>{request.roomId}</td>
-              <td>{request.clientId}</td>
-              <td>{request.clientName}</td>
-              <td>{request.clientEmail}</td>
-              <td>
+              <td className="custom-td">{request.roomId}</td>
+              <td className="custom-td">{request.clientId}</td>
+              <td className="custom-td">{request.clientName}</td>
+              <td className="custom-td">{request.clientEmail}</td>
+              <td className="custom-td">
                 <a
-                  className="call-request"
+                  className="custom-call-request"
                   href={`tel: ${request.clientNumber}`}
                 >
-                  <span role="img" aria-label="Phone Icon">
+                  <span
+                    className="custom-span"
+                    role="img"
+                    aria-label="Phone Icon"
+                  >
                     📞
                   </span>
                   {request.clientNumber}
                 </a>
               </td>
-              <td>{request.clientRequest}</td>
-              <td>
+              <td className="custom-td">{request.clientRequest}</td>
+              <td className="custom-td">
                 <select
+                  className="custom-select"
                   value={request.status}
                   onChange={(e) =>
                     handleStatusChange(request.roomId, e.target.value)
                   }
                 >
-                  <option className="approved">Approved</option>
-                  <option className="canceled">Canceled</option>
-                  <option className="in progress">In Progress</option>
+                  <option className="custom-approved">Approved</option>
+                  <option className="custom-canceled">Canceled</option>
+                  <option className="custom-in-progress">In Progress</option>
                 </select>
               </td>
             </tr>

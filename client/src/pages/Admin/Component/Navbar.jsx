@@ -10,34 +10,34 @@ import { MdOutlineBedroomParent } from "react-icons/md"; // Import MdOutlineBedr
 
 const Navbar = () => {
   return (
-    <div className="nav-wrapper">
-      <div className="nav-center">
+    <div className="navbar-wrapper">
+      <div className="navbar-center">
         <Link to="/Admin" className="nav-link">
           <div className="Admin-name">
             <img src={Manager} alt="admin logo" className="Nav-image" />
             Chouaib Atrous
           </div>
         </Link>
-        <div className="nav-links">
-          <Link to="/AddRooms" className="nav-link">
+        <div className="nav-All-links">
+          <Link to="/AddRooms" className="nav-link-admin">
             <MdOutlineBedroomParent className="Nav-icon" />
             Add Rooms
           </Link>
-          <Link to="/Clients" className="nav-link">
+          <Link to="/Clients" className="nav-link-admin">
             <HiOutlineUsers className="Nav-icon" />
             Clients
           </Link>
 
-          <Link to="/Status" className="nav-link">
+          <Link to="/Status" className="nav-link-admin">
             <FcStatistics className="Nav-icon" />
             Room Status
           </Link>
-          <Link to="/Reviews" className="nav-link">
+          <Link to="/Reviews" className="nav-link-admin">
             <MdReviews className="Nav-icon" />
             Reviews
           </Link>
 
-          <Link to="/Login" className="nav-link">
+          <Link to="/Login" className="nav-link-admin">
             <LuLogOut className="Nav-icon" />
             Logout
           </Link>

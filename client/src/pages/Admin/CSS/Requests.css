@@ -1,16 +1,18 @@
-.body-request {
+/* Requests.css */
+
+.custom-body-request {
   font-family: Arial, sans-serif;
   margin: 20px;
   border: 2px solid #023e8a;
   margin-top: 200px;
 }
 
-table {
+.custom-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-th {
+.custom-th {
   background-color: #00a8cc;
   font-weight: bold;
   text-align: left;
@@ -19,26 +21,26 @@ th {
   color: white;
 }
 
-td {
+.custom-td {
   text-align: left;
   padding: 8px;
   border: 1px solid #ccc;
   font-weight: bold;
 }
 
-.call-request {
+.custom-call-request {
   text-decoration: none;
   color: #333;
   display: flex;
   align-items: center;
 }
 
-span[aria-label="Phone Icon"] {
+.custom-span {
   margin-right: 5px;
   font-size: 18px;
 }
 
-select {
+.custom-select {
   padding: 5px;
   background-color: #fff;
   border: 1px solid #ccc;
