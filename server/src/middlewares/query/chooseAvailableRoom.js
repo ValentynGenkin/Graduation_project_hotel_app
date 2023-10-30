@@ -7,6 +7,7 @@ export const chooseAvailableRoom = asyncHandler(async (req, res, next) => {
   const exampleRoom = req.room;
   const checkIn = new Date(req.body.checkIn);
   const checkOut = new Date(req.body.checkOut);
+
   const aggregationStages = chooseAvailableRoomAggregation(
     exampleRoom,
     checkIn,

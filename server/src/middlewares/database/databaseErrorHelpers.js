@@ -34,6 +34,9 @@ export const getCustomerAccess = asyncHandler(async (req, res, next) => {
   }
   // add customer to request. to use next functions
   req.customer = customer;
+  if (res === null) {
+    return;
+  }
   next();
 });
 
@@ -49,6 +52,7 @@ export const checkRoomExist = asyncHandler(async (req, res, next) => {
   }
 
   req.room = room;
+
   next();
 });
 
@@ -92,8 +96,12 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
     }
   } else {
     // at this step we create req.customer.id if guestCustomerId is not exist in request.
-    await getCustomerAccess(req, res, next);
-    booking = await Booking.findOne({ guestCustomerId: req.customer.id });
+    await getCustomerAccess(req, null, next);
+
+    booking = await Booking.findOne({ customerId: req.customer.id });
+    if (!booking) {
+      booking = await Booking.create({ customerId: req.customer.id });
+    }
   }
 
   req.booking = booking;
