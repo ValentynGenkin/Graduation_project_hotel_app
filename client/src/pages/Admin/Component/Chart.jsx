@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
+import "../CSS/Chart.css";
 
 const RevenueChart = () => {
   const chartRef = useRef(null);
@@ -27,7 +28,16 @@ const RevenueChart = () => {
             {
               label: "Monthly Revenue",
               data: [
-                5000, 2000, 40000, 5000, 5000, 5000, 30000, 5000, 3300, 5500,
+                5000,
+                2000,
+                40000,
+                5000,
+                5000,
+                5000,
+                30000,
+                5000,
+                3300,
+                5500,
               ],
               borderColor: "blue",
               borderWidth: 5,
@@ -79,19 +89,7 @@ const RevenueChart = () => {
   return (
     <div style={{ width: "50%", height: "500px" }}>
       <canvas ref={chartRef} />
-      <p
-        style={{
-          backgroundColor: "#f7f7f7",
-          borderLeft: "5px solid black",
-          padding: "10px",
-          fontStyle: "italic",
-          marginBottom: "20px",
-          fontFamily: "Arial, sans-serif",
-          fontSize: "10px",
-          width: "400px",
-          marginTop: "50px",
-        }}
-      >
+      <p className="note-description-chart">
         Note: The revenue chart is calculated after deducting worker and
         facilities payments.
       </p>
