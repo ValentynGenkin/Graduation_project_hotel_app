@@ -139,3 +139,23 @@ export const inBranchBooking = asyncHandler(async (req, res, next) => {
     booking: updatedBooking,
   });
 });
+
+export const cancelBooking = asyncHandler(async (req, res, next) => {
+  const { bookingId } = req.params;
+  const booking = await Booking.findByIdAndUpdate(bookingId, {
+    status: "canceled",
+  });
+  if (!booking) {
+    return next(
+      new ServerError("There is no booking with provided bookingId", 400)
+    );
+  }
+  booking.status = "canceled";
+
+  await booking.save();
+
+  return res.status(200).json({
+    success: true,
+    message: "Booking is cancelled successfully.",
+  });
+});

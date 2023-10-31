@@ -11,6 +11,7 @@ import {
   removeRoomFromBooking,
   getBookingStatus,
   inBranchBooking,
+  cancelBooking,
 } from "../controllers/booking.js";
 import { chooseAvailableRoom } from "../middlewares/query/chooseAvailableRoom.js";
 
@@ -37,5 +38,6 @@ bookingRouter.post(
   [getAdminAccess, checkRoomExist, chooseAvailableRoom],
   inBranchBooking
 );
+bookingRouter.get("/cancel/:bookingId", getAdminAccess, cancelBooking);
 
 export default bookingRouter;
