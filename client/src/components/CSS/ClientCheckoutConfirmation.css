@@ -7,8 +7,16 @@
 }
 
 .confirmation-done {
+  margin-top: 15px;
   color: green;
 }
 .confirmation-done {
   font-size: 5.5rem;
+}
+
+@media screen and (max-width: 991px) {
+  .client-checkout-confirmation-container {
+    margin-top: 0;
+    min-height: calc(100vh - 185px);
+  }
 }
