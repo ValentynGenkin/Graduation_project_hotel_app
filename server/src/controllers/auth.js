@@ -12,6 +12,7 @@ import {
   resetPasswordEmail,
 } from "../util/mailer/mailTemplates.js";
 import ServerError from "../util/error/ServerError.js";
+import Booking from "../models/Booking.js";
 
 export const register = asyncHandler(async (req, res, next) => {
   const { firstname, lastname, phone, password, email } =
@@ -35,6 +36,21 @@ export const register = asyncHandler(async (req, res, next) => {
     subject: "Welcome to Hotel",
     html: registrationEmail(firstname),
   });
+
+  let guestCustomerBooking;
+  if (req.cookies.booking && req.cookies.guestCustomerId) {
+    guestCustomerBooking = await Booking.findByIdAndUpdate(req.booking._id, {
+      customerId: user._id,
+      guestCustomerId: null,
+    });
+    res.cookie("booking", guestCustomerBooking, {
+      httpOnly: true,
+      expires: new Date(
+        Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
+      ),
+      secure: false,
+    });
+  }
   return res
     .status(201)
     .cookie("customer_access_token", token, {
@@ -44,6 +60,7 @@ export const register = asyncHandler(async (req, res, next) => {
       ),
       secure: false,
     })
+    .clearCookie("guestCustomerId")
     .json({
       success: true,
       customer: userObject,
@@ -67,6 +84,21 @@ export const login = asyncHandler(async (req, res, next) => {
   const userObject = user.toObject();
   delete userObject.password;
 
+  let guestCustomerBooking;
+  if (req.cookies.booking && req.cookies.guestCustomerId) {
+    guestCustomerBooking = await Booking.findByIdAndUpdate(req.booking._id, {
+      customerId: user._id,
+      guestCustomerId: null,
+    });
+    res.cookie("booking", guestCustomerBooking, {
+      httpOnly: true,
+      expires: new Date(
+        Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
+      ),
+      secure: false,
+    });
+  }
+
   return res
     .status(200)
     .cookie("customer_access_token", token, {
@@ -76,6 +108,7 @@ export const login = asyncHandler(async (req, res, next) => {
       ),
       secure: false,
     })
+    .clearCookie("guestCustomerId")
     .json({
       success: true,
       customer: userObject,
