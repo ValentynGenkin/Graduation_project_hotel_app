@@ -2,11 +2,16 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home/Home";
+import Admin from "../src/pages/Admin";
+import Clients from "./pages/Admin/pages/Clients";
+import AddRooms from "./pages/Admin/pages/AddRooms";
+import Login from "./pages/Admin/Component/Login";
 import ClientRegistrationForm from "./pages/RegistrationForm/ClientRegistrationForm";
 import ExistAccountInfo from "./pages/Account/ExistAccountInfo";
 import ClientBookings from "./pages/Bookings/ClientBookings";
 import ClientCheckout from "./components/ClientCheckout";
 import ClientCheckoutConfirmation from "./components/ClientCheckoutConfirmation";
+import RoomStatus from "./pages/Admin/pages/RoomStatus";
 
 const App = () => {
   return (
@@ -23,6 +28,11 @@ const App = () => {
             element={<ClientCheckoutConfirmation />}
           />
         </Route>
+        <Route path="admin" element={<Admin />} />
+        <Route path="clients" element={<Clients />} />
+        <Route path="AddRooms" element={<AddRooms />} />
+        <Route path="Login" element={<Login />} />
+        <Route path="/Status" element={<RoomStatus />} />
       </Routes>
     </>
   );

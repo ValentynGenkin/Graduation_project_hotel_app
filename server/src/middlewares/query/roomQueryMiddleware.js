@@ -1,10 +1,10 @@
 import asyncHandler from "express-async-handler";
 import Room from "../../models/Room.js";
-import { filterRooms } from "../../util/query/roomQueryHelper.js";
+import { filterRoomsAggregation } from "../../util/query/roomQueryHelper.js";
 
 export const roomQueryMiddleware = asyncHandler(async (req, res, next) => {
   // create filterStages array by user req.query
-  const filterStages = filterRooms(req);
+  const filterStages = filterRoomsAggregation(req);
   // we group same rooms here.
   const groupingStage = {
     $group: {

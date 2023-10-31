@@ -1,4 +1,4 @@
-export const filterRooms = (req) => {
+export const filterRoomsAggregation = (req) => {
   const filterInputs = req.query;
   const stages = [];
 
@@ -32,9 +32,9 @@ export const filterRooms = (req) => {
 
   // Check room availability
 
-  if (req.query.checkIn && req.query.checkOut) {
-    const checkIn = new Date(req.query.checkIn);
-    const checkOut = new Date(req.query.checkOut);
+  if (filterInputs.checkIn && filterInputs.checkOut) {
+    const checkIn = new Date(filterInputs.checkIn);
+    const checkOut = new Date(filterInputs.checkOut);
 
     // Join 'rooms' with 'bookingdetails'
     stages.push({
@@ -46,20 +46,105 @@ export const filterRooms = (req) => {
       },
     });
 
-    // Filter rooms
+    // Detect overlapping bookings
     stages.push({
-      $match: {
-        $or: [
-          { "bookings.checkIn": { $gt: checkOut } },
-          { "bookings.checkOut": { $lt: checkIn } },
-          { bookings: { $size: 0 } },
-        ],
+      $addFields: {
+        overlappingBookings: {
+          $filter: {
+            input: "$bookings",
+            as: "booking",
+            cond: {
+              $or: [
+                {
+                  $and: [
+                    { $lt: ["$$booking.checkIn", checkOut] },
+                    { $gt: ["$$booking.checkOut", checkIn] },
+                  ],
+                },
+                {
+                  $and: [
+                    { $gt: ["$$booking.checkIn", checkIn] },
+                    { $lt: ["$$booking.checkOut", checkOut] },
+                  ],
+                },
+              ],
+            },
+          },
+        },
       },
     });
 
-    // Remove  'bookings' field
-    stages.push({ $project: { bookings: 0 } });
+    // Filter rooms without overlapping bookings
+    stages.push({
+      $match: {
+        overlappingBookings: { $size: 0 },
+      },
+    });
+
+    // Remove 'bookings' and 'overlappingBookings' fields
+    stages.push({ $project: { bookings: 0, overlappingBookings: 0 } });
   } //TODO: after create bookingDetails model add here else condition which returns an error
+
+  return stages;
+};
+
+export const chooseAvailableRoomAggregation = (
+  exampleRoom,
+  checkIn,
+  checkOut
+) => {
+  const stages = [
+    {
+      $match: {
+        roomType: exampleRoom.roomType,
+        bedCount: exampleRoom.bedCount,
+        facilities: exampleRoom.facilities,
+        roomPrice: exampleRoom.roomPrice,
+      },
+    },
+    {
+      $lookup: {
+        from: "bookingdetails",
+        localField: "_id",
+        foreignField: "roomId",
+        as: "bookings",
+      },
+    },
+    {
+      $addFields: {
+        overlappingBookings: {
+          $filter: {
+            input: "$bookings",
+            as: "booking",
+            cond: {
+              $or: [
+                {
+                  $and: [
+                    { $lt: ["$$booking.checkIn", checkOut] },
+                    { $gt: ["$$booking.checkOut", checkIn] },
+                  ],
+                },
+                {
+                  $and: [
+                    { $gt: ["$$booking.checkIn", checkIn] },
+                    { $lt: ["$$booking.checkOut", checkOut] },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+    {
+      $match: {
+        overlappingBookings: { $size: 0 },
+      },
+    },
+    {
+      $limit: 1,
+    },
+  ];
 
   return stages;
 };

@@ -1,7 +1,8 @@
-export const registrationEmail = (firstname) => {
+export const registrationEmail = (firstname, password) => {
   return String.raw`
   Welcome ${firstname},
   You have registered succesfully!
+  ${password ? "Your password: " + password : ""}
   `;
 };
 

@@ -32,7 +32,7 @@ export const editRoom = asyncHandler(async (req, res, next) => {
 });
 
 export const getSingleRoom = asyncHandler(async (req, res) => {
-  const room = req.rooms[0];
+  const room = req.room;
 
   return res.status(200).json({
     success: true,
