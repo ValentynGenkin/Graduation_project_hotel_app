@@ -127,7 +127,7 @@ export const inBranchBooking = asyncHandler(async (req, res, next) => {
     "bookingDetails"
   );
 
-  sendEmail({
+  await sendEmail({
     from: process.env.SMTP_USER,
     to: customer.email,
     subject: "Your Booking Details",
