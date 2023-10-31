@@ -1,0 +1,54 @@
+.container-global {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  height: 100%;
+  width: 50%;
+}
+
+.circle-container {
+  width: 80%;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.red-text {
+  color: red;
+}
+.legend-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.legend-circle {
+  display: flex;
+  align-items: center;
+}
+
+.legend-box {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000;
+  margin-left: 40px;
+}
+
+.red {
+  background-color: red;
+  margin-right: 18px;
+}
+
+.white {
+  background-color: whitesmoke;
+}
+
+.text-inside {
+  font-size: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  font-size: 20px;
+}

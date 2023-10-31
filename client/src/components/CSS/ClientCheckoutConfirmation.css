@@ -1,0 +1,14 @@
+.client-checkout-confirmation-container {
+  width: 90%;
+  margin-top: 100px;
+  z-index: 1;
+  min-height: calc(100vh - 214px);
+  text-align: center;
+}
+
+.confirmation-done {
+  color: green;
+}
+.confirmation-done {
+  font-size: 5.5rem;
+}

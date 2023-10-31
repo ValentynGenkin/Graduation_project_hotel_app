@@ -2,7 +2,7 @@
   width: 90%;
   margin-top: 100px;
   z-index: 1;
-  min-height: calc(100vh - 164px);
+  min-height: calc(100vh - 214px);
 }
 
 .registration-form-title {
@@ -71,6 +71,7 @@
 
 @media screen and (max-width: 991px) {
   .payment-method-container {
-    margin-top: 50px;
+    margin-top: 0;
+    min-height: calc(100vh - 185px);
   }
 }
