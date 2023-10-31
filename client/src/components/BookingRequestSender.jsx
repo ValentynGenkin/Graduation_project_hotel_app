@@ -18,7 +18,7 @@ const BookingRequestSender = () => {
             <Form.Control
               as="textarea"
               placeholder="Leave a comment here"
-              style={{ height: "100px" }}
+              className="comment-text-area"
             />
           </FloatingLabel>
           <Button variant="outline-secondary" className="request-send-btn">

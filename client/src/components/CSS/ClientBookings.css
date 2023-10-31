@@ -87,6 +87,10 @@
   margin: 10px;
 }
 
+.comment-text-area {
+  height: 100px !important;
+}
+
 @media screen and (max-width: 1200px) {
   .bookings-description {
     max-width: 600px;
