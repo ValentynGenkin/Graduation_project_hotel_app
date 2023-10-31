@@ -68,3 +68,24 @@ export const checkout = asyncHandler(async (req, res, next) => {
       redirectUrl: payment._links.checkout.href,
     });
 });
+
+export const getBookingStatus = asyncHandler(async (req, res, next) => {
+  const booking = req.booking;
+  const customer = req.customer;
+  if (booking.customerId !== customer.id) {
+    return next(
+      new ServerError(
+        "You do not have authorization to access this route.",
+        401
+      )
+    );
+  }
+  if (booking.status === "closed") {
+    res.clearCookie("bookingInProgress");
+  }
+
+  return res.status(200).json({
+    success: true,
+    bookingStatus: booking.status,
+  });
+});

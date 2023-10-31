@@ -39,10 +39,13 @@ export const register = asyncHandler(async (req, res, next) => {
 
   let guestCustomerBooking;
   if (req.cookies.booking && req.cookies.guestCustomerId) {
-    guestCustomerBooking = await Booking.findByIdAndUpdate(req.booking._id, {
-      customerId: user._id,
-      guestCustomerId: null,
-    });
+    guestCustomerBooking = await Booking.findByIdAndUpdate(
+      req.cookies.booking._id,
+      {
+        customerId: user._id,
+        guestCustomerId: null,
+      }
+    );
     res.cookie("booking", guestCustomerBooking, {
       httpOnly: true,
       expires: new Date(
@@ -86,10 +89,15 @@ export const login = asyncHandler(async (req, res, next) => {
 
   let guestCustomerBooking;
   if (req.cookies.booking && req.cookies.guestCustomerId) {
-    guestCustomerBooking = await Booking.findByIdAndUpdate(req.booking._id, {
-      customerId: user._id,
-      guestCustomerId: null,
-    });
+    guestCustomerBooking = await Booking.findByIdAndUpdate(
+      req.cookies.booking._id,
+      {
+        customerId: user._id,
+        guestCustomerId: null,
+      },
+      { new: true }
+    );
+
     res.cookie("booking", guestCustomerBooking, {
       httpOnly: true,
       expires: new Date(
