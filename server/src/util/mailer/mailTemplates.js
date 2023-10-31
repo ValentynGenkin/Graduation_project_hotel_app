@@ -30,3 +30,12 @@ export const adminRegistrationEmail = (firstname, email, password) => {
   Password: ${password}
   `;
 };
+
+export const inBranchBookingEmail = (firstname, bookingId) => {
+  return String.raw`
+  Welcome ${firstname},
+  Your booking is created successfully.
+  
+  Your Booking ID: ${bookingId}
+  `;
+};
