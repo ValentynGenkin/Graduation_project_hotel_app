@@ -9,6 +9,8 @@ import Login from "./pages/Admin/Component/Login";
 import ClientRegistrationForm from "./pages/RegistrationForm/ClientRegistrationForm";
 import ExistAccountInfo from "./pages/Account/ExistAccountInfo";
 import ClientBookings from "./pages/Bookings/ClientBookings";
+import ClientCheckout from "./components/ClientCheckout";
+import ClientCheckoutConfirmation from "./components/ClientCheckoutConfirmation";
 import RoomStatus from "./pages/Admin/pages/RoomStatus";
 
 const App = () => {
@@ -20,6 +22,11 @@ const App = () => {
           <Route path="registration" element={<ClientRegistrationForm />} />
           <Route path="account-info" element={<ExistAccountInfo />} />
           <Route path="current-bookings" element={<ClientBookings />} />
+          <Route path="checkout" element={<ClientCheckout />} />
+          <Route
+            path="checkout-confirmation"
+            element={<ClientCheckoutConfirmation />}
+          />
         </Route>
         <Route path="admin" element={<Admin />} />
         <Route path="clients" element={<Clients />} />
