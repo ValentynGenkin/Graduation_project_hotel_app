@@ -1,0 +1,320 @@
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - firstname
+                - lastname
+                - phone
+                - password
+                - email
+              properties:
+                firstname:
+                  type: string
+                  description: The user's first name
+                lastname:
+                  type: string
+                  description: The user's last name
+                phone:
+                  type: string
+                  description: The user's phone number
+                password:
+                  type: string
+                  description: The user's login password
+                email:
+                  type: string
+                  description: The user's email
+                  format: email
+      responses:
+        201:
+          description: User registered successfully  - A set of cookies that include `customer_access_token`, `booking` (optional), and `guestCustomerId` (optional)
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the registration
+                  customer:
+                    type: object
+                    properties:
+                      firstname:
+                        type: string
+                      lastname:
+                        type: string
+                      phone:
+                        type: string
+                      email:
+                        type: string
+                      _id:
+                        type: string
+                        description: The unique identifier of the user
+        400:
+          description: Bad request (e.g. missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the registration
+                  message:
+                    type: string
+                    description: Error message
+  /api/auth/login:
+    post:
+      summary: Log in an existing user
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The user's email
+                  format: email
+                password:
+                  type: string
+                  description: The user's login password
+      responses:
+        200:
+          description: User logged in successfully - A set of cookies that include `customer_access_token` and optionally `booking`.
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the login
+                  customer:
+                    type: object
+                    properties:
+                      firstname:
+                        type: string
+                      lastname:
+                        type: string
+                      phone:
+                        type: string
+                      email:
+                        type: string
+                      _id:
+                        type: string
+                        description: The unique identifier of the user
+        400:
+          description: Bad request (e.g. missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the login
+                  message:
+                    type: string
+                    description: Error message
+        401:
+          description: Unauthorized (e.g. invalid username or password)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the login
+                  message:
+                    type: string
+                    description: Error message
+  /api/auth/logout:
+    get:
+      summary: Log out the user
+      tags:
+        - Authentication
+      parameters:
+        - in: cookie
+          name: customer_access_token
+          description: Token used for customer authentication
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: User logged out successfully. The `customer_access_token` cookie is cleared.
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: Clears the `customer_access_token` cookie.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the logout
+                  message:
+                    type: string
+                    description: Logout message
+        401:
+          description: Unauthorized access. Possible reasons include missing or invalid `customer_access_token`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+  /api/auth/forgotpassword:
+    post:
+      summary: Request a reset password email
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  description: The user's email for which the password needs to be reset
+                  format: email
+      responses:
+        200:
+          description: Reset password email is sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the email sending
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Bad request (e.g. email not provided or no account associated with the email)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the email sending
+                  message:
+                    type: string
+                    description: Error message
+        500:
+          description: Internal server error (e.g. email could not be sent)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the email sending
+                  message:
+                    type: string
+                    description: Error message
+  /api/auth/resetpassword:
+    put:
+      summary: Reset the user's password
+      tags:
+        - Authentication
+      parameters:
+        - in: query
+          name: resetPasswordToken
+          required: true
+          description: The token for password reset verification
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+                  description: The new password for the user
+      responses:
+        200:
+          description: Password is changed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the password reset
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Bad request (e.g. password not provided, token not provided, or invalid token)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the password reset
+                  message:
+                    type: string
+                    description: Error message
+        401:
+          description: Unauthorized (e.g. invalid token or session expired)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the password reset
+                  message:
+                    type: string
+                    description: Error message

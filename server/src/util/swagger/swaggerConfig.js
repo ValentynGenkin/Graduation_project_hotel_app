@@ -19,5 +19,5 @@ export const swaggerOptions = {
     ],
   },
   // Path to the API docs
-  apis: [path.join(__dirname, "..", "..", "routes", "*.js")],
+  apis: [path.join(__dirname, "..", "..", "docs", "*.yaml")],
 };
