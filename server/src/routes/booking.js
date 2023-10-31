@@ -2,11 +2,16 @@ import express from "express";
 import {
   checkBookingExist,
   checkRoomExist,
+  getAdminAccess,
+  getCustomerAccess,
 } from "../middlewares/database/databaseErrorHelpers.js";
 import {
   addRoomToBooking,
   checkout,
   removeRoomFromBooking,
+  getBookingStatus,
+  inBranchBooking,
+  cancelBooking,
 } from "../controllers/booking.js";
 import { chooseAvailableRoom } from "../middlewares/query/chooseAvailableRoom.js";
 
@@ -23,5 +28,16 @@ bookingRouter.post(
   removeRoomFromBooking
 );
 bookingRouter.post("/checkout", checkBookingExist, checkout);
+bookingRouter.get(
+  "/status/:bookingId",
+  [getCustomerAccess, checkBookingExist],
+  getBookingStatus
+);
+bookingRouter.post(
+  "/in-branch",
+  [getAdminAccess, checkRoomExist, chooseAvailableRoom],
+  inBranchBooking
+);
+bookingRouter.get("/cancel/:bookingId", getAdminAccess, cancelBooking);
 
 export default bookingRouter;
