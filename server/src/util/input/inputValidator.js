@@ -81,7 +81,7 @@ export const validateCheckOutInput = (req, next) => {
     return next(new ServerError("Please provide all required inputs", 400));
   }
   const userObj = { firstname, lastname, phone, email };
-  userObj.password = req.body.guestCustomerId;
+  userObj.password = req.cookies.guestCustomerId;
 
   return userObj;
 };
