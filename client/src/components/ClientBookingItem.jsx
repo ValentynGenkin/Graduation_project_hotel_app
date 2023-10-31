@@ -11,7 +11,7 @@ const responsive = {
   1060: { items: 1 },
 };
 
-const ClientBookingItem = ({ requestBlok }) => {
+const ClientBookingItem = ({ requestBlok, bookingControl }) => {
   const items = [
     <div className="main-screen-card-item" data-value="1" key={"1"}>
       <img src={Room1Image} alt="" className="main-screen-card-img" />
@@ -43,6 +43,9 @@ const ClientBookingItem = ({ requestBlok }) => {
           <span>15.11.2023 12:00</span>
         </div>
       </div>
+
+      {bookingControl}
+
       <div className="bookings-description-block">
         <div className="bookings-img-carousel">
           <AliceCarousel
@@ -102,4 +105,5 @@ export default ClientBookingItem;
 
 ClientBookingItem.propTypes = {
   requestBlok: PropTypes.element,
+  bookingControl: PropTypes.element,
 };

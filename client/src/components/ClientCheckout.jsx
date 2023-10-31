@@ -10,8 +10,10 @@ import Input from "./InputComponent";
 const ClientCheckout = () => {
   return (
     <Container className="client-checkout-container">
+      <h5 className="checkout-title">Booking confirmation</h5>
       <div className="checkout-tourist-info">
-        <h5>Tourist information</h5>
+        <h6>Tourist information</h6>
+
         <Input
           id={"checkout-first-name"}
           type={"text"}
@@ -46,44 +48,58 @@ const ClientCheckout = () => {
         />
       </div>
       <div className="checkout-booking-info">
-        <h5>Booking information</h5>
-        <p className="input-group-text"> Check-in date: </p>
-        <p className="input-group-text"> Check-out date: </p>
-        <p className="input-group-text"> Guests: </p>
-        <p className="input-group-text"> Bad type: </p>
-        <p className="input-group-text"> Extra: </p>
+        <h6>Booking information</h6>
+        <div>
+          <p className="checkout-booking-info-title">Check-in date:</p>
+          <p className="checkout-booking-info-value">test</p>
+        </div>
+        <div>
+          <p className="checkout-booking-info-title"> Check-out date: </p>
+          <p className="checkout-booking-info-value">test</p>
+        </div>
+        <div>
+          <p className="checkout-booking-info-title"> Guests: </p>
+          <p className="checkout-booking-info-value">test</p>
+        </div>
+        <div>
+          <p className="checkout-booking-info-title"> Bad type: </p>
+          <p className="checkout-booking-info-value">test</p>
+        </div>
+        <div>
+          <p className="checkout-booking-info-title"> Extra: </p>
+          <p className="checkout-booking-info-value">test</p>
+        </div>
       </div>
-      <div>
-        <h5>Room information</h5>
+      <div className="checkout-room-info">
+        <h6>Room information</h6>
       </div>
+      <br />
+      <div className="checkout-comments">
+        <h6>Add comment</h6>
+        <FloatingLabel controlId="floatingTextarea2" label="Comments">
+          <Form.Control
+            as="textarea"
+            placeholder="Leave a comment here"
+            style={{ height: "100px" }}
+          />
+        </FloatingLabel>
 
-      <div>
-        <h5>Add extra options</h5>
-        <Button variant="outline-secondary" className="">
-          Transfer from airport
-        </Button>
-        <Button variant="outline-secondary" className="">
-          Birthday greeting
-        </Button>
-        <Button variant="outline-secondary" className="">
-          Honeymoon greeting
-        </Button>
-      </div>
+        <br />
+        <div className="checkout-amount">
+          <p className="checkout-booking-info-title"> Total amount: </p>
+          <p className="checkout-booking-info-value">250.00 euro</p>
+        </div>
+        <div className="checkout-confirmation-btn">
+          <Button variant="outline-secondary" className="">
+            Back
+          </Button>
 
-      <h6>Add comment</h6>
-      <FloatingLabel controlId="floatingTextarea2" label="Comments">
-        <Form.Control
-          as="textarea"
-          placeholder="Leave a comment here"
-          style={{ height: "100px" }}
-        />
-      </FloatingLabel>
-      <Button variant="outline-secondary" className="">
-        Confirm
-      </Button>
-      <Button variant="outline-secondary" className="">
-        Cancel
-      </Button>
+          <Button variant="outline-secondary" className="">
+            Confirm
+          </Button>
+        </div>
+      </div>
+      <br />
     </Container>
   );
 };
