@@ -1,66 +1,79 @@
-.imgs {
-  display: flex;
-  justify-content: center;
+.room-container-01 {
+  background-color: rgba(13, 153, 255, 0.2);
+  border: 1px solid #0d99ff;
+  border-radius: 0.4rem;
+  width: 100%;
+  margin: 80px auto;
+  padding: 20px;
 }
 
-.flex-column {
+.imgs-01 {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.hotel-imgs-01 {
+  width: 70%;
+  height: 500px;
+}
+
+.flex-column-01 {
   justify-content: center;
   display: flex;
-  padding: 10px;
+  padding: 12px;
   flex-direction: column;
   gap: 1rem;
 }
 
-.room-container {
-  background-color: rgba(13, 153, 255, 0.2);
-  border: 1px solid #0d99ff;
-  border-radius: 0.4rem;
-  width: 90%;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.room-info {
+.room-info-01 {
   display: flex;
   justify-content: flex-start;
   padding: 20px 60px;
 }
 
-.desc {
+.desc-01 {
   display: flex;
   justify-content: center;
   padding: 20px;
 }
 
-.bed-option {
+.bed-option-01 {
   display: flex;
   align-items: center;
-  gap: 4rem;
+  gap: 2rem;
   padding: 10px 40px;
 }
 
-.bed-option h3 {
+.bed-option-01-h4 {
   background-color: white;
   padding: 10px;
   border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.dropdown-btn {
+.dropdown-btn-01 {
   display: flex;
   justify-content: space-between;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   padding: 10px;
-  gap: 0.5rem;
+  gap: 2rem;
 }
 
-.dropdown-menu {
+.dropdown-menu-01 {
   list-style: none;
   display: flex;
+  flex-direction: column;
+  background-color: rgba(13, 153, 255, 0.2);
+  border: 1px solid #0d99ff;
+  position: absolute;
+  justify-content: center;
 }
 
-.dropdown-menu li {
-  background-color: rgba(0, 0, 0, 0.1);
+.dropdown-menu-01-li {
+  background-color: white;
   margin: 2px;
   padding: 6px;
   cursor: pointer;
@@ -68,14 +81,12 @@
   font-size: 14px;
 }
 
-.bed-type {
+.bed-type-01 {
   display: flex;
   gap: 2rem;
-  margin: 10px 40px;
-  align-items: first baseline;
 }
 
-.option {
+.option-01 {
   background-color: white;
   padding: 7px 14px;
   font-size: 14px;
@@ -83,15 +94,103 @@
   height: fit-content;
 }
 
-.empty-box {
+.empty-box-01 {
   background-color: none;
 }
 
-.right-bar {
+.right-bar-01 {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  align-items: baseline;
 }
 
-.book-buttons {
-  margin-right: 40px;
+.book-buttons-01 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  margin: 40px auto;
+}
+
+@media screen and (max-width: 991px) {
+  .imgs-01 {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hotel-imgs-01 {
+    max-width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .flex-column-01 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0rem;
+    width: 80%;
+  }
+
+  .flex-column-01 img {
+    max-width: 90%;
+    height: 54px;
+    object-fit: cover;
+    margin: 0 auto;
+  }
+
+  .room-container-01 {
+    width: 100%;
+    margin: 40px auto;
+    padding: 10px 0;
+  }
+
+  .room-info-01 {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .right-bar-01 {
+    flex-direction: row;
+    align-items: baseline;
+    font-size: 12px;
+  }
+
+  .book-buttons-01 {
+    margin-top: 60px;
+  }
+
+  .bed-option-01 h4 {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .dropdown-btn-01 {
+    font-size: 14px;
+    padding: 4px;
+    gap: 1rem;
+  }
+
+  .dropdown-menu-01-li {
+    margin: 1px;
+    padding: 4px;
+    font-size: 12px;
+    width: 100px;
+  }
+
+  .dropdown-menu-01 {
+    background-color: none;
+    border: none;
+    padding: 4px;
+  }
+
+  .option-01 {
+    padding: 7px;
+    font-size: 12px;
+  }
+
+  .bed-type-01 {
+    display: flex;
+    gap: 0.3rem;
+  }
 }

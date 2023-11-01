@@ -9,6 +9,9 @@ import Login from "./pages/Admin/Component/Login";
 import ClientRegistrationForm from "./pages/RegistrationForm/ClientRegistrationForm";
 import ExistAccountInfo from "./pages/Account/ExistAccountInfo";
 import ClientBookings from "./pages/Bookings/ClientBookings";
+import RoomInfoCard from "../src/components/RoomInfoCard";
+import slideData from "../src/data/DataImages.json";
+import RoomDetailsCard from "../src/components/RoomDetailsCard";
 import ClientCheckout from "./components/ClientCheckout";
 import ClientCheckoutConfirmation from "./components/ClientCheckoutConfirmation";
 import RoomStatus from "./pages/Admin/pages/RoomStatus";
@@ -23,6 +26,11 @@ const App = () => {
           <Route path="registration" element={<ClientRegistrationForm />} />
           <Route path="account-info" element={<ExistAccountInfo />} />
           <Route path="current-bookings" element={<ClientBookings />} />
+          <Route
+            path="RoomInfoCard"
+            element={<RoomInfoCard data={slideData} />}
+          />
+          <Route path="RoomDetailsCard" element={<RoomDetailsCard />} />
           <Route path="checkout" element={<ClientCheckout />} />
           <Route
             path="checkout-confirmation"

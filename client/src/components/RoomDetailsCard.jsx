@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./CSS/roomDetailsCard.css";
 import PropTypes from "prop-types";
 import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
+import { Container } from "react-bootstrap";
 
 function RoomDetailsCard() {
   RoomDetailsCard.propTypes = {
@@ -56,97 +57,108 @@ function RoomDetailsCard() {
   };
 
   return (
-    <div className="room-container">
-      <div className="imgs">
-        <img src={sliderData.value} height="500" width="70%" />
-        <div className="flex-column">
-          {imgs.map((data, i) => (
-            <img
-              className={sliderData.id == i ? "clicked" : ""}
-              src={data.value}
-              onClick={() => handleClick(i)}
-              height="80"
-              width="160"
-              key={data.id}
-            />
-          ))}
+    <Container>
+      <div className="room-container-01">
+        <div className="imgs-01">
+          <img src={sliderData.value} className="hotel-imgs-01" />
+          <div className="flex-column-01">
+            {imgs.map((data, i) => (
+              <img
+                className={sliderData.id == i ? "clicked" : ""}
+                src={data.value}
+                onClick={() => handleClick(i)}
+                height="80"
+                width="160"
+                key={data.id}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-      <div>
-        <h3 className="desc">Description</h3>
-        <div className="room-info">
-          <ul>
-            <li>Bla</li>
-            <li>Bla</li>
-            <li>Bla</li>
-            <li>Bla</li>
-            <li>Bla</li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="right-bar">
         <div>
-          <div className="bed-option">
-            <h3>Extra bed</h3>
-            <label>
-              <input
-                type="checkbox"
-                name="ExtraBedYes"
-                checked={extraBed === "Yes"}
-                onChange={() => setExtraBed("Yes")}
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="ExtraBedNo"
-                checked={extraBed === "No"}
-                onChange={() => setExtraBed("No")}
-              />
-              No
-            </label>
+          <h3 className="desc-01">Description</h3>
+          <div className="room-info-01">
+            <ul>
+              <li>Bla</li>
+              <li>Bla</li>
+              <li>Bla</li>
+              <li>Bla</li>
+              <li>Bla</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="right-bar-01">
+          <div>
+            <div className="bed-option-01">
+              <h4 className="bed-option-01-h4">Extra bed</h4>
+              <label>
+                <input
+                  type="checkbox"
+                  name="ExtraBedYes"
+                  checked={extraBed === "Yes"}
+                  onChange={() => setExtraBed("Yes")}
+                />
+                Yes
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="ExtraBedNo"
+                  checked={extraBed === "No"}
+                  onChange={() => setExtraBed("No")}
+                />
+                No
+              </label>
+            </div>
+
+            <div className="bed-option-01">
+              <h4 className="bed-option-01-h4">Baby bed</h4>
+              <label>
+                <input
+                  type="checkbox"
+                  name="BabyBedYes"
+                  checked={babyBed === "Yes"}
+                  onChange={() => setBabyBed("Yes")}
+                />
+                Yes
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="BabyBedNo"
+                  checked={babyBed === "No"}
+                  onChange={() => setBabyBed("No")}
+                />
+                No
+              </label>
+            </div>
           </div>
 
-          <div className="bed-option">
-            <h3>Baby bed</h3>
-            <label>
-              <input
-                type="checkbox"
-                name="BabyBedYes"
-                checked={babyBed === "Yes"}
-                onChange={() => setBabyBed("Yes")}
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="BabyBedNo"
-                checked={babyBed === "No"}
-                onChange={() => setBabyBed("No")}
-              />
-              No
-            </label>
-          </div>
-
-          <div className="bed-type">
-            <div className="dropdown">
-              <button onClick={toggleDropdown} className="dropdown-btn">
+          <div className="bed-type-01">
+            <div className="dropdown-01">
+              <button onClick={toggleDropdown} className="button-02">
                 Bed Type
                 {!isOpen ? <AiOutlineCaretDown /> : <AiOutlineCaretUp />}
               </button>
 
               {isOpen && (
-                <ul className="dropdown-menu">
-                  <li onClick={() => handleOptionSelect("Single bed")}>
+                <ul className="dropdown-menu-01">
+                  <li
+                    onClick={() => handleOptionSelect("Single bed")}
+                    className="dropdown-menu-01-li"
+                  >
                     Single bed
                   </li>
-                  <li onClick={() => handleOptionSelect("Two Single beds")}>
+                  <li
+                    onClick={() => handleOptionSelect("Two Single beds")}
+                    className="dropdown-menu-01-li"
+                  >
                     Two Single beds
                   </li>
-                  <li onClick={() => handleOptionSelect("King bed")}>
+                  <li
+                    onClick={() => handleOptionSelect("King bed")}
+                    className="dropdown-menu-01-li"
+                  >
                     King bed
                   </li>
                 </ul>
@@ -158,12 +170,12 @@ function RoomDetailsCard() {
           </div>
         </div>
 
-        <div className="book-buttons">
-          <button>Total amount</button>
-          <button>Book</button>
+        <div className="book-buttons-01">
+          <button className="button-02">Total amount</button>
+          <button className="button-02">Book</button>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 
