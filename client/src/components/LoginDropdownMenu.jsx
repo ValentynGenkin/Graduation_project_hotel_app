@@ -1,11 +1,13 @@
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Form, InputGroup } from "react-bootstrap";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
 import "./CSS/LoginDropdownMenu.css";
+import PopUp from "./PopUp";
+import ForgotPasswordPopUp from "./ForgotPasswordPopUp";
 
 const LoginDropdownMenu = () => {
+  const [modalShow, setModalShow] = useState(false);
   return (
     <NavDropdown
       className="login-dropdown-menu"
@@ -41,11 +43,19 @@ const LoginDropdownMenu = () => {
       </div>
       <NavDropdown.Item
         className="login-forgot-password-btn"
-        as={Link}
-        to={"/"}
+        onClick={() => {
+          setModalShow(true);
+        }}
       >
         Forgot password?
       </NavDropdown.Item>
+      <PopUp
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        body={<ForgotPasswordPopUp />}
+        title={"Forgot password?"}
+        btn={"Send"}
+      />
     </NavDropdown>
   );
 };

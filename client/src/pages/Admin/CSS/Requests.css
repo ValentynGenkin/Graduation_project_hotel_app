@@ -1,0 +1,47 @@
+/* Requests.css */
+
+.custom-body-request {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  border: 2px solid #023e8a;
+  margin-top: 200px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-th {
+  background-color: #00a8cc;
+  font-weight: bold;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ccc;
+  color: white;
+}
+
+.custom-td {
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.custom-call-request {
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.custom-span {
+  margin-right: 5px;
+  font-size: 18px;
+}
+
+.custom-select {
+  padding: 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}

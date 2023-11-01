@@ -74,3 +74,14 @@ export const validateEditRoomInput = (req, next) => {
 
   return updateInputsObj;
 };
+
+export const validateCheckOutInput = (req, next) => {
+  const { firstname, lastname, phone, email } = req.body;
+  if (!(firstname && lastname && phone && email)) {
+    return next(new ServerError("Please provide all required inputs", 400));
+  }
+  const userObj = { firstname, lastname, phone, email };
+  userObj.password = req.cookies.guestCustomerId;
+
+  return userObj;
+};

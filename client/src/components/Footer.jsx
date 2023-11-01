@@ -39,21 +39,21 @@ const Footer = () => {
         </div>
         <div className="client-footer-social-media">
           <Nav.Link as={Link} to="https://www.instagram.com">
-            <FaInstagram className="icon-footer" />
+            <FaInstagram />
           </Nav.Link>
           <Nav.Link as={Link} to="https://www.facebook.com">
-            <FaFacebook className="icon-footer" />
+            <FaFacebook />
           </Nav.Link>
           <Nav.Link as={Link} to="https://twitter.com/home">
-            <FaTwitter className="icon-footer" />
+            <FaTwitter />
           </Nav.Link>
           <Nav.Link as={Link} to="https://www.linkedin.com">
-            <FaLinkedin className="icon-footer" />
+            <FaLinkedin />
           </Nav.Link>
         </div>
       </Nav>
 
-      <p className="footer-paragraph">Finale Project HYF 2023</p>
+      <p className="footer-paragraph">Final Project HYF 2023</p>
     </Container>
   );
 };

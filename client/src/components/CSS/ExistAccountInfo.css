@@ -2,7 +2,7 @@
   width: 90%;
   margin-top: 100px;
   z-index: 1;
-  min-height: calc(100vh - 164px);
+  min-height: calc(100vh - 214px);
 }
 
 .exist-account-title {
@@ -29,4 +29,11 @@
 
 .exist-account-btn-block button {
   width: 200px;
+}
+
+@media screen and (max-width: 991px) {
+  .exist-account-container {
+    margin-top: 0;
+    min-height: calc(100vh - 185px);
+  }
 }

@@ -1,0 +1,22 @@
+.client-checkout-confirmation-container {
+  width: 90%;
+  margin-top: 100px;
+  z-index: 1;
+  min-height: calc(100vh - 214px);
+  text-align: center;
+}
+
+.confirmation-done {
+  margin-top: 15px;
+  color: green;
+}
+.confirmation-done {
+  font-size: 5.5rem;
+}
+
+@media screen and (max-width: 991px) {
+  .client-checkout-confirmation-container {
+    margin-top: 0;
+    min-height: calc(100vh - 185px);
+  }
+}
