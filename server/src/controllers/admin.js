@@ -35,6 +35,10 @@ export const registerAdmin = asyncHandler(async (req, res, next) => {
 export const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
+  if (!(email && password)) {
+    next(new ServerError("Please provide all required fields.", 400));
+  }
+
   const admin = (
     await User.where({ email: email, role: "admin" }).select("+password")
   )[0];

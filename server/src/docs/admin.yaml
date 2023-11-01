@@ -1,0 +1,180 @@
+paths:
+  /api/admin/register:
+    post:
+      summary: "Register a new admin"
+      description: "This endpoint allows for the registration of a new admin. An `admin_access_token` is required in the request cookies for authorization purposes."
+      operationId: "registerAdmin"
+      tags:
+        - "Admin"
+      parameters:
+        - in: "cookie"
+          name: "admin_access_token"
+          schema:
+            type: "string"
+          required: true
+          description: "Admin access token for authorization"
+      requestBody:
+        description: "User registration data"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                firstname:
+                  type: "string"
+                  description: "First name of the admin"
+                lastname:
+                  type: "string"
+                  description: "Last name of the admin"
+                email:
+                  type: "string"
+                  format: "email"
+                  description: "Email address of the admin"
+                password:
+                  type: "string"
+                  format: "password"
+                  description: "Password for the admin"
+                phone:
+                  type: "string"
+                  description: "Phone number of the admin"
+      responses:
+        201:
+          description: "Admin registered successfully"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  success:
+                    type: "boolean"
+                  message:
+                    type: "string"
+        400:
+          description: "Bad Request. Missing or invalid input data."
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  success:
+                    type: "boolean"
+                  error:
+                    type: "string"
+        401:
+          description: "Unauthorized. Invalid or missing admin access token."
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  success:
+                    type: "boolean"
+                  error:
+                    type: "string"
+  /api/admin/login:
+    post:
+      summary: "Log in as an admin"
+      description: "This endpoint allows admins to log in by providing their email and password. Successful login will set an `admin_access_token` in the cookies."
+      operationId: "loginAdmin"
+      tags:
+        - "Admin"
+      requestBody:
+        description: "Admin login credentials"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                email:
+                  type: "string"
+                  format: "email"
+                  description: "Email address of the admin"
+                password:
+                  type: "string"
+                  format: "password"
+                  description: "Password for the admin"
+      responses:
+        200:
+          description: "Admin logged in successfully"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  success:
+                    type: "boolean"
+                  message:
+                    type: "string"
+          headers:
+            Set-Cookie:
+              description: "Cookie header with the admin_access_token"
+              schema:
+                type: "string"
+        400:
+          description: "Bad Request. Missing email or password."
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  success:
+                    type: "boolean"
+                  error:
+                    type: "string"
+        401:
+          description: "Unauthorized. Invalid email or password."
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  success:
+                    type: "boolean"
+                  error:
+                    type: "string"
+  /api/admin/logout:
+    get:
+      summary: Log out the admin
+      tags:
+        - Admin
+      parameters:
+        - in: cookie
+          name: admin_access_token
+          description: Token used for admin authentication
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Admin logged out successfully. The `admin_access_token` cookie is cleared.
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: Clears the `admin_access_token` cookie.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the logout
+                  message:
+                    type: string
+                    description: Logout message
+        401:
+          description: Unauthorized access. Possible reasons include missing or invalid `admin_access_token`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
