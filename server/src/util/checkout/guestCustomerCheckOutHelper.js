@@ -6,6 +6,9 @@ import sendEmail from "../mailer/sendEmail.js";
 export const guestCustomerCheckOutHelper = async (req, booking, next) => {
   const userObj = validateCheckOutInput(req, next);
   const customer = await User.create(userObj);
+  const resetPasswordToken = customer.getResetPasswordTokenFromUser();
+  await customer.save();
+  const resetPasswordUrl = `${process.env.BASE_CLIENT_URL}/customer/resetpassword?reset_password_url=${process.env.BASE_SERVER_URL}/api/auth/resetpassword?resetPasswordToken=${resetPasswordToken}`;
   booking.customerId = customer._id;
   booking.guestCustomerId = null;
 
@@ -13,7 +16,7 @@ export const guestCustomerCheckOutHelper = async (req, booking, next) => {
     from: process.env.SMTP_USER,
     to: customer.email,
     subject: "Welcome to Hotel",
-    html: registrationEmail(customer.firstname, req.body.guestCustomerId),
+    html: registrationEmail(customer.firstname, resetPasswordUrl),
   });
 
   return await booking.save();

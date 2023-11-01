@@ -7,6 +7,7 @@ import authRouter from "./routes/auth.js";
 import adminRouter from "./routes/admin.js";
 import serverErrorHandler from "./middlewares/error/serverErrorHandler.js";
 import bookingRouter from "./routes/booking.js";
+import { checkCustomerIdentity } from "./middlewares/cookie/cookieHelpers.js";
 
 // Create an express server
 const app = express();
@@ -23,6 +24,7 @@ app.use(cookieParser());
  * We use /api/ at the start of every route!
  * As we also host our client code on heroku we want to separate the API endpoints.
  */
+app.use(checkCustomerIdentity);
 app.use("/api/auth", authRouter);
 app.use("/api/rooms", roomRouter);
 app.use("/api/admin", adminRouter);
