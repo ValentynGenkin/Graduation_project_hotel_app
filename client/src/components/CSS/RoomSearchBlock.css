@@ -30,12 +30,12 @@
   margin: auto 10px;
   text-align: center;
   line-height: 36px;
-  /* color: white; */
 }
 
 .search-dates p {
   margin: 10px;
   font-size: 1.2rem;
+  color: white;
 }
 
 .search-dates {
@@ -43,10 +43,10 @@
   align-items: center;
   justify-content: space-evenly;
   width: 35rem;
-  height: 5rem;
+  height: 3.5rem;
   border: 1px solid rgba(0, 0, 0, 0);
-  box-shadow: 0 0 6px 1px rgb(150, 150, 150);
-  background-color: white;
+  box-shadow: 0 0 6px 2px rgb(187, 187, 187);
+  background-color: rgba(0, 0, 0, 0.459);
   border-radius: 5px;
   overflow: hidden;
   margin: 10px;
@@ -82,7 +82,7 @@
 }
 .search-accordion-container {
   margin-top: -150px;
-  margin-bottom: 75px;
+  margin-bottom: 105px;
 }
 .search-btn-block {
   width: 100%;
@@ -109,5 +109,9 @@
 @media screen and (max-width: 991px) {
   .search-accordion-container {
     margin-bottom: 15px;
+  }
+  .search-accordion-container {
+    margin-top: -170px;
+    margin-bottom: 55px;
   }
 }

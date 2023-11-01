@@ -17,6 +17,8 @@
 .main-screen-card-img {
   width: 100%;
   height: auto;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .main-screen-cars-btn {

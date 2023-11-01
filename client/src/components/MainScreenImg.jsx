@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import ImageSource from "../assets/MainScreenImg.jpg";
+import ImageSource from "../assets/MainScreenImg-2.jpg";
 
 import "./CSS/MainScreenImg.css";
 

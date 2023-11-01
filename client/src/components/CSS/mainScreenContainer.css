@@ -1,0 +1,11 @@
+.main-screen-container {
+  padding: 0;
+
+  min-height: calc(100vh - 114px);
+}
+
+@media screen and (max-width: 991px) {
+  .main-screen-container {
+    min-height: calc(100vh - 170px);
+  }
+}
