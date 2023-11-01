@@ -97,7 +97,6 @@ export const login = asyncHandler(async (req, res, next) => {
       },
       { new: true }
     );
-
     res.cookie("booking", guestCustomerBooking, {
       httpOnly: true,
       expires: new Date(

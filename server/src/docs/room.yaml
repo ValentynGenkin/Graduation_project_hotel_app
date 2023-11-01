@@ -1,0 +1,320 @@
+paths:
+  /api/rooms/add:
+    post:
+      summary: Add a new room
+      tags:
+        - Rooms
+      parameters:
+        - in: cookie
+          name: admin_access_token
+          schema:
+            type: string
+          required: true
+          description: Admin access token
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - roomNo
+                - roomDescription
+                - roomType
+                - bedCount
+                - roomPrice
+                - facilities
+              properties:
+                roomNo:
+                  type: integer
+                  description: Room number
+                roomDescription:
+                  type: string
+                  description: Description of the room
+                roomType:
+                  type: string
+                  description: Type of the room (e.g. Single, Double)
+                bedCount:
+                  type: integer
+                  description: Number of beds in the room
+                roomPrice:
+                  type: number
+                  format: float
+                  description: Price of the room per night
+                facilities:
+                  type: array
+                  items:
+                    type: string
+                  description: List of facilities available in the room
+                roomImages:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Array of room images (maximum of 10)
+      responses:
+        201:
+          description: Room added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  room:
+                    type: object
+                    description: Room details
+        400:
+          description: Bad request. Missing or invalid input fields.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  message:
+                    type: string
+                    description: Error message
+        401:
+          description: Unauthorized. Invalid or missing admin access token in cookies.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  message:
+                    type: string
+                    description: Error message
+  /api/rooms/{roomId}/edit:
+    put:
+      summary: Edit an existing room
+      tags:
+        - Rooms
+      parameters:
+        - in: path
+          name: roomId
+          schema:
+            type: string
+          required: true
+          description: ID of the room to edit
+        - in: cookie
+          name: admin_access_token
+          schema:
+            type: string
+          required: true
+          description: Admin access token
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                roomNo:
+                  type: integer
+                  description: Room number
+                roomDescription:
+                  type: string
+                  description: Description of the room
+                roomType:
+                  type: string
+                  description: Type of the room (e.g. Single, Double)
+                bedCount:
+                  type: integer
+                  description: Number of beds in the room
+                roomPrice:
+                  type: number
+                  format: float
+                  description: Price of the room per night
+                facilities:
+                  type: array
+                  items:
+                    type: string
+                  description: List of facilities available in the room
+                roomImages:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Array of room images (maximum of 10)
+      responses:
+        200:
+          description: Room updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  room:
+                    type: object
+                    description: Room details
+        400:
+          description: Bad request. Missing or invalid input fields.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  message:
+                    type: string
+                    description: Error message
+        401:
+          description: Unauthorized. Invalid or missing admin access token in cookies.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  message:
+                    type: string
+                    description: Error message
+  /api/rooms/{roomId}:
+    get:
+      summary: Retrieve details of a single room
+      tags:
+        - Rooms
+      parameters:
+        - in: path
+          name: roomId
+          schema:
+            type: string
+          required: true
+          description: ID of the room to retrieve
+      responses:
+        200:
+          description: Room details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  room:
+                    type: object
+                    description: Room details
+        404:
+          description: Room not found with the given ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  message:
+                    type: string
+                    description: Error message indicating the room is not found
+  /api/rooms/:
+    get:
+      summary: Retrieve a list of rooms based on filters
+      tags:
+        - Rooms
+      parameters:
+        - in: query
+          name: roomType
+          schema:
+            type: string
+          description: Filter rooms by specified types (comma-separated values).
+        - in: query
+          name: facilities
+          schema:
+            type: string
+          description: Filter rooms matching all specified facilities (comma-separated values).
+        - in: query
+          name: bedCount
+          schema:
+            type: integer
+          description: Filter rooms with a bed count equal to or greater.
+        - in: query
+          name: roomPrice
+          schema:
+            type: integer
+          description: Filter rooms with a room price equal to or less.
+        - in: query
+          name: checkIn
+          schema:
+            type: string
+            format: date
+          description: Check-in date for availability check.
+        - in: query
+          name: checkOut
+          schema:
+            type: string
+            format: date
+          description: Check-out date for availability check.
+      responses:
+        200:
+          description: A list of rooms retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  rooms:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: object
+                          properties:
+                            roomType:
+                              type: string
+                            bedCount:
+                              type: integer
+                            facilities:
+                              type: array
+                              items:
+                                type: string
+                            roomPrice:
+                              type: string
+                              pattern: "^\\$numberDecimal:\\s*\"[0-9]+(\\.[0-9]{1,2})?\"$"
+                        count:
+                          type: integer
+                          description: Number of rooms that match the same properties
+                        exampleRoom:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                            roomNo:
+                              type: integer
+                            roomDescription:
+                              type: string
+                            roomType:
+                              type: string
+                            bedCount:
+                              type: integer
+                            roomPrice:
+                              type: string
+                              pattern: "^\\$numberDecimal:\\s*\"[0-9]+(\\.[0-9]{1,2})?\"$"
+                            facilities:
+                              type: array
+                              items:
+                                type: string
+                            images:
+                              type: array
+                              items:
+                                type: string
+                            __v:
+                              type: integer
