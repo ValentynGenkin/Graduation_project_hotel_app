@@ -12,6 +12,7 @@ import ClientBookings from "./pages/Bookings/ClientBookings";
 import ClientCheckout from "./components/ClientCheckout";
 import ClientCheckoutConfirmation from "./components/ClientCheckoutConfirmation";
 import RoomStatus from "./pages/Admin/pages/RoomStatus";
+import PasswordReset from "./pages/PasswordReset/PasswordReset";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
             path="checkout-confirmation"
             element={<ClientCheckoutConfirmation />}
           />
+          <Route path="reset-password" element={<PasswordReset />} />
         </Route>
         <Route path="admin" element={<Admin />} />
         <Route path="clients" element={<Clients />} />
