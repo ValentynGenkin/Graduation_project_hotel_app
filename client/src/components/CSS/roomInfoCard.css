@@ -1,4 +1,4 @@
-.carousel {
+.carousel-02 {
   position: relative;
   display: flex;
   width: 30%;
@@ -7,18 +7,18 @@
   margin-left: 1rem;
 }
 
-.slide {
+.slide-02 {
   width: 100%;
   height: 100%;
   border-radius: 10px;
   object-fit: cover;
 }
 
-.slide-hidden {
+.slide-hidden-02 {
   display: none;
 }
 
-.arrow {
+.arrow-02 {
   position: absolute;
   width: 1rem;
   height: 1rem;
@@ -26,22 +26,22 @@
   top: 6rem;
 }
 
-.arrow-left {
+.arrow-left-02 {
   left: 1.5rem;
 }
 
-.arrow-right {
+.arrow-right-02 {
   right: 1.5rem;
 }
 
-.info {
+.info-02 {
   display: flex;
   gap: 26rem;
   align-items: center;
   padding-right: 10px;
 }
 
-.block {
+.block-02 {
   display: flex;
   background-color: rgba(13, 153, 255, 0.2);
   border: 1px solid #0d99ff;
@@ -50,13 +50,13 @@
   margin: 100px auto;
 }
 
-.buttons {
+.buttons-02 {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-button {
+.button-02 {
   padding: 0.5rem;
   border: none;
   border-radius: 0.3rem;
@@ -64,7 +64,7 @@ button {
   background-color: white;
 }
 
-ul {
+.u-list-02 {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -73,7 +73,7 @@ ul {
 }
 
 @media screen and (max-width: 991px) {
-  .carousel {
+  .carousel-02 {
     position: relative;
     display: flex;
     justify-content: flex-start;
@@ -84,30 +84,30 @@ ul {
     margin-left: 0;
   }
 
-  .info {
+  .info-02 {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
 
-  .block {
+  .block-02 {
     display: flex;
     flex-direction: column;
   }
 
-  .buttons {
+  .buttons-02 {
     display: flex;
     flex-direction: row;
     gap: 1rem;
     margin: 1rem auto;
   }
 
-  button {
+  .button-02 {
     font-size: 14px;
   }
 
-  ul {
+  .u-list-02 {
     font-size: 14px;
   }
 }

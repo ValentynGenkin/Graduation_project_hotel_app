@@ -58,10 +58,10 @@ function RoomDetailsCard() {
 
   return (
     <Container>
-      <div className="room-container">
-        <div className="imgs">
-          <img src={sliderData.value} className="hotel-imgs" />
-          <div className="flex-column">
+      <div className="room-container-01">
+        <div className="imgs-01">
+          <img src={sliderData.value} className="hotel-imgs-01" />
+          <div className="flex-column-01">
             {imgs.map((data, i) => (
               <img
                 className={sliderData.id == i ? "clicked" : ""}
@@ -75,8 +75,8 @@ function RoomDetailsCard() {
           </div>
         </div>
         <div>
-          <h3 className="desc">Description</h3>
-          <div className="room-info">
+          <h3 className="desc-01">Description</h3>
+          <div className="room-info-01">
             <ul>
               <li>Bla</li>
               <li>Bla</li>
@@ -87,10 +87,10 @@ function RoomDetailsCard() {
           </div>
         </div>
 
-        <div className="right-bar">
+        <div className="right-bar-01">
           <div>
-            <div className="bed-option">
-              <h4>Extra bed</h4>
+            <div className="bed-option-01">
+              <h4 className="bed-option-01-h4">Extra bed</h4>
               <label>
                 <input
                   type="checkbox"
@@ -111,8 +111,8 @@ function RoomDetailsCard() {
               </label>
             </div>
 
-            <div className="bed-option">
-              <h4>Baby bed</h4>
+            <div className="bed-option-01">
+              <h4 className="bed-option-01-h4">Baby bed</h4>
               <label>
                 <input
                   type="checkbox"
@@ -134,22 +134,31 @@ function RoomDetailsCard() {
             </div>
           </div>
 
-          <div className="bed-type">
-            <div className="dropdown">
-              <button onClick={toggleDropdown} className="dropdown-btn">
+          <div className="bed-type-01">
+            <div className="dropdown-01">
+              <button onClick={toggleDropdown} className="button-02">
                 Bed Type
                 {!isOpen ? <AiOutlineCaretDown /> : <AiOutlineCaretUp />}
               </button>
 
               {isOpen && (
-                <ul className="dropdown-menu">
-                  <li onClick={() => handleOptionSelect("Single bed")}>
+                <ul className="dropdown-menu-01">
+                  <li
+                    onClick={() => handleOptionSelect("Single bed")}
+                    className="dropdown-menu-01-li"
+                  >
                     Single bed
                   </li>
-                  <li onClick={() => handleOptionSelect("Two Single beds")}>
+                  <li
+                    onClick={() => handleOptionSelect("Two Single beds")}
+                    className="dropdown-menu-01-li"
+                  >
                     Two Single beds
                   </li>
-                  <li onClick={() => handleOptionSelect("King bed")}>
+                  <li
+                    onClick={() => handleOptionSelect("King bed")}
+                    className="dropdown-menu-01-li"
+                  >
                     King bed
                   </li>
                 </ul>
@@ -161,9 +170,9 @@ function RoomDetailsCard() {
           </div>
         </div>
 
-        <div className="book-buttons">
-          <button>Total amount</button>
-          <button>Book</button>
+        <div className="book-buttons-01">
+          <button className="button-02">Total amount</button>
+          <button className="button-02">Book</button>
         </div>
       </div>
     </Container>
