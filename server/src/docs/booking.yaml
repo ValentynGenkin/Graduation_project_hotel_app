@@ -1,0 +1,554 @@
+paths:
+  /api/booking/addRoomToBooking:
+    post:
+      summary: Add a room to the current booking
+      tags:
+        - Booking
+      parameters:
+        - in: cookie
+          name: guestCustomerId
+          description: ID of the guest customer. Used for guest bookings.
+          required: false
+          schema:
+            type: string
+        - in: cookie
+          name: customer_access_token
+          description: Token used for customer authentication
+          required: false
+          schema:
+            type: string
+        - in: body
+          name: room
+          required: true
+          description: Room details to be added to the booking
+          schema:
+            type: object
+            properties:
+              roomId:
+                type: string
+                description: ID of the room to be added to the booking
+              checkIn:
+                type: string
+                format: date-time
+                description: Check-in date and time
+              checkOut:
+                type: string
+                format: date-time
+                description: Check-out date and time
+      responses:
+        200:
+          description: Room added to the booking successfully.
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: Sets a new `booking` cookie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  booking:
+                    type: object
+                    description: Updated booking details
+        400:
+          description: Bad request. Reasons might include invalid check-in/check-out format or date, room not found, no available room with provided criteria, etc.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+        401:
+          description: Unauthorized access. Possible reasons include missing or invalid `customer_access_token` or missing guestCustomerId.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+        404:
+          description: Room not found for the given ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+  /api/booking/removeRoomFromBooking:
+    post:
+      summary: Remove a room from the current booking
+      tags:
+        - Booking
+      parameters:
+        - in: cookie
+          name: guestCustomerId
+          description: ID of the guest customer. Used for guest bookings.
+          required: false
+          schema:
+            type: string
+        - in: cookie
+          name: customer_access_token
+          description: Token used for customer authentication. Required if user is logged in.
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: roomDetails
+          required: true
+          description: Details of the room to be removed from the booking
+          schema:
+            type: object
+            properties:
+              roomId:
+                type: string
+                description: ID of the room to be removed from the booking
+              bookingDetailId:
+                type: string
+                description: ID of the booking detail associated with the room to be removed
+      responses:
+        200:
+          description: Room removed from the booking successfully.
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: Sets a new `booking` cookie with the updated booking details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  updatedBooking:
+                    type: object
+                    description: Updated booking details after room removal
+        400:
+          description: Bad request. Reasons might include missing bookingDetailId, roomId not associated with bookingDetailId, room not found in current booking, etc.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+        401:
+          description: Unauthorized access. Possible reasons include missing or invalid `customer_access_token`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+        404:
+          description: Room not found for the given ID or no room found associated with bookingDetailId.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+        500:
+          description: Internal server error. Reasons might include issues during transaction or other server related problems.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+  /api/booking/checkout:
+    post:
+      summary: Complete the checkout for a booking
+      tags:
+        - Booking
+      parameters:
+        - in: cookie
+          name: guestCustomerId
+          description: ID of the guest customer. Used for guest bookings.
+          required: false
+          schema:
+            type: string
+        - in: cookie
+          name: customer_access_token
+          description: Token used for customer authentication. Required if user is logged in.
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: checkoutDetails
+          required: true
+          description: Details required for the checkout process
+          schema:
+            type: object
+            properties:
+              returnUrl:
+                type: string
+                description: URL to which the user is redirected after completing the payment
+      responses:
+        200:
+          description: Checkout completed successfully.
+          headers:
+            Set-Cookie:
+              schema:
+                type: array
+                items:
+                  type: string
+              description: |
+                Sets the `bookingInProgress` cookie with the updated booking details and clears the `booking` cookie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  redirectUrl:
+                    type: string
+                    description: URL to which the user needs to be redirected to complete the payment
+        400:
+          description: Bad request. Reasons might include an empty booking, issues with the payment, etc.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+        401:
+          description: Unauthorized access. Possible reasons include missing or invalid `customer_access_token`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+        500:
+          description: Internal server error. Reasons might include issues with payment processing, server-related problems, etc.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+  /api/booking/status/{bookingId}:
+    get:
+      summary: Retrieve the status of a specific booking
+      tags:
+        - Booking
+      parameters:
+        - in: path
+          name: bookingId
+          description: ID of the booking for which status is requested
+          required: true
+          schema:
+            type: string
+        - in: cookie
+          name: customer_access_token
+          description: Token used for customer authentication. Required if user is logged in.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Booking status retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation
+                  bookingStatus:
+                    type: string
+                    description: Current status of the booking
+                    enum:
+                      - open
+                      - pending
+                      - closed
+                      - other # Depending on the possible statuses in your application
+        401:
+          description: Unauthorized access. Possible reasons include mismatch between customer and booking, or missing/invalid `customer_access_token`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+        404:
+          description: Booking not found. Possible reasons include no booking for the provided `bookingId` or the booking does not belong to the authenticated customer.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+        500:
+          description: Internal server error. Reasons might include issues with retrieving the booking, server-related problems, etc.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request
+                  message:
+                    type: string
+                    description: Error message
+  /api/booking/in-branch:
+    post:
+      summary: Create a new booking in a branch by an admin
+      tags:
+        - Booking
+      parameters:
+        - in: cookie
+          name: admin_access_token
+          description: Token used for admin authentication.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - firstname
+                - lastname
+                - phone
+                - password
+                - email
+                - roomId
+                - checkIn
+                - checkOut
+              properties:
+                firstname:
+                  type: string
+                  description: First name of the user.
+                lastname:
+                  type: string
+                  description: Last name of the user.
+                phone:
+                  type: string
+                  description: Phone number of the user.
+                password:
+                  type: string
+                  description: Password of the user.
+                email:
+                  type: string
+                  format: email
+                  description: Email address of the user.
+                roomId:
+                  type: string
+                  description: ID of the room to be booked.
+                checkIn:
+                  type: string
+                  format: date-time
+                  description: Check-in date and time.
+                checkOut:
+                  type: string
+                  format: date-time
+                  description: Check-out date and time.
+      responses:
+        200:
+          description: In-branch booking successfully created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation.
+                  booking:
+                    type: object
+                    description: Details of the newly created booking.
+        400:
+          description: Booking not created. Reasons might include missing user details or no available room for the given criteria.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request.
+                  message:
+                    type: string
+                    description: Error message.
+        401:
+          description: Unauthorized access. Possible reasons include missing/invalid `admin_access_token` or the authenticated user is not an admin.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request.
+                  message:
+                    type: string
+                    description: Error message.
+        404:
+          description: Room not found. Possible reasons include no room for the provided `roomId`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request.
+                  message:
+                    type: string
+                    description: Error message.
+        500:
+          description: Internal server error. Reasons might include issues with the server or database, server-related problems, etc.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request.
+                  message:
+                    type: string
+                    description: Error message.
+  /api/booking/cancel/{bookingId}:
+    get:
+      summary: Cancel a booking by an admin
+      tags:
+        - Booking
+      parameters:
+        - in: path
+          name: bookingId
+          description: The ID of the booking to be cancelled.
+          required: true
+          schema:
+            type: string
+        - in: cookie
+          name: admin_access_token
+          description: Token used for admin authentication.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Booking successfully cancelled.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the operation.
+                  message:
+                    type: string
+                    description: Confirmation message about the cancellation.
+        400:
+          description: Booking not found. Reasons might include no booking for the provided `bookingId`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request.
+                  message:
+                    type: string
+                    description: Error message.
+        401:
+          description: Unauthorized access. Possible reasons include missing/invalid `admin_access_token` or the authenticated user is not an admin.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request.
+                  message:
+                    type: string
+                    description: Error message.
+        500:
+          description: Internal server error. Reasons might include issues with the server or database, server-related problems, etc.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status of the request.
+                  message:
+                    type: string
+                    description: Error message.

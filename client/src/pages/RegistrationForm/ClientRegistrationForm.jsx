@@ -82,7 +82,7 @@ const ClientRegistrationForm = () => {
     return true;
   }
 
-  const savePassword = async () => {
+  const savePassword = () => {
     if (
       checkPassword.password === checkPassword.repeatPassword &&
       checkPassword.password !== undefined &&

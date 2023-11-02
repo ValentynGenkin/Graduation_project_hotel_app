@@ -71,7 +71,27 @@
   gap: 0.5rem;
   font-size: 16px;
 }
+.popup-container-02 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
 
+.popup-content-02 {
+  position: relative;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  max-height: 80%;
+}
 @media screen and (max-width: 991px) {
   .carousel-02 {
     position: relative;
