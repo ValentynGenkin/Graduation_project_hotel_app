@@ -84,6 +84,8 @@ const ClientRegistrationForm = () => {
 
   const savePassword = () => {
     if (
+      !isNaN(checkPassword.password) &&
+      !isNaN(checkPassword.repeatPassword) &&
       checkPassword.password === checkPassword.repeatPassword &&
       checkPassword.password !== undefined &&
       checkPassword.repeatPassword !== undefined &&
