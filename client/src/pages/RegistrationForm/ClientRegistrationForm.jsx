@@ -9,6 +9,8 @@ import CreditCardImg from "../../assets/credit-card.png";
 import Input from "../../components/InputComponent";
 import { useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../util/emailValidation.js";
+import { isValidName } from "../../util/nameValidation";
+import { isValidPhoneNumber } from "../../util/phoneNumberValidation";
 
 import "../../components/CSS/ClientRegistrationForm.css";
 import ShowPasswordBtn from "../../components/ShowPasswordBtn";
@@ -19,10 +21,14 @@ const ClientRegistrationForm = () => {
   const [showPassword, setShowPassword] = useState("password");
   const [errMsg, setErrMsg] = useState("none");
   const [emailCheck, setEmailCheck] = useState("none");
+  const [checkName, setCheckName] = useState("none");
+  const [checkPhone, setCheckPhone] = useState("grey");
   const [loading, setLoading] = useState("none");
   const [checkPassword, setCheckPassword] = useState({
     password: null,
     repeatPassword: null,
+    error: "none",
+    passwordLengthError: "grey",
   });
 
   const [response, setResponse] = useState(null);
@@ -84,8 +90,6 @@ const ClientRegistrationForm = () => {
 
   const savePassword = () => {
     if (
-      !isNaN(checkPassword.password) &&
-      !isNaN(checkPassword.repeatPassword) &&
       checkPassword.password === checkPassword.repeatPassword &&
       checkPassword.password !== undefined &&
       checkPassword.repeatPassword !== undefined &&
@@ -114,10 +118,12 @@ const ClientRegistrationForm = () => {
           label={"Username"}
           text={"First name"}
           cb={(e) => {
-            if (e.target.value.length === 0) {
+            if (!isValidName(e.target.value)) {
+              setCheckName("block");
               setUser({ ...user, firstName: null });
             } else {
               setUser({ ...user, firstName: e.target.value });
+              setCheckName("none");
             }
           }}
         />
@@ -127,13 +133,19 @@ const ClientRegistrationForm = () => {
           label={"Username"}
           text={"Last name"}
           cb={(e) => {
-            if (e.target.value.length === 0) {
+            if (!isValidName(e.target.value)) {
               setUser({ ...user, lastName: null });
+              setCheckName("block");
             } else {
               setUser({ ...user, lastName: e.target.value });
+              setCheckName("none");
             }
           }}
         />
+        <p style={{ display: checkName, color: "red", fontSize: "11px" }}>
+          The name should consist of letters only, with hyphens allowed, and
+          should contain a minimum of two characters.
+        </p>
         <Input
           id={"registration-form-email"}
           type={"email"}
@@ -142,20 +154,14 @@ const ClientRegistrationForm = () => {
           cb={(e) => {
             if (!isValidEmail(e.target.value)) {
               setUser({ ...user, email: null });
-            } else {
-              setUser({ ...user, email: e.target.value });
-            }
-          }}
-          onBlur={(e) => {
-            if (!isValidEmail(e.target.value)) {
               setEmailCheck("block");
             } else {
+              setUser({ ...user, email: e.target.value });
               setEmailCheck("none");
             }
           }}
         />
-        <p style={{ display: emailCheck, color: "red", fontSize: "12px" }}>
-          {" "}
+        <p style={{ display: emailCheck, color: "red", fontSize: "11px" }}>
           Check e-mail format
         </p>
         <Input
@@ -164,13 +170,18 @@ const ClientRegistrationForm = () => {
           label={"Phone number"}
           text={"Phone number"}
           cb={(e) => {
-            if (e.target.value.length === 0) {
+            if (!isValidPhoneNumber(e.target.value)) {
               setUser({ ...user, phone: null });
+              setCheckPhone("red");
             } else {
               setUser({ ...user, phone: e.target.value });
+              setCheckPhone("grey");
             }
           }}
         />
+        <p style={{ color: checkPhone, fontSize: "11px" }}>
+          Enter an international phone number starting with +
+        </p>
         <Input
           id={"registration-form-bday"}
           type={"date"}
@@ -228,8 +239,46 @@ const ClientRegistrationForm = () => {
               });
             }
           }}
+          onBlur={() => {
+            if (checkPassword.password !== checkPassword.repeatPassword) {
+              setCheckPassword({
+                ...checkPassword,
+                error: "block",
+                passwordLengthError: "grey",
+              });
+            } else {
+              if (
+                checkPassword.password === null ||
+                checkPassword.repeatPassword === null ||
+                checkPassword.password.length < 6 ||
+                checkPassword.repeatPassword.length < 6
+              ) {
+                setCheckPassword({
+                  ...checkPassword,
+                  passwordLengthError: "red",
+                });
+              } else {
+                setCheckPassword({
+                  ...checkPassword,
+                  passwordLengthError: "grey",
+                  error: "none",
+                });
+              }
+            }
+          }}
         />
-        <p style={{ color: "grey", fontSize: "12px" }}>
+        <p
+          style={{
+            display: checkPassword.error,
+            color: "red",
+            fontSize: "11px",
+          }}
+        >
+          Passwords do not match. Please ensure both passwords are identical
+        </p>
+        <p
+          style={{ color: checkPassword.passwordLengthError, fontSize: "11px" }}
+        >
           The password must contain at least 6 characters
         </p>
         <Form>
@@ -251,11 +300,11 @@ const ClientRegistrationForm = () => {
             All fields are required
           </p>
           {error && (
-            <p style={{ color: "red", fontSize: "12px" }}>{error.toString()}</p>
+            <p style={{ color: "red", fontSize: "11px" }}>{error.toString()}</p>
           )}
           <Button
             variant="outline-secondary"
-            onClick={async () => {
+            onClick={() => {
               if (dataCheck(user)) {
                 setErrMsg("none");
                 saveUser();
