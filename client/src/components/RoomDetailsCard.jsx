@@ -41,6 +41,23 @@ function RoomDetailsCard() {
   const [selectedOption, setSelectedOption] = useState("");
   const [extraBed, setExtraBed] = useState("");
   const [babyBed, setBabyBed] = useState("");
+  const [isAdded, setIsAdded] = useState(false);
+  const [roomCount, setRoomCount] = useState(0);
+
+  const handleAddButtonClick = () => {
+    setIsAdded(!isAdded);
+    if (isAdded) {
+      setRoomCount(roomCount - 1);
+    } else {
+      setRoomCount(roomCount + 1);
+    }
+  };
+
+  // const handleAddButtonClick = () => {
+  //   setIsAdded(!isAdded);
+  // };
+
+  const addButtonLabel = isAdded ? "Delete" : "Add";
 
   const handleClick = (index) => {
     const slider = imgs[index];
@@ -164,15 +181,18 @@ function RoomDetailsCard() {
                 </ul>
               )}
             </div>
-            <h3 className={selectedOption ? "option" : "empty-box"}>
+            <p className={selectedOption ? "option-01" : "empty-box"}>
               {selectedOption}
-            </h3>
+            </p>
           </div>
         </div>
 
         <div className="book-buttons-01">
           <button className="button-02">Total amount</button>
-          <button className="button-02">Book</button>
+          <button className="button-02" onClick={handleAddButtonClick}>
+            {addButtonLabel}
+          </button>
+          <button className="button-02">Rooms Added: {roomCount}</button>
         </div>
       </div>
     </Container>

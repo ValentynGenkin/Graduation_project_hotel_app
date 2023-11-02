@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import "./CSS/roomInfoCard.css";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
 import PropTypes from "prop-types";
 import { Container } from "react-bootstrap";
+import RoomDetailsCard from "../components/RoomDetailsCard";
+import "chart.js/auto";
 
 function RoomInfoCard({ data }) {
   RoomInfoCard.propTypes = {
     data: PropTypes.array.isRequired,
   };
+
+  const [isPopupVisible, setPopupVisible] = useState(false);
+
   const [slide, setSlide] = useState(0);
 
   const nextSlide = () => {
@@ -55,13 +59,30 @@ function RoomInfoCard({ data }) {
             </ul>
           </div>
           <div className="buttons-02">
-            <Link to={"/RoomDetailsCard"}>
-              <button className="button-02">Information</button>
-            </Link>
+            <button
+              className="button-02"
+              onClick={() => setPopupVisible(!isPopupVisible)}
+            >
+              Information
+            </button>
             <button className="button-02">Book</button>
           </div>
         </div>
       </div>
+
+      {isPopupVisible && (
+        <div className="popup-container-02">
+          <div className="popup-content-02">
+            <button
+              className="button-02"
+              onClick={() => setPopupVisible(false)}
+            >
+              X
+            </button>
+            <RoomDetailsCard />
+          </div>
+        </div>
+      )}
     </Container>
   );
 }
