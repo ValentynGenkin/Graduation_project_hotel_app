@@ -7,6 +7,7 @@ import {
 import sendEmail from "../util/mailer/sendEmail.js";
 import { adminRegistrationEmail } from "../util/mailer/mailTemplates.js";
 import ServerError from "../util/error/ServerError.js";
+import BookingDetail from "../models/BookingDetail.js";
 
 export const registerAdmin = asyncHandler(async (req, res, next) => {
   const userObject = validateUserRegisterInput(req, next);
@@ -79,4 +80,31 @@ export const logout = asyncHandler(async (req, res) => {
       success: true,
       message: "You have logged out successfully",
     });
+});
+
+export const getActiveBookingsByRoom = asyncHandler(async (req, res) => {
+  // const bookings = await req.bookings.exec();
+
+  const rooms = req.rooms;
+  const roomIds = req.roomIds;
+
+  const bookings = await BookingDetail.find({
+    roomId: { $in: roomIds },
+    $or: [
+      { checkIn: { $lt: req.startDate }, checkOut: { $gte: req.startDate } },
+      { checkIn: { $gte: req.startDate, $lte: req.endDate } },
+    ],
+  });
+  bookings.forEach((booking) => {
+    rooms.forEach((room) => {
+      if (booking.roomId.toString() === room._id.toString()) {
+        rooms[rooms.indexOf(room)].bookings.push(booking);
+      }
+    });
+  });
+  return res.status(200).json({
+    success: true,
+    pagination: req.pagination,
+    rooms: rooms,
+  });
 });
