@@ -7,7 +7,8 @@ import {
 import sendEmail from "../util/mailer/sendEmail.js";
 import { adminRegistrationEmail } from "../util/mailer/mailTemplates.js";
 import ServerError from "../util/error/ServerError.js";
-import BookingDetail from "../models/BookingDetail.js";
+import Room from "../models/Room.js";
+import { paginationHelper } from "../util/query/roomQueryHelper.js";
 
 export const registerAdmin = asyncHandler(async (req, res, next) => {
   const userObject = validateUserRegisterInput(req, next);
@@ -86,15 +87,8 @@ export const getActiveBookingsByRoom = asyncHandler(async (req, res) => {
   // const bookings = await req.bookings.exec();
 
   const rooms = req.rooms;
-  const roomIds = req.roomIds;
+  const bookings = req.bookings;
 
-  const bookings = await BookingDetail.find({
-    roomId: { $in: roomIds },
-    $or: [
-      { checkIn: { $lt: req.startDate }, checkOut: { $gte: req.startDate } },
-      { checkIn: { $gte: req.startDate, $lte: req.endDate } },
-    ],
-  });
   bookings.forEach((booking) => {
     rooms.forEach((room) => {
       if (booking.roomId.toString() === room._id.toString()) {
@@ -105,6 +99,18 @@ export const getActiveBookingsByRoom = asyncHandler(async (req, res) => {
   return res.status(200).json({
     success: true,
     pagination: req.pagination,
+    rooms: rooms,
+  });
+});
+
+export const getAllRooms = asyncHandler(async (req, res) => {
+  const roomsQuery = Room.find({});
+  const paginationResults = await paginationHelper(Room, roomsQuery, req);
+  const rooms = await paginationResults.query;
+
+  return res.status(200).json({
+    success: true,
+    pagination: paginationResults.pagination,
     rooms: rooms,
   });
 });
