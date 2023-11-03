@@ -85,3 +85,22 @@ export const validateCheckOutInput = (req, next) => {
 
   return userObj;
 };
+
+export const validateEditUserInput = (req) => {
+  const { firstname, lastname, phone, email } = req.body;
+  const editObj = {};
+
+  if (firstname) {
+    editObj.firstname = firstname;
+  }
+  if (lastname) {
+    editObj.lastname = lastname;
+  }
+  if (phone) {
+    editObj.phone = phone;
+  }
+  if (email) {
+    editObj.email = email;
+  }
+  return editObj;
+};
