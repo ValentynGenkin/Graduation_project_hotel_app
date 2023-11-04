@@ -9,12 +9,11 @@ import PropTypes from "prop-types";
 const LoggedDropdownMenu = ({ name }) => {
   const navigation = useNavigate();
   const [response, setResponse] = useState(null);
-  const { performFetch, cancelFetch } = useFetch("/auth/logout", (response) => {
+  const { performFetch } = useFetch("/auth/logout", (response) => {
     setResponse(response);
   });
   const userLogOut = () => {
     performFetch();
-    return cancelFetch;
   };
 
   useEffect(() => {

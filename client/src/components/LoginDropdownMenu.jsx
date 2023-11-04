@@ -9,23 +9,21 @@ import useFetch from "../hooks/useFetch";
 import { isValidEmail } from "../util/emailValidation.js";
 import { Spinner } from "react-bootstrap";
 import LoggedDropdownMenu from "./LoggedDropdownMenu";
+import PropTypes from "prop-types";
 
-const LoginDropdownMenu = () => {
+const LoginDropdownMenu = ({ res }) => {
   const [userData, setUserData] = useState({ email: null, password: null });
   const [response, setResponse] = useState(null);
   const [errorMsg, setErrorMsg] = useState("none");
   const [show, setShow] = useState();
   const menuRef = useRef(null);
-  const { isLoading, error, performFetch, cancelFetch } = useFetch(
-    "/customer/auth",
+
+  const { isLoading, error, performFetch } = useFetch(
+    "/auth/login",
     (response) => {
       setResponse(response);
     }
   );
-
-  useEffect(() => {
-    performFetch();
-  }, []);
 
   const userSignIn = () => {
     performFetch({
@@ -38,8 +36,6 @@ const LoginDropdownMenu = () => {
         password: userData.password,
       }),
     });
-
-    return cancelFetch;
   };
 
   useEffect(() => {
@@ -64,8 +60,9 @@ const LoginDropdownMenu = () => {
 
   return (
     <>
-      {response && response.success === true ? (
-        <LoggedDropdownMenu name={response.customer.firstname} />
+      {(response && response.success === true) ||
+      (res && res.success === true) ? (
+        <LoggedDropdownMenu name={"Valentyn"} />
       ) : (
         <NavDropdown
           show={show}
@@ -187,3 +184,7 @@ const LoginDropdownMenu = () => {
 };
 
 export default LoginDropdownMenu;
+
+LoginDropdownMenu.propTypes = {
+  res: PropTypes.object,
+};
