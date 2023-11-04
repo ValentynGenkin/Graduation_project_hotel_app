@@ -18,7 +18,11 @@ function PopUp(props) {
       </Modal.Header>
       <Modal.Body>{body}</Modal.Body>
       <Modal.Footer>
-        <Button variant="outline-secondary" onClick={props.onHide}>
+        <Button
+          variant="outline-secondary"
+          id="popup-submit-btn"
+          onClick={props.onHide}
+        >
           {btn}
         </Button>
       </Modal.Footer>

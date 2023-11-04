@@ -23,7 +23,6 @@ const ClientRegistrationForm = () => {
   const [emailCheck, setEmailCheck] = useState("none");
   const [checkName, setCheckName] = useState("none");
   const [checkPhone, setCheckPhone] = useState("grey");
-  const [loading, setLoading] = useState("none");
   const [checkPassword, setCheckPassword] = useState({
     password: null,
     repeatPassword: null,
@@ -48,10 +47,6 @@ const ClientRegistrationForm = () => {
       setResponse(response);
     }
   );
-
-  useEffect(() => {
-    isLoading ? setLoading("inline-block") : setLoading("none");
-  }, [isLoading]);
 
   const saveUser = () => {
     performFetch({
@@ -315,7 +310,6 @@ const ClientRegistrationForm = () => {
           >
             {isLoading ? (
               <Spinner
-                style={{ display: loading }}
                 as="div"
                 animation="border"
                 size="sm"
