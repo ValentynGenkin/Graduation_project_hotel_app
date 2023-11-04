@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import {
   comparePassword,
+  validateEditUserInput,
   validateUserLoginInput,
   validateUserRegisterInput,
 } from "../util/input/inputValidator.js";
@@ -218,4 +219,60 @@ export const logout = asyncHandler(async (req, res) => {
       success: true,
       message: "You have logged out successfully",
     });
+});
+
+export const changePassword = asyncHandler(async (req, res, next) => {
+  const { currentPassword, newPassword, repeatNewPassword } = req.body;
+  if (
+    !newPassword ||
+    !repeatNewPassword ||
+    typeof newPassword !== "string" ||
+    newPassword !== repeatNewPassword
+  ) {
+    return next(
+      new ServerError("Invalid password or repeatNewPassword inputs")
+    );
+  }
+
+  const customer = await User.findById(req.customer.id).select("+password");
+  if (!customer) {
+    return next(
+      new ServerError(
+        "You do not have authorization to access this route.",
+        401
+      )
+    );
+  }
+
+  if (!comparePassword(currentPassword, customer.password)) {
+    return next(new ServerError("Current password input is not correct!", 401));
+  }
+
+  customer.password = newPassword;
+  await customer.save();
+
+  return res.status(200).json({
+    success: true,
+    msg: "Password is changed!",
+  });
+});
+
+export const editUser = asyncHandler(async (req, res, next) => {
+  const editObj = validateEditUserInput(req);
+  const customer = await User.findByIdAndUpdate(req.customer.id, editObj, {
+    new: true,
+  });
+  if (!customer) {
+    return next(
+      new ServerError(
+        "customer_access_token is not associated with any user.",
+        404
+      )
+    );
+  }
+
+  return res.status(200).json({
+    success: true,
+    customer: customer,
+  });
 });
