@@ -7,6 +7,8 @@ import {
 import sendEmail from "../util/mailer/sendEmail.js";
 import { adminRegistrationEmail } from "../util/mailer/mailTemplates.js";
 import ServerError from "../util/error/ServerError.js";
+import Room from "../models/Room.js";
+import { paginationHelper } from "../util/query/roomQueryHelper.js";
 
 export const registerAdmin = asyncHandler(async (req, res, next) => {
   const userObject = validateUserRegisterInput(req, next);
@@ -79,4 +81,36 @@ export const logout = asyncHandler(async (req, res) => {
       success: true,
       message: "You have logged out successfully",
     });
+});
+
+export const getActiveBookingsByRoom = asyncHandler(async (req, res) => {
+  // const bookings = await req.bookings.exec();
+
+  const rooms = req.rooms;
+  const bookings = req.bookings;
+
+  bookings.forEach((booking) => {
+    rooms.forEach((room) => {
+      if (booking.roomId.toString() === room._id.toString()) {
+        rooms[rooms.indexOf(room)].bookings.push(booking);
+      }
+    });
+  });
+  return res.status(200).json({
+    success: true,
+    pagination: req.pagination,
+    rooms: rooms,
+  });
+});
+
+export const getAllRooms = asyncHandler(async (req, res) => {
+  const roomsQuery = Room.find({});
+  const paginationResults = await paginationHelper(Room, roomsQuery, req);
+  const rooms = await paginationResults.query;
+
+  return res.status(200).json({
+    success: true,
+    pagination: paginationResults.pagination,
+    rooms: rooms,
+  });
 });
