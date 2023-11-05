@@ -5,6 +5,7 @@ import {
   logout,
   getActiveBookingsByRoom,
   getAllRooms,
+  getAllUsers,
 } from "../controllers/admin.js";
 import { getAdminAccess } from "../middlewares/database/databaseErrorHelpers.js";
 import { bookingsByRoomQueryMiddleware } from "../middlewares/query/bookingsByRoomQueryMiddleware.js";
@@ -20,5 +21,6 @@ adminRouter.get(
   getActiveBookingsByRoom
 );
 adminRouter.get("/dashboard/rooms", getAdminAccess, getAllRooms);
+adminRouter.get("/allUsers", getAdminAccess, getAllUsers);
 
 export default adminRouter;
