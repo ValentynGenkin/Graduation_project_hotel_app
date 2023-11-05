@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../CSS/Navbar.css";
 import Manager from "../Icons/Manager.png";
 import { FcStatistics } from "react-icons/fc"; // Import FcStatistics from react-icons/fc
@@ -7,15 +7,30 @@ import { LuLogOut } from "react-icons/lu"; // Import LuLogOut from react-icons/l
 import { MdReviews } from "react-icons/md"; // Import MdReviews from react-icons/md
 import { HiOutlineUsers } from "react-icons/hi"; // Import HiOutlineUsers from react-icons/hi
 import { MdOutlineBedroomParent } from "react-icons/md"; // Import MdOutlineBedroomParent from react-icons/md
+import useFetch from "../../../hooks/useFetch";
 
 const Navbar = () => {
+  const [userData, setUserData] = useState({ firstname: "", lastname: "" });
+  useEffect(() => {
+    const userData = localStorage.getItem("admin");
+    const parsed = JSON.parse(userData);
+    setUserData(parsed);
+  }, []);
+  const navigate = useNavigate();
+  const { performFetch } = useFetch("/admin/logout", () => {
+    navigate("/login-admin");
+    localStorage.clear("admin");
+  });
+  const handleLogout = () => {
+    performFetch();
+  };
   return (
     <div className="navbar-wrapper">
       <div className="navbar-center">
         <Link to="/Admin" className="nav-link">
           <div className="Admin-name">
             <img src={Manager} alt="admin logo" className="Nav-image" />
-            Chouaib Atrous
+            {userData?.firstname} {userData?.lastname}
           </div>
         </Link>
         <div className="nav-All-links">
@@ -37,10 +52,10 @@ const Navbar = () => {
             Reviews
           </Link>
 
-          <Link to="/Login" className="nav-link-admin">
+          <p onClick={handleLogout} className="nav-link-admin">
             <LuLogOut className="Nav-icon" />
             Logout
-          </Link>
+          </p>
         </div>
       </div>
     </div>
