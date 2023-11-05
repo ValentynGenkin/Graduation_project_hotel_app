@@ -17,3 +17,5 @@ cypress/videos
 
 # For server public assets
 public
+
+app.js

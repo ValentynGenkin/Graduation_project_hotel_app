@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import dotenv from "dotenv";
+dotenv.config();
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { swaggerOptions } from "./util/swagger/swaggerConfig.js";
@@ -20,7 +21,20 @@ const app = express();
 // Tell express to use the json middleware
 app.use(express.json());
 // Allow everyone to access our API. In a real application, we would need to restrict this!
-app.use(cors());
+// you should allow credentials so you can access cookies
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", process.env.BASE_CLIENT_URL);
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+const corsOptions = {
+  origin: process.env.BASE_CLIENT_URL,
+  credentials: true,
+};
+app.use(cors(corsOptions));
+// handle preflight
+app.options("*", cors(corsOptions));
+
 //cookie parser middleware
 app.use(cookieParser());
 

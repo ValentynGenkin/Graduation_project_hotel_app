@@ -78,7 +78,7 @@ const RevenueChart = () => {
   }, []);
 
   return (
-    <div style={{ width: "50%", height: "500px" }}>
+    <div className="chart-container">
       <canvas ref={chartRef} />
       <p className="note-description-chart">
         Note: The revenue chart is calculated after deducting worker and

@@ -1,16 +1,24 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Navbar from "../Component/Navbar";
+import RegistrationForm from "../Component/RegistrationForm";
+import UserList from "../Component/UserList";
 
 const Clients = () => {
   return (
-    <>
+    <div style={{ overflowX: "hidden" }}>
       <Navbar />
-      <h2>clients</h2>
-      <Link to="/Admin">
-        <button>Back</button>
-      </Link>
-    </>
+      <div
+        style={{
+          width: "100vw",
+          backgroundColor: "red",
+          overflowX: "hidden",
+          display: "flex",
+        }}
+      >
+        <UserList />
+        <RegistrationForm />
+      </div>
+    </div>
   );
 };
 
