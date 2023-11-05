@@ -21,7 +21,7 @@ export const getCustomerAccessAndInfo = asyncHandler(async (req, res) => {
   return res.status(200).json({
     success: true,
     customer: {
-      name: customer.firstname,
+      name: customer.name,
       lastname: customer.lastname,
       id: customer.id,
     },
