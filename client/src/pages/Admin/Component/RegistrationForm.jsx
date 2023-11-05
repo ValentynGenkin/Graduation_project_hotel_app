@@ -42,14 +42,8 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const {
-      firstname,
-      lastname,
-      email,
-      phone,
-      password,
-      confirmPassword,
-    } = formData;
+    const { firstname, lastname, email, phone, password, confirmPassword } =
+      formData;
 
     if (
       !firstname ||
