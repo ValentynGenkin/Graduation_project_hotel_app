@@ -5,13 +5,29 @@ import Calendar from "react-calendar";
 import Accordion from "react-bootstrap/Accordion";
 import "react-calendar/dist/Calendar.css";
 import "./CSS/RoomSearchBlock.css";
+import PropTypes from "prop-types";
 
-const RoomSearchBlock = () => {
+const RoomSearchBlock = ({ onSearch }) => {
+  RoomSearchBlock.propTypes = {
+    onSearch: PropTypes.func.isRequired,
+  };
+
   const [value, setValue] = useState(new Date());
   const [date, setDate] = useState(["yyyy-mm-dd", "yyyy-mm-dd"]);
   const [adult, setAdult] = useState(2);
-  const [childe, setChilde] = useState(0);
+  const [child, setChild] = useState(0);
   const [room, setRoom] = useState(1);
+
+  const handleSearch = () => {
+    const searchCriteria = {
+      checkInDate: value[0],
+      checkOutDate: value[1],
+      adult: adult,
+      child: child,
+      room: room,
+    };
+    onSearch(searchCriteria);
+  };
 
   const onChange = (nextValue) => {
     setValue(nextValue);
@@ -55,7 +71,7 @@ const RoomSearchBlock = () => {
               </p>
 
               <p>
-                <span>{childe}</span> children
+                <span>{child}</span> children
               </p>
 
               <p>
@@ -96,17 +112,17 @@ const RoomSearchBlock = () => {
                     className="counter-btn"
                     variant="outline-secondary"
                     onClick={() => {
-                      increment(setChilde, childe);
+                      increment(setChild, child);
                     }}
                   >
                     +
                   </Button>
-                  <span className="counter">{childe}</span>
+                  <span className="counter">{child}</span>
                   <Button
                     className="counter-btn"
                     variant="outline-secondary"
                     onClick={() => {
-                      decrement(setChilde, childe);
+                      decrement(setChild, child);
                     }}
                   >
                     -
@@ -150,6 +166,7 @@ const RoomSearchBlock = () => {
             <div className="search-btn-block">
               <Link to={"/RoomInfoCard"}>
                 <Button
+                  onClick={handleSearch}
                   className="search-btn"
                   variant="outline-success"
                   size="lg"
