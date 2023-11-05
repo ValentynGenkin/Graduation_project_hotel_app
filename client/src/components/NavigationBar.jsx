@@ -11,17 +11,12 @@ import useFetch from "../hooks/useFetch";
 
 function NavigationBar() {
   const [authResponse, setAuthResponse] = useState(null);
-  const { performFetch, cancelFetch } = useFetch(
-    "/customer/auth",
-    (response) => {
-      setAuthResponse(response);
-    }
-  );
+  const { performFetch } = useFetch("/customer/auth", (response) => {
+    setAuthResponse(response);
+  });
 
   useEffect(() => {
     performFetch();
-
-    return cancelFetch();
   }, []);
 
   return (
