@@ -22,7 +22,7 @@ const Navbar = () => {
     localStorage.clear("admin");
   });
   const handleLogout = () => {
-    performFetch({ credentials: "include" });
+    performFetch();
   };
   return (
     <div className="navbar-wrapper">
