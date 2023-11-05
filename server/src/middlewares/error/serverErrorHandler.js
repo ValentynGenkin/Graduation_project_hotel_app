@@ -16,7 +16,7 @@ const serverErrorHandler = (err, req, res, next) => {
   logError(err);
   return res.status(err.status || 500).json({
     success: false,
-    message: err.message || "Internal Server Error",
+    msg: err.message || "Internal Server Error",
   });
 };
 
