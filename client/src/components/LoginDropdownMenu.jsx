@@ -62,7 +62,7 @@ const LoginDropdownMenu = ({ res }) => {
     <>
       {(response && response.success === true) ||
       (res && res.success === true) ? (
-        <LoggedDropdownMenu name={"Valentyn"} />
+        <LoggedDropdownMenu name={"Valentynaaa"} />
       ) : (
         <NavDropdown
           show={show}
