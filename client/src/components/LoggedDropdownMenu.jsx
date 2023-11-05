@@ -1,14 +1,31 @@
 import NavDropdown from "react-bootstrap/NavDropdown";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import "./CSS/LoginDropdownMenu.css";
+import useFetch from "../hooks/useFetch";
+import PropTypes from "prop-types";
 
-const LoggedDropdownMenu = () => {
+const LoggedDropdownMenu = ({ name }) => {
+  const navigation = useNavigate();
+  const [response, setResponse] = useState(null);
+  const { performFetch } = useFetch("/auth/logout", (response) => {
+    setResponse(response);
+  });
+  const userLogOut = () => {
+    performFetch();
+  };
+
+  useEffect(() => {
+    if (response && response.success === true) {
+      navigation("/");
+    }
+  }, [response]);
+
   return (
     <NavDropdown
       className="logged-dropdown-menu"
-      title="User Name"
+      title={name}
       id="basic-nav-dropdown"
       align={{ sm: "end" }}
     >
@@ -19,7 +36,11 @@ const LoggedDropdownMenu = () => {
         Bookings
       </NavDropdown.Item>
 
-      <NavDropdown.Item as={Link} to={"/"}>
+      <NavDropdown.Item
+        onClick={() => {
+          userLogOut();
+        }}
+      >
         Log out
       </NavDropdown.Item>
     </NavDropdown>
@@ -27,3 +48,7 @@ const LoggedDropdownMenu = () => {
 };
 
 export default LoggedDropdownMenu;
+
+LoggedDropdownMenu.propTypes = {
+  name: PropTypes.string.isRequired,
+};
