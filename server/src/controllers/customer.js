@@ -3,6 +3,7 @@ import {
   isTokenIncluded,
   verifyUserToken,
 } from "../util/authorization/auth.js";
+import Booking from "../models/Booking.js";
 
 export const getCustomerAccessAndInfo = asyncHandler(async (req, res) => {
   const token = isTokenIncluded(req);
@@ -20,9 +21,31 @@ export const getCustomerAccessAndInfo = asyncHandler(async (req, res) => {
   return res.status(200).json({
     success: true,
     customer: {
-      name: customer.firstname,
+      name: customer.name,
       lastname: customer.lastname,
       id: customer.id,
     },
+  });
+});
+
+export const getCustomerCurrentBookings = asyncHandler(async (req, res) => {
+  const customerId = req.customer.id;
+  const currentDate = new Date();
+  const bookings = await Booking.find({
+    customerId: customerId,
+  }).populate({
+    path: "bookingDetails",
+    match: {
+      checkIn: { $lte: currentDate },
+      checkOut: { $gte: currentDate },
+    },
+    populate: {
+      path: "roomId",
+      model: "Room",
+    },
+  });
+  return res.status(200).json({
+    success: true,
+    bookings: bookings,
   });
 });

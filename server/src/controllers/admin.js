@@ -66,6 +66,10 @@ export const login = asyncHandler(async (req, res, next) => {
     .json({
       success: true,
       message: "Admin logged in",
+      admin: {
+        firstname: admin.firstname,
+        lastname: admin.lastname,
+      },
     });
 });
 

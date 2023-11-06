@@ -2,10 +2,13 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  height: 100%;
-  width: 50%;
+  height: auto; /* Change from 100% to auto for better responsiveness */
+  width: 100%;
+  max-width: 800px; /* Adjust maximum width as needed */
+  margin: 0 auto;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
-
 .circle-container {
   width: 80%;
   height: 600px;
@@ -51,4 +54,20 @@
   transform: translate(-50%, -50%);
   z-index: 2;
   font-size: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .legend-circle {
+    margin-bottom: 5px;
+  }
+
+  .legend-box {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+  }
+
+  .text-inside {
+    font-size: 16px;
+  }
 }
