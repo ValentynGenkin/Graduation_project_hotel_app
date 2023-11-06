@@ -72,7 +72,7 @@ function RoomInfoCard() {
                             ? room.exampleRoom.images.indexOf(image)
                             : 0
                         }
-                        src={image}
+                        src={process.env.BASE_SERVER_URL + image}
                         alt={room.roomType}
                       />
                     ))
