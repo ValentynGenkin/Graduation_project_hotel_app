@@ -4,21 +4,24 @@ import React from "react";
 import ScrollToTop from "react-scroll-to-top";
 import Footer from "./Footer";
 import ToTopImage from "../assets/to-top.png";
+import { BookingContextProvider } from "../contexts/BookingContext";
 
 const MainLayout = () => {
   return (
     <>
-      <NavigationBar />
+      <BookingContextProvider>
+        <NavigationBar />
 
-      <Outlet />
+        <Outlet />
 
-      <ScrollToTop
-        className="scroll-btn"
-        smooth
-        component={<img src={ToTopImage} alt="top-btn" />}
-      />
+        <ScrollToTop
+          className="scroll-btn"
+          smooth
+          component={<img src={ToTopImage} alt="top-btn" />}
+        />
 
-      <Footer />
+        <Footer />
+      </BookingContextProvider>
     </>
   );
 };
