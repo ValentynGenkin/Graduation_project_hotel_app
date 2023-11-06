@@ -8,15 +8,22 @@ import { Link } from "react-router-dom";
 
 import "./CSS/NavigationBar.css";
 import useFetch from "../hooks/useFetch";
+import { Spinner } from "react-bootstrap";
 
 function NavigationBar() {
   const [authResponse, setAuthResponse] = useState(null);
-  const { performFetch } = useFetch("/customer/auth", (response) => {
+  const { isLoading, performFetch } = useFetch("/customer/auth", (response) => {
     setAuthResponse(response);
   });
 
   useEffect(() => {
-    performFetch();
+    performFetch({
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
   }, []);
 
   return (
@@ -43,7 +50,18 @@ function NavigationBar() {
             <Nav.Link as={Link} to={"/"}>
               Contact
             </Nav.Link>
-            <LoginDropdownMenu res={authResponse && authResponse} />
+
+            {isLoading ? (
+              <Spinner
+                as="div"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : (
+              <LoginDropdownMenu res={authResponse && authResponse} />
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

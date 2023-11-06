@@ -15,6 +15,8 @@ const LoginDropdownMenu = ({ res }) => {
   const [userData, setUserData] = useState({ email: null, password: null });
   const [response, setResponse] = useState(null);
   const [errorMsg, setErrorMsg] = useState("none");
+  const [userName, setUserName] = useState("");
+
   const [show, setShow] = useState();
   const menuRef = useRef(null);
 
@@ -31,6 +33,7 @@ const LoginDropdownMenu = ({ res }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         email: userData.email,
         password: userData.password,
@@ -58,11 +61,16 @@ const LoginDropdownMenu = ({ res }) => {
 
   const [modalShow, setModalShow] = useState(false);
 
+  useEffect(() => {
+    (res && setUserName(res.customer.name)) ||
+      (response && setUserName(response.customer.firstname));
+  }, [res, response]);
+
   return (
     <>
       {(response && response.success === true) ||
       (res && res.success === true) ? (
-        <LoggedDropdownMenu name={res && res.customer.lastname} />
+        <LoggedDropdownMenu name={userName} />
       ) : (
         <NavDropdown
           show={show}

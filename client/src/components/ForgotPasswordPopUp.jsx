@@ -16,6 +16,7 @@ const ForgotPasswordPopUp = () => {
   const sendRequest = (email) => {
     performFetch({
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -38,27 +39,49 @@ const ForgotPasswordPopUp = () => {
     }
   }, [emailInputValue]);
 
+  useEffect(() => {
+    const btn = document.getElementById("popup-submit-btn");
+    const body = document.getElementById("forgot-password-input-block");
+    if (response) {
+      btn.style.display = "none";
+      body.style.display = "none";
+    }
+  }, [response]);
+
   return (
     <div className="forgot-password-popup-body">
       {isLoading ? (
-        <Spinner />
+        <Spinner
+          as="div"
+          animation="border"
+          size="sm"
+          role="status"
+          aria-hidden="true"
+        />
       ) : response && response.success === true ? (
-        <p>Check e-mail</p>
+        <p>
+          We have sent instructions to {emailInputValue}, check your mailbox.
+        </p>
       ) : (
-        <p>{error && error.toString()}</p>
+        <p style={{ color: "red", fontSize: "12px" }}>
+          {error && error.toString()}
+        </p>
       )}
-      <p>
-        Enter your email address and you will receive an email with instructions
-      </p>
-      <Input
-        id={"forgot-password-input"}
-        type={"email"}
-        label={"E-mail"}
-        text={"E-mail"}
-        cb={(e) => {
-          setEmailInputValue(e.target.value);
-        }}
-      />
+      <div id="forgot-password-input-block">
+        <p>
+          Enter your email address and you will receive an email with
+          instructions
+        </p>
+        <Input
+          id={"forgot-password-input"}
+          type={"email"}
+          label={"E-mail"}
+          text={"E-mail"}
+          cb={(e) => {
+            setEmailInputValue(e.target.value);
+          }}
+        />
+      </div>
     </div>
   );
 };
