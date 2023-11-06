@@ -21,7 +21,7 @@ function PopUp(props) {
         <Button
           variant="outline-secondary"
           id="popup-submit-btn"
-          onClick={props.onHide}
+          // onClick={props.onHide}
         >
           {btn}
         </Button>

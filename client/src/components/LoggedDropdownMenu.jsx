@@ -5,20 +5,32 @@ import { useNavigate } from "react-router-dom";
 import "./CSS/LoginDropdownMenu.css";
 import useFetch from "../hooks/useFetch";
 import PropTypes from "prop-types";
+import { Spinner } from "react-bootstrap";
 
 const LoggedDropdownMenu = ({ name }) => {
   const navigation = useNavigate();
   const [response, setResponse] = useState(null);
-  const { performFetch } = useFetch("/auth/logout", (response) => {
-    setResponse(response);
-  });
+
+  const { isLoading, error, performFetch } = useFetch(
+    "/auth/logout",
+    (response) => {
+      setResponse(response);
+    }
+  );
   const userLogOut = () => {
-    performFetch({ credentials: "include" });
+    performFetch({
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
   };
 
   useEffect(() => {
     if (response && response.success === true) {
       navigation("/");
+      location.reload();
     }
   }, [response]);
 
@@ -41,7 +53,30 @@ const LoggedDropdownMenu = ({ name }) => {
           userLogOut();
         }}
       >
-        Log out
+        {isLoading ? (
+          <Spinner
+            as="div"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />
+        ) : (
+          "Log out"
+        )}
+        {error && (
+          <p
+            style={{
+              color: "red",
+              textAlign: "center",
+              marginBottom: "10px",
+              padding: "0",
+              fontSize: "11px",
+            }}
+          >
+            {error.toString()}
+          </p>
+        )}
       </NavDropdown.Item>
     </NavDropdown>
   );

@@ -16,6 +16,7 @@ const LoginDropdownMenu = ({ res }) => {
   const [response, setResponse] = useState(null);
   const [errorMsg, setErrorMsg] = useState("none");
   const [userName, setUserName] = useState("");
+
   const [show, setShow] = useState();
   const menuRef = useRef(null);
 
@@ -61,14 +62,15 @@ const LoginDropdownMenu = ({ res }) => {
   const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
-    res && setUserName(res.customer.name);
-  }, [res]);
+    (res && setUserName(res.customer.name)) ||
+      (response && setUserName(response.customer.firstname));
+  }, [res, response]);
 
   return (
     <>
       {(response && response.success === true) ||
       (res && res.success === true) ? (
-        <LoggedDropdownMenu name={userName || response.customer.firstname} />
+        <LoggedDropdownMenu name={userName} />
       ) : (
         <NavDropdown
           show={show}
