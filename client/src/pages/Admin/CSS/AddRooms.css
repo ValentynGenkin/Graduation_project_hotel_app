@@ -1,0 +1,41 @@
+.room-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px;
+  width: 300px;
+}
+
+.room-container h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.room-container p {
+  margin: 10px 0;
+}
+
+.facilities-list {
+  list-style: none;
+  padding: 0;
+}
+
+.facilities-list li {
+  margin-bottom: 5px;
+}
+
+.images-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.room-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}

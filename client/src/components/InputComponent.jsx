@@ -3,7 +3,17 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import PropTypes from "prop-types";
 
-const Input = ({ id, type, label, text, btn, changeability, placeholder }) => {
+const Input = ({
+  id,
+  type,
+  label,
+  text,
+  btn,
+  changeability,
+  placeholder,
+  cb,
+  onBlur,
+}) => {
   return (
     <InputGroup className="mb-3">
       <InputGroup.Text id="basic-addon1">{text}</InputGroup.Text>
@@ -14,6 +24,8 @@ const Input = ({ id, type, label, text, btn, changeability, placeholder }) => {
         aria-describedby="basic-addon1"
         disabled={changeability}
         placeholder={placeholder}
+        onChange={cb}
+        onBlur={onBlur}
       />
       {btn}
     </InputGroup>
@@ -30,4 +42,6 @@ Input.propTypes = {
   btn: PropTypes.element,
   changeability: PropTypes.bool,
   placeholder: PropTypes.string,
+  cb: PropTypes.func,
+  onBlur: PropTypes.func,
 };

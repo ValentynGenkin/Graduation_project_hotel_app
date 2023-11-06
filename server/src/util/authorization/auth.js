@@ -14,7 +14,8 @@ export const verifyUserToken = (token) => {
     }
     return {
       id: decoded.id,
-      name: decoded.name,
+      name: decoded.firstname,
+      lastname: decoded.lastname,
       role: decoded.role,
     };
   });
