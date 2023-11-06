@@ -13,7 +13,7 @@ const LoggedDropdownMenu = ({ name }) => {
     setResponse(response);
   });
   const userLogOut = () => {
-    performFetch();
+    performFetch({ credentials: "include" });
   };
 
   useEffect(() => {
