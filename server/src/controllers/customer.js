@@ -31,8 +31,9 @@ export const getCustomerAccessAndInfo = asyncHandler(async (req, res) => {
 export const getCustomerCurrentBookings = asyncHandler(async (req, res) => {
   const customerId = req.customer.id;
   const currentDate = new Date();
-  const bookings = await Booking.find({
+  const currentBookings = await Booking.find({
     customerId: customerId,
+    status: { $in: ["pending", "closed"] },
   }).populate({
     path: "bookingDetails",
     match: {
@@ -44,8 +45,19 @@ export const getCustomerCurrentBookings = asyncHandler(async (req, res) => {
       model: "Room",
     },
   });
+  const allBookings = await Booking.find({
+    customerId: customerId,
+    status: { $in: ["pending", "closed"] },
+  }).populate({
+    path: "bookingDetails",
+    populate: {
+      path: "roomId",
+      model: "Room",
+    },
+  });
   return res.status(200).json({
     success: true,
-    bookings: bookings,
+    currentBookings: currentBookings,
+    allBookings: allBookings,
   });
 });
