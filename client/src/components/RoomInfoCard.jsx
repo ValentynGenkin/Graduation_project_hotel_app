@@ -119,6 +119,7 @@ function RoomInfoCard() {
                   checkIn={checkIn}
                   checkOut={checkOut}
                   roomId={room.exampleRoom._id}
+                  className="button-02"
                 />
               </div>
             </div>
