@@ -2,39 +2,33 @@ import React, { useState, useEffect } from "react";
 import useFetch from "../hooks/useFetch.js";
 import "./CSS/roomInfoCard.css";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
-import PropTypes from "prop-types";
 import { Container } from "react-bootstrap";
 import RoomDetailsCard from "../components/RoomDetailsCard";
 import "chart.js/auto";
+import { useLocation } from "react-router-dom";
 
 function RoomInfoCard() {
-  RoomInfoCard.propTypes = {
-    data: PropTypes.array.isRequired,
-    searchCriteria: PropTypes.object.isRequired,
-  };
-
   const [response, setResponse] = useState(null);
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [roomIdx, setRoomIdx] = useState(0);
-
+  const queryParams = new URLSearchParams(useLocation().search);
+  let checkIn = queryParams.get("checkIn");
+  let checkOut = queryParams.get("checkOut");
+  checkIn = new Date(checkIn).toISOString();
+  checkOut = new Date(checkOut).toISOString();
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
-    "/rooms",
+    `/rooms?checkIn=${checkIn}&checkOut=${checkOut}`,
     (response) => {
       setResponse(response);
-      // console.log(response)
     }
   );
 
   useEffect(() => {
-    const queryParams = new URLSearchParams();
-    const queryString = queryParams.toString();
-
     performFetch({
       method: "GET",
       headers: {
         "content-type": "application/json",
       },
-      params: queryString,
     });
 
     return () => cancelFetch();
@@ -42,7 +36,6 @@ function RoomInfoCard() {
 
   const nextSlide = (imageLength) => {
     setRoomIdx((roomIdx + 1) % (imageLength || 0));
-    //  console.log('hello')
   };
 
   const prevSlide = (imageLength) => {
@@ -58,7 +51,6 @@ function RoomInfoCard() {
       ) : response && response.rooms && response.rooms.length > 0 ? (
         response.rooms.map((room) => (
           <div key={room._id} className="block-02">
-            {/* images */}
             <div className="carousel-02">
               <BsArrowLeftCircleFill
                 className="arrow-02 arrow-left-02"
@@ -99,7 +91,7 @@ function RoomInfoCard() {
 
             <div className="info-02">
               <div>
-                {/* images */}
+                <p>Count:{room.count}</p>
 
                 <ul className="u-list-02">
                   <li>Room Type: {room.exampleRoom.roomType}</li>
@@ -114,7 +106,7 @@ function RoomInfoCard() {
                   </ul>
                 </ul>
               </div>
-              {/* buttons */}
+
               <div className="buttons-02">
                 <button
                   className="button-02"

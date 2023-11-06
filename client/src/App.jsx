@@ -24,10 +24,7 @@ const App = () => {
           <Route path="registration" element={<ClientRegistrationForm />} />
           <Route path="account-info" element={<ExistAccountInfo />} />
           <Route path="current-bookings" element={<ClientBookings />} />
-          <Route
-            path="RoomInfoCard"
-            element={<RoomInfoCard data={Response} />}
-          />
+          <Route path="RoomInfoCard" element={<RoomInfoCard />} />
 
           <Route path="checkout" element={<ClientCheckout />} />
           <Route

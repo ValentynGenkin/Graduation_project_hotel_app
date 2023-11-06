@@ -5,29 +5,13 @@ import Calendar from "react-calendar";
 import Accordion from "react-bootstrap/Accordion";
 import "react-calendar/dist/Calendar.css";
 import "./CSS/RoomSearchBlock.css";
-import PropTypes from "prop-types";
 
-const RoomSearchBlock = ({ onSearch }) => {
-  RoomSearchBlock.propTypes = {
-    onSearch: PropTypes.func.isRequired,
-  };
-
+const RoomSearchBlock = () => {
   const [value, setValue] = useState(new Date());
   const [date, setDate] = useState(["yyyy-mm-dd", "yyyy-mm-dd"]);
   const [adult, setAdult] = useState(2);
   const [child, setChild] = useState(0);
   const [room, setRoom] = useState(1);
-
-  const handleSearch = () => {
-    const searchCriteria = {
-      checkInDate: value[0],
-      checkOutDate: value[1],
-      adult: adult,
-      child: child,
-      room: room,
-    };
-    onSearch(searchCriteria);
-  };
 
   const onChange = (nextValue) => {
     setValue(nextValue);
@@ -164,9 +148,10 @@ const RoomSearchBlock = ({ onSearch }) => {
               />
             </Container>
             <div className="search-btn-block">
-              <Link to={"/RoomInfoCard"}>
+              <Link
+                to={`/RoomInfoCard?checkIn=${value[0]}&checkOut=${value[1]}`}
+              >
                 <Button
-                  onClick={handleSearch}
                   className="search-btn"
                   variant="outline-success"
                   size="lg"
