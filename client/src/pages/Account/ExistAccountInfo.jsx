@@ -145,13 +145,11 @@ const ExistAccountInfo = () => {
           />
         </>
       ) : (
-        error && (
-          <p>
-            404 - Page Not Found <br />
-            The page you are looking for could not be found. Please check the
-            URL or go back to the homepage.
-          </p>
-        )
+        <div className="error-404">
+          <h1>404 - Page Not Found</h1>
+          <p>The page you are looking for could not be found.</p>
+          <p>Please check the URL or go back to the homepage.</p>
+        </div>
       )}
     </Container>
   );
