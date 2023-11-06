@@ -39,7 +39,7 @@ app.get("/public/images/:imageName", (req, res) => {
   return res.sendFile(imagePath);
 });
 // Swagger documentation endpoint
-const specs = swaggerJsdoc(swaggerOptions);
+const specs = swaggerJsdoc(swaggerOptions(process.env.BASE_SERVER_URL));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 /****** Attach routes ******/
