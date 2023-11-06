@@ -12,7 +12,7 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
   };
   const { handleBookingContext } = useContext(BookingContext);
 
-  const { isLoading, error, performFetch, cancelFetch } = useFetch(
+  const { isLoading, error, performFetch } = useFetch(
     "/booking/addRoomToBooking",
     (response) => {
       if (response.success === true) {
@@ -35,8 +35,6 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
         checkOut: checkOut,
       }),
     });
-
-    return cancelFetch();
   };
 
   return (
