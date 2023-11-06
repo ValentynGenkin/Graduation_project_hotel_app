@@ -6,6 +6,7 @@ import { Container } from "react-bootstrap";
 import RoomDetailsCard from "../components/RoomDetailsCard";
 import "chart.js/auto";
 import { useLocation } from "react-router-dom";
+import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
 
 function RoomInfoCard() {
   const [response, setResponse] = useState(null);
@@ -114,7 +115,11 @@ function RoomInfoCard() {
                 >
                   Information
                 </button>
-                <button className="button-02">Book</button>
+                <AddRoomToBookingButton
+                  checkIn={checkIn}
+                  checkOut={checkOut}
+                  roomId={room.exampleRoom._id}
+                />
               </div>
             </div>
           </div>
