@@ -21,6 +21,15 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  birthday: {
+    type: Date,
+    required: false,
+  },
+  payment: {
+    type: String,
+    required: false,
+    enum: ["iDeal", "PayPal", "Credit Card"],
+  },
   role: {
     type: String,
     default: "customer",
@@ -52,6 +61,8 @@ UserSchema.methods.generateJwtFromUser = function () {
     lastname: this.lastname,
     email: this.email,
     phone: this.phone,
+    birthday: this.birthday,
+    payment: this.payment,
     role: this.role,
   };
   const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: JWT_EXPIRE });

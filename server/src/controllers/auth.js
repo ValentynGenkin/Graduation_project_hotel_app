@@ -16,7 +16,7 @@ import ServerError from "../util/error/ServerError.js";
 import Booking from "../models/Booking.js";
 
 export const register = asyncHandler(async (req, res, next) => {
-  const { firstname, lastname, phone, password, email } =
+  const { firstname, lastname, phone, birthday, payment, password, email } =
     validateUserRegisterInput(req, next);
 
   const user = await User.create({
@@ -24,6 +24,8 @@ export const register = asyncHandler(async (req, res, next) => {
     lastname,
     email,
     phone,
+    birthday,
+    payment,
     password,
   });
   const token = await user.generateJwtFromUser();

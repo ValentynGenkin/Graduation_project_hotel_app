@@ -18,6 +18,8 @@ export const verifyUserToken = (token) => {
       lastname: decoded.lastname,
       email: decoded.email,
       phone: decoded.phone,
+      birthday: decoded.birthday,
+      payment: decoded.payment,
       role: decoded.role,
     };
   });

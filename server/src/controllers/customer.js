@@ -25,6 +25,8 @@ export const getCustomerAccessAndInfo = asyncHandler(async (req, res) => {
       lastname: customer.lastname,
       email: customer.email,
       phone: customer.phone,
+      birthday: customer.birthday,
+      payment: customer.payment,
       id: customer.id,
     },
   });

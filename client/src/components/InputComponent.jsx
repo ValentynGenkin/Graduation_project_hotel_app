@@ -13,6 +13,8 @@ const Input = ({
   placeholder,
   cb,
   onBlur,
+  value,
+  defaultValue,
 }) => {
   return (
     <InputGroup className="mb-3">
@@ -26,6 +28,8 @@ const Input = ({
         placeholder={placeholder}
         onChange={cb}
         onBlur={onBlur}
+        value={value}
+        defaultValue={defaultValue}
       />
       {btn}
     </InputGroup>
@@ -44,4 +48,6 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   cb: PropTypes.func,
   onBlur: PropTypes.func,
+  value: PropTypes.string,
+  defaultValue: PropTypes.string,
 };

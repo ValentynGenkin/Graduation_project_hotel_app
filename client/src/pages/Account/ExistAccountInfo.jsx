@@ -16,6 +16,11 @@ const ExistAccountInfo = () => {
   const [popUpTitle, setPopUpTitle] = useState("");
   const [btnTitle, setBtnTitle] = useState("");
   const [response, setResponse] = useState(null);
+  const [dateValue, setDateValue] = useState({
+    year: "yyyy",
+    month: "mm",
+    day: "dd",
+  });
   const navigation = useNavigate();
   const { isLoading, error, performFetch } = useFetch(
     "/customer/auth",
@@ -33,6 +38,17 @@ const ExistAccountInfo = () => {
       },
     });
   }, []);
+
+  useEffect(() => {
+    if (response) {
+      const bDay = new Date(response.customer.birthday);
+      setDateValue({
+        year: bDay.getFullYear().toString(),
+        month: String(bDay.getMonth() + 1).padStart(2, "0"),
+        day: String(bDay.getDate()).padStart(2, "0"),
+      });
+    }
+  }, [response]);
 
   useEffect(() => {
     error &&
@@ -87,10 +103,10 @@ const ExistAccountInfo = () => {
             />
             <Input
               id={"account-bday"}
-              type={"text"}
+              type={"date"}
               label={"Date of Birth"}
               text={"Date of Birth"}
-              placeholder={"12.07.1987"}
+              defaultValue={`${dateValue.year}-${dateValue.month}-${dateValue.day}`}
               changeability={update}
             />
             <Input
@@ -98,7 +114,7 @@ const ExistAccountInfo = () => {
               type={"text"}
               label={"Payment method"}
               text={"Payment method"}
-              placeholder={"iDeal"}
+              placeholder={response.customer.payment}
               changeability={update}
             />
           </div>

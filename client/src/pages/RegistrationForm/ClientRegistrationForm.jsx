@@ -38,6 +38,8 @@ const ClientRegistrationForm = () => {
     phone: null,
     password: null,
     email: null,
+    birthday: null,
+    payment: null,
     checked: null,
   });
 
@@ -61,6 +63,8 @@ const ClientRegistrationForm = () => {
         phone: user.phone,
         password: user.password,
         email: user.email,
+        payment: user.payment,
+        birthday: user.birthday,
       }),
     });
   };
@@ -183,6 +187,9 @@ const ClientRegistrationForm = () => {
           type={"date"}
           label={"Date of Birth"}
           text={"Date of Birth"}
+          cb={(e) => {
+            setUser({ ...user, birthday: new Date(e.target.value) });
+          }}
         />
 
         <InputGroup className="mb-3 payment-method-title">
@@ -193,15 +200,45 @@ const ClientRegistrationForm = () => {
         <div key="inline-radio" className="mb-3 payment-method-select">
           <div className="payment-method-select-component">
             <img src={iDealImg} alt="ideal" />
-            <Form.Check inline name="group1" type="radio" id="inline-radio-1" />
+            <Form.Check
+              inline
+              name="group1"
+              type="radio"
+              id="inline-radio-1"
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setUser({ ...user, payment: "iDeal" });
+                }
+              }}
+            />
           </div>
           <div className="payment-method-select-component">
             <img src={PayPalImg} alt="paypal" />
-            <Form.Check inline name="group1" type="radio" id="inline-radio-2" />
+            <Form.Check
+              inline
+              name="group1"
+              type="radio"
+              id="inline-radio-2"
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setUser({ ...user, payment: "PayPal" });
+                }
+              }}
+            />
           </div>
           <div className="payment-method-select-component">
             <img src={CreditCardImg} alt="credit card" />
-            <Form.Check inline name="group1" type="radio" id="inline-radio-3" />
+            <Form.Check
+              inline
+              name="group1"
+              type="radio"
+              id="inline-radio-3"
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setUser({ ...user, payment: "Credit card" });
+                }
+              }}
+            />
           </div>
         </div>
       </Form>
