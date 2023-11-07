@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import useFetch from "../../../hooks/useFetch";
-import styled from "styled-components";
 import PropTypes from "prop-types";
-// import { MdDeleteForever } from "react-icons/md";
+import "../CSS/UserList.css";
+
 const UsersList = ({ reload }) => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,18 +24,14 @@ const UsersList = ({ reload }) => {
     fetchData();
   }, [reload]);
 
-  // Logic for pagination
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
-  // Change page
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  // const handleDelete = (id) => {
-  //   console.log(id)
-  // };
+
   return (
     <div>
       {loading ? (
@@ -44,101 +40,56 @@ const UsersList = ({ reload }) => {
         users && (
           <div>
             <h1>All Users</h1>
-            <Table>
+            <table className="admin-table">
               <thead>
                 <tr>
-                  <TableHeader>Name</TableHeader>
-                  <TableHeader>Email</TableHeader>
-                  <TableHeader>Phone</TableHeader>
-                  <TableHeader>Role</TableHeader>
-                  {/* <TableHeader>Delete</TableHeader> */}
+                  <th className="admin-table-header">FullName</th>
+                  <th className="admin-table-header">Email</th>
+                  <th className="admin-table-header">Phone</th>
+                  <th className="admin-table-header">Role</th>
                 </tr>
               </thead>
               <tbody>
                 {currentUsers.map((user) => (
                   <tr key={user._id}>
-                    <TableData>
+                    <td className="admin-table-data">
                       {user?.firstname} {user?.lastname}
-                    </TableData>
-                    <TableData>{user.email}</TableData>
-                    <TableData>{user.phone}</TableData>
-                    <TableData>{user.role}</TableData>
-                    {/* <TableAction onClick={() => handleDelete(user._id)}>
-                      <MdDeleteForever size={24} color />
-                    </TableAction> */}
+                    </td>
+                    <td className="admin-table-data">{user.email}</td>
+                    <td className="admin-table-data">{user.phone}</td>
+                    <td className="admin-table-data">{user.role}</td>
                   </tr>
                 ))}
               </tbody>
-            </Table>
-            <Pagination>
-              {users.length > usersPerPage && (
-                <PgContainer>
-                  {Array(Math.ceil(users.length / usersPerPage))
+            </table>
+            <div className="admin-pagination">
+              <div className="admin-pg-container">
+                {users.length > usersPerPage &&
+                  Array(Math.ceil(users.length / usersPerPage))
                     .fill()
                     .map((_, i) => (
-                      <PageNumber
+                      <div
                         key={i}
+                        className="admin-page-number"
                         onClick={() => paginate(i + 1)}
                         style={{
-                          color: i + 1 == currentPage ? "red" : "black",
+                          color: i + 1 === currentPage ? "red" : "black",
                         }}
                       >
                         {i + 1}
-                      </PageNumber>
+                      </div>
                     ))}
-                </PgContainer>
-              )}
-            </Pagination>
+              </div>
+            </div>
           </div>
         )
       )}
     </div>
   );
 };
+
 UsersList.propTypes = {
   reload: PropTypes.bool.isRequired,
 };
 
 export default UsersList;
-
-const Table = styled.table`
-  width: 70vw;
-  background-color: white;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-`;
-
-const TableHeader = styled.th`
-  background-color: #f2f2f2;
-  padding: 8px;
-`;
-
-const TableData = styled.td`
-  padding: 8px;
-  border: 1px solid #ccc;
-`;
-// const TableAction = styled.td`
-//   padding: 8px;
-//   cursor: pointer;
-//   border-bottom: 1px solid #ddd;
-//   text-align: center;
-//   transition: color 0.3s; /* Smooth color transition */
-//   &:hover {
-//     color: red; /* Change color to red on hover */
-//   }
-// `;
-
-const Pagination = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const PageNumber = styled.div`
-  margin: 0 5px;
-  cursor: pointer;
-`;
-
-const PgContainer = styled.div`
-  display: flex;
-`;
