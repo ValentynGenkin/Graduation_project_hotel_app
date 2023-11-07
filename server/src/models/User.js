@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
   payment: {
     type: String,
     required: false,
-    enum: ["iDeal", "PayPal", "Credit Card"],
+    enum: ["iDeal", "PayPal", "Credit card"],
   },
   role: {
     type: String,
