@@ -14,7 +14,7 @@ export const verifyUserToken = (token) => {
     }
     return {
       id: decoded.id,
-      name: decoded.firstname,
+      firstname: decoded.firstname,
       lastname: decoded.lastname,
       email: decoded.email,
       phone: decoded.phone,

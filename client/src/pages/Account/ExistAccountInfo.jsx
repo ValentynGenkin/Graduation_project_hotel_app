@@ -8,26 +8,28 @@ import ChangePasswordInputs from "../../components/ChangePasswordInputs";
 import DeleteAccountConfirmation from "../../components/DeleteAccountConfirmation";
 import Input from "../../components/InputComponent";
 import useFetch from "../../hooks/useFetch";
+import { dateFormatter } from "../../util/dateFormatter";
+import Form from "react-bootstrap/Form";
+import iDealImg from "../../assets/ideal.png";
+import PayPalImg from "../../assets/paypal.png";
+import CreditCardImg from "../../assets/credit-card.png";
 
 const ExistAccountInfo = () => {
   const [update, setUpdate] = useState(true);
+  const [userData, setUserData] = useState({});
   const [modalShow, setModalShow] = useState(false);
   const [popUpProp, setPopUpProp] = useState(<></>);
   const [popUpTitle, setPopUpTitle] = useState("");
   const [btnTitle, setBtnTitle] = useState("");
   const [response, setResponse] = useState(null);
-  const [dateValue, setDateValue] = useState({
-    year: "yyyy",
-    month: "mm",
-    day: "dd",
-  });
+  const [fetchUrl, setFetchUrl] = useState("/customer/auth");
+
+  const [paymentSelect, setPaymentSelect] = useState("none");
+
   const navigation = useNavigate();
-  const { isLoading, error, performFetch } = useFetch(
-    "/customer/auth",
-    (response) => {
-      setResponse(response);
-    }
-  );
+  const { isLoading, error, performFetch } = useFetch(fetchUrl, (response) => {
+    setResponse(response);
+  });
 
   useEffect(() => {
     performFetch({
@@ -40,17 +42,6 @@ const ExistAccountInfo = () => {
   }, []);
 
   useEffect(() => {
-    if (response) {
-      const bDay = new Date(response.customer.birthday);
-      setDateValue({
-        year: bDay.getFullYear().toString(),
-        month: String(bDay.getMonth() + 1).padStart(2, "0"),
-        day: String(bDay.getDate()).padStart(2, "0"),
-      });
-    }
-  }, [response]);
-
-  useEffect(() => {
     error &&
       setTimeout(() => {
         navigation("/");
@@ -60,6 +51,53 @@ const ExistAccountInfo = () => {
   const accountUpdate = () => {
     setUpdate(!update);
   };
+
+  const updateCheck = (e, objKey) => {
+    {
+      if (response.customer[objKey] !== e.target.value) {
+        setUserData({ ...userData, [objKey]: e.target.value });
+      }
+      if (response.customer[objKey] === e.target.value) {
+        const obj = { ...userData };
+        delete obj[objKey];
+        setUserData(obj);
+      }
+    }
+  };
+
+  const updateUserData = () => {
+    if (userData && Object.keys(userData).length >= 1) {
+      performFetch({
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (response && userData.payment) {
+      if (response.customer.payment !== userData.payment) {
+        setUserData({ ...userData, payment: userData.payment });
+      }
+      if (response.customer.payment === userData.payment) {
+        const obj = { ...userData };
+        delete obj.payment;
+        setUserData(obj);
+      }
+    }
+  }, [userData.payment]);
+
+  useEffect(() => {
+    if (!update) {
+      setFetchUrl("/auth/edit-user");
+    } else {
+      updateUserData();
+    }
+  }, [update]);
 
   return (
     <Container className="exist-account-container">
@@ -74,55 +112,131 @@ const ExistAccountInfo = () => {
               type={"text"}
               label={"Username"}
               text={"First name"}
-              placeholder={response.customer.name}
+              defaultValue={response.customer.firstname}
               changeability={update}
+              cb={(e) => {
+                updateCheck(e, "firstname");
+              }}
             />
             <Input
               id={"account-last-name"}
               type={"text"}
               label={"Username"}
               text={"Last name"}
-              placeholder={response.customer.lastname}
+              defaultValue={response.customer.lastname}
               changeability={update}
+              cb={(e) => {
+                updateCheck(e, "lastname");
+              }}
             />
             <Input
               id={"account-email"}
               type={"text"}
               label={"Email"}
               text={"E-mail"}
-              placeholder={response.customer.email}
+              defaultValue={response.customer.email}
               changeability={update}
+              cb={(e) => {
+                updateCheck(e, "email");
+              }}
             />
             <Input
               id={"account-phone-num"}
               type={"tel"}
               label={"Phone number"}
               text={"Phone number"}
-              placeholder={response.customer.phone}
+              defaultValue={response.customer.phone}
               changeability={update}
+              cb={(e) => {
+                updateCheck(e, "phone");
+              }}
             />
             <Input
               id={"account-bday"}
               type={"date"}
               label={"Date of Birth"}
               text={"Date of Birth"}
-              defaultValue={`${dateValue.year}-${dateValue.month}-${dateValue.day}`}
+              defaultValue={dateFormatter(new Date(response.customer.birthday))}
               changeability={update}
+              cb={(e) => {
+                if (
+                  dateFormatter(new Date(response.customer.birthday)) !==
+                  dateFormatter(new Date(e.target.value))
+                ) {
+                  setUserData({
+                    ...userData,
+                    birthday: new Date(e.target.value),
+                  });
+                }
+                if (
+                  dateFormatter(new Date(response.customer.birthday)) ===
+                  dateFormatter(new Date(e.target.value))
+                ) {
+                  const obj = { ...userData };
+                  delete obj.birthday;
+                  setUserData(obj);
+                }
+              }}
             />
             <Input
               id={"account-payment-method"}
               type={"text"}
               label={"Payment method"}
               text={"Payment method"}
-              placeholder={response.customer.payment}
-              changeability={update}
+              value={userData.payment || response.customer.payment}
+              changeability={true}
             />
+
+            <Form style={{ display: paymentSelect }}>
+              <div key="inline-radio" className="mb-3 payment-method-select">
+                <div className="payment-method-select-component">
+                  <img src={iDealImg} alt="ideal" />
+                  <Form.Check
+                    inline
+                    name="group1"
+                    type="radio"
+                    id="inline-radio-1"
+                    onChange={() => {
+                      setUserData({ ...userData, payment: "iDeal" });
+                    }}
+                  />
+                </div>
+                <div className="payment-method-select-component">
+                  <img src={PayPalImg} alt="paypal" />
+                  <Form.Check
+                    inline
+                    name="group1"
+                    type="radio"
+                    id="inline-radio-2"
+                    onChange={() => {
+                      setUserData({ ...userData, payment: "PayPal" });
+                    }}
+                  />
+                </div>
+                <div className="payment-method-select-component">
+                  <img src={CreditCardImg} alt="credit card" />
+                  <Form.Check
+                    inline
+                    name="group1"
+                    type="radio"
+                    id="inline-radio-3"
+                    onChange={() => {
+                      setUserData({ ...userData, payment: "Credit card" });
+                    }}
+                  />
+                </div>
+              </div>
+            </Form>
           </div>
           <div className="exist-account-form-inputs">
             <div className="exist-account-btn-block">
               <Button
                 variant="outline-secondary"
                 onClick={() => {
+                  paymentSelect === "none"
+                    ? setPaymentSelect("block")
+                    : setPaymentSelect("none");
+
                   accountUpdate();
                 }}
               >
