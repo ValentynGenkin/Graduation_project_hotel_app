@@ -7,18 +7,29 @@ import RoomDetailsCard from "../components/RoomDetailsCard";
 import "chart.js/auto";
 import { useLocation } from "react-router-dom";
 import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
+import RoomFilterCheckBoxes from "./RoomFilterCheckBoxes.jsx";
 
 function RoomInfoCard() {
   const [response, setResponse] = useState(null);
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [roomIdx, setRoomIdx] = useState(0);
+  const [filters, setFilters] = useState({
+    roomType: null,
+    facilities: null,
+    bedCount: null,
+  });
   const queryParams = new URLSearchParams(useLocation().search);
+
   let checkIn = queryParams.get("checkIn");
   let checkOut = queryParams.get("checkOut");
   checkIn = new Date(checkIn).toISOString();
   checkOut = new Date(checkOut).toISOString();
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
-    `/rooms?checkIn=${checkIn}&checkOut=${checkOut}`,
+    `/rooms?checkIn=${checkIn}&checkOut=${checkOut}&roomType=${
+      filters.roomType ? filters.roomType : ""
+    }&facilities=${filters.facilities ? filters.facilities : ""}&bedCount=${
+      filters.bedCount ? filters.bedCount : ""
+    }`,
     (response) => {
       setResponse(response);
     }
@@ -33,7 +44,7 @@ function RoomInfoCard() {
     });
 
     return () => cancelFetch();
-  }, []);
+  }, [filters]);
 
   const nextSlide = (imageLength) => {
     setRoomIdx((roomIdx + 1) % (imageLength || 0));
@@ -45,6 +56,9 @@ function RoomInfoCard() {
 
   return (
     <Container>
+      <br />
+      <br />
+      <RoomFilterCheckBoxes setFilters={setFilters} />
       {isLoading ? (
         <p>Loading...</p>
       ) : error ? (
