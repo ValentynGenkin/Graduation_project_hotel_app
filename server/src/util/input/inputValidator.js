@@ -2,11 +2,12 @@ import ServerError from "../error/ServerError.js";
 import bcrypt from "bcryptjs";
 
 export const validateUserRegisterInput = (req, next) => {
-  const { firstname, lastname, phone, password, email } = req.body;
+  const { firstname, lastname, phone, password, email, birthday, payment } =
+    req.body;
   if (!(firstname && lastname && phone && password && email)) {
     return next(new ServerError("Please provide all required inputs", 400));
   }
-  return { firstname, lastname, phone, password, email };
+  return { firstname, lastname, phone, password, email, birthday, payment };
 };
 
 export const validateUserLoginInput = (req, next) => {

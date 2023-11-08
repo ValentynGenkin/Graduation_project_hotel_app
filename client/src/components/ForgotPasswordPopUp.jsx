@@ -2,10 +2,12 @@ import { Spinner } from "react-bootstrap";
 import useFetch from "../hooks/useFetch";
 import Input from "./InputComponent";
 import React, { useEffect, useState } from "react";
+import { isValidEmail } from "../util/emailValidation";
 
 const ForgotPasswordPopUp = () => {
-  const [emailInputValue, setEmailInputValue] = useState();
+  const [emailInputValue, setEmailInputValue] = useState(null);
   const [response, setResponse] = useState(null);
+  const [emailCheck, setEmailCheck] = useState("none");
   const { isLoading, error, performFetch } = useFetch(
     "/auth/forgotpassword",
     (response) => {
@@ -14,16 +16,20 @@ const ForgotPasswordPopUp = () => {
   );
 
   const sendRequest = (email) => {
-    performFetch({
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-      }),
-    });
+    if (isValidEmail(email)) {
+      performFetch({
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+        }),
+      });
+    } else {
+      setEmailCheck("block");
+    }
   };
 
   useEffect(() => {
@@ -81,6 +87,9 @@ const ForgotPasswordPopUp = () => {
             setEmailInputValue(e.target.value);
           }}
         />
+        <p style={{ display: emailCheck, color: "red", fontSize: "11px" }}>
+          Check e-mail format
+        </p>
       </div>
     </div>
   );

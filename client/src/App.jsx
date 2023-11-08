@@ -31,7 +31,7 @@ const App = () => {
             path="checkout-confirmation"
             element={<ClientCheckoutConfirmation />}
           />
-          <Route path="reset-password" element={<PasswordReset />} />
+          <Route path="customer/resetpassword" element={<PasswordReset />} />
         </Route>
         <Route path="admin" element={<Admin />} />
         <Route path="clients" element={<Clients />} />
