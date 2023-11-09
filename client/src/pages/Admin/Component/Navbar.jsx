@@ -18,7 +18,7 @@ const Navbar = () => {
   }, []);
   const navigate = useNavigate();
   const { performFetch } = useFetch("/admin/logout", () => {
-    navigate("/login-admin");
+    navigate("/Admin/login");
     localStorage.clear("admin");
   });
   const handleLogout = () => {
@@ -34,20 +34,20 @@ const Navbar = () => {
           </div>
         </Link>
         <div className="nav-All-links">
-          <Link to="/AddRooms" className="nav-link-admin">
+          <Link to="/Admin/AddRooms" className="nav-link-admin">
             <MdOutlineBedroomParent className="Nav-icon" />
             Add Rooms
           </Link>
-          <Link to="/Clients" className="nav-link-admin">
+          <Link to="/Admin/Clients" className="nav-link-admin">
             <HiOutlineUsers className="Nav-icon" />
             Clients
           </Link>
 
-          <Link to="/Status" className="nav-link-admin">
+          <Link to="/Admin/Status" className="nav-link-admin">
             <FcStatistics className="Nav-icon" />
             Room Status
           </Link>
-          <Link to="/Reviews" className="nav-link-admin">
+          <Link to="/Admin/Reviews" className="nav-link-admin">
             <MdReviews className="Nav-icon" />
             Reviews
           </Link>

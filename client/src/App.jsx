@@ -37,13 +37,11 @@ const App = () => {
           />
           <Route path="reset-password" element={<PasswordReset />} />
         </Route>
-        <Route path="admin" element={<Admin />} />
-        <Route path="clients" element={<Clients />} />
-        <Route path="AddRooms" element={<Rooms />} />
-        <Route path="Login" element={<Login />} />
-        <Route path="Status" element={<RoomStatus />} />
-        <Route path="Login-admin" element={<Login />} />
-        <Route path="Status" element={<RoomStatus />} />
+        <Route path="Admin" element={<Admin />} />
+        <Route path="Admin/Clients" element={<Clients />} />
+        <Route path="Admin/AddRooms" element={<Rooms />} />
+        <Route path="Admin/Login" element={<Login />} />
+        <Route path="Admin/Status" element={<RoomStatus />} />
       </Routes>
     </>
   );
