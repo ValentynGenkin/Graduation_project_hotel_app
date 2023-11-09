@@ -7,7 +7,6 @@ import "../../components/CSS/ExistAccountInfo.css";
 import ChangePasswordInputs from "../../components/ChangePasswordInputs";
 import DeleteAccountConfirmation from "../../components/DeleteAccountConfirmation";
 import Input from "../../components/InputComponent";
-import useFetch from "../../hooks/useFetch";
 import { dateFormatter } from "../../util/dateFormatter";
 import Form from "react-bootstrap/Form";
 import iDealImg from "../../assets/ideal.png";
@@ -17,6 +16,9 @@ import { isValidEmail } from "../../util/emailValidation";
 import { isValidName } from "../../util/nameValidation";
 import { isValidPhoneNumber } from "../../util/phoneNumberValidation";
 
+import { default as useFetchAuth } from "../../hooks/useFetch";
+import { default as useFetchUpdateUser } from "../../hooks/useFetch";
+
 const ExistAccountInfo = () => {
   const [update, setUpdate] = useState(true);
   const [userData, setUserData] = useState({});
@@ -25,7 +27,6 @@ const ExistAccountInfo = () => {
   const [popUpTitle, setPopUpTitle] = useState("");
   const [btnTitle, setBtnTitle] = useState("");
   const [response, setResponse] = useState(null);
-  const [fetchUrl, setFetchUrl] = useState("/customer/auth");
   const [newDataCheck, setNewDataCheck] = useState({
     name: "none",
     email: "none",
@@ -35,12 +36,23 @@ const ExistAccountInfo = () => {
   const [paymentSelect, setPaymentSelect] = useState("none");
 
   const navigation = useNavigate();
-  const { isLoading, error, performFetch } = useFetch(fetchUrl, (response) => {
+  const {
+    isLoading: isLoadingAuth,
+    error: errorAuth,
+    performFetch: performFetchAuth,
+  } = useFetchAuth("/customer/auth", (response) => {
+    setResponse(response);
+  });
+  const {
+    isLoading: isLoadingUpdateUser,
+    error: errorUpdateUser,
+    performFetch: performFetchUpdateUser,
+  } = useFetchUpdateUser("/auth/edit-user", (response) => {
     setResponse(response);
   });
 
   useEffect(() => {
-    performFetch({
+    performFetchAuth({
       method: "GET",
       credentials: "include",
       headers: {
@@ -50,12 +62,12 @@ const ExistAccountInfo = () => {
   }, []);
 
   useEffect(() => {
-    if (response && response.success === false) {
+    if (errorAuth) {
       setTimeout(() => {
         navigation("/");
       }, 3000);
     }
-  }, [response]);
+  }, [errorAuth]);
 
   const accountUpdate = () => {
     setUpdate(!update);
@@ -76,7 +88,7 @@ const ExistAccountInfo = () => {
 
   const updateUserData = () => {
     if (userData && Object.keys(userData).length >= 1) {
-      performFetch({
+      performFetchUpdateUser({
         method: "PUT",
         credentials: "include",
         headers: {
@@ -86,6 +98,12 @@ const ExistAccountInfo = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (update) {
+      updateUserData();
+    }
+  }, [update]);
 
   useEffect(() => {
     if (response && userData.payment) {
@@ -100,22 +118,14 @@ const ExistAccountInfo = () => {
     }
   }, [userData.payment]);
 
-  useEffect(() => {
-    if (!update) {
-      setFetchUrl("/auth/edit-user");
-    } else {
-      updateUserData();
-    }
-  }, [update]);
-
   return (
     <Container className="exist-account-container">
-      {isLoading ? (
+      {isLoadingAuth || isLoadingUpdateUser ? (
         <Spinner as="div" animation="border" role="status" aria-hidden="true" />
       ) : response && response.success === true ? (
         <>
           <h5 className="exist-account-title">Account info</h5>
-          {error && <p>{error.toString()}</p>}
+          {errorUpdateUser && <p>{errorUpdateUser.toString()}</p>}
           <div className="exist-account-form-inputs">
             <Input
               id={"account-first-name"}
