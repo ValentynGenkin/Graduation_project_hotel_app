@@ -44,11 +44,15 @@
 
 .info-02 {
   display: flex;
-  gap: 26rem;
+  gap: 28rem;
   align-items: center;
   padding-right: 10px;
+  justify-content: space-between;
 }
-
+.ul-btns-div-02 {
+  display: flex;
+  justify-content: space-between;
+}
 .block-02 {
   display: flex;
   background-color: rgba(13, 153, 255, 0.2);
