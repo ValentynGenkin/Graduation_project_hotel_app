@@ -7,8 +7,9 @@ const UsersList = ({ reload }) => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
-  const { loading, performFetch } = useFetch("/admin/allUsers", (res) =>
-    setUsers(res.users)
+  const { loading, performFetch } = useFetch(
+    "/admin/dashboard/allUsers",
+    (res) => setUsers(res.users)
   );
 
   useEffect(() => {

@@ -7,8 +7,9 @@
 }
 
 .admin-table-header {
-  background-color: #f2f2f2;
+  background-color: #00a8cc;
   padding: 8px;
+  color: white;
 }
 
 .admin-table-data {

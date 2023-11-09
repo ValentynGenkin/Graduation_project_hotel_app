@@ -21,6 +21,7 @@ adminRouter.get(
   getActiveBookingsByRoom
 );
 adminRouter.get("/dashboard/rooms", getAdminAccess, getAllRooms);
-adminRouter.get("/allUsers", getAdminAccess, getAllUsers);
+
+adminRouter.get("/dashboard/allUsers", getAdminAccess, getAllUsers);
 
 export default adminRouter;

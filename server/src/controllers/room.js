@@ -39,6 +39,14 @@ export const getSingleRoom = asyncHandler(async (req, res) => {
     room: room,
   });
 });
+export const deleteSingleRoom = asyncHandler(async (req, res) => {
+  const room = req.params.roomId;
+  await Room.findByIdAndDelete(room);
+  return res.status(200).json({
+    success: true,
+    msg: "room was deleted",
+  });
+});
 
 export const getRooms = asyncHandler(async (req, res) => {
   const rooms = await req.rooms.exec();
