@@ -13,7 +13,8 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
   );
 
   const handleOnChange = (event) => {
-    const { name, group } = event.target;
+    const { name, attributes } = event.target;
+    const group = attributes.group.value;
     setFilters((prevFilters) => {
       return {
         ...prevFilters,
@@ -42,13 +43,14 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
         );
       })
     : [];
-  const roomTypes = filterItems.roomType
-    ? filterItems.roomType.map((type) => {
+  const roomTypes = filterItems.roomTypes
+    ? filterItems.roomTypes.map((type) => {
         return (
           <label key={type}>
             {type}:
             <input
               type="checkbox"
+              group="roomType"
               name={type}
               checked={false}
               onChange={handleOnChange}
@@ -57,13 +59,14 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
         );
       })
     : [];
-  const bedCounts = filterItems.bedCount
-    ? filterItems.bedCount.map((count) => {
+  const bedCounts = filterItems.bedCounts
+    ? filterItems.bedCounts.map((count) => {
         return (
           <label key={count}>
             {count}:
             <input
               type="checkbox"
+              group="bedCount"
               name={count}
               checked={false}
               onChange={handleOnChange}
