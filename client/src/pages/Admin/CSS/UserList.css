@@ -1,0 +1,33 @@
+/* UsersList.css */
+.admin-table {
+  width: 70vw;
+  background-color: white;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.admin-table-header {
+  background-color: #00a8cc;
+  padding: 8px;
+  color: white;
+}
+
+.admin-table-data {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+.admin-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.admin-page-number {
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.admin-pg-container {
+  display: flex;
+}
