@@ -19,6 +19,7 @@ const RemoveRoomFromBookingButton = ({
     "/booking/removeRoomFromBooking",
     (response) => {
       if (response.success === true) {
+        localStorage.setItem("booking", JSON.stringify(response.booking));
         handleBookingContext();
       }
     }
