@@ -43,9 +43,13 @@ export const addRoomToBookingTransaction = async (req, next) => {
 
     await session.commitTransaction();
 
-    const updatedBooking = Booking.findById(booking._id).populate(
-      "bookingDetails"
-    );
+    const updatedBooking = Booking.findById(booking._id).populate({
+      path: "bookingDetails",
+      populate: {
+        path: "roomId",
+        model: "Room",
+      },
+    });
     return updatedBooking;
   } catch (error) {
     await session.abortTransaction();
@@ -109,9 +113,13 @@ export const removeRoomFromBookingTransaction = async (req, next) => {
 
     await session.commitTransaction();
 
-    const updatedBooking = await Booking.findById(booking._id).populate(
-      "bookingDetails"
-    );
+    const updatedBooking = await Booking.findById(booking._id).populate({
+      path: "bookingDetails",
+      populate: {
+        path: "roomId",
+        model: "Room",
+      },
+    });
 
     return updatedBooking;
   } catch (error) {

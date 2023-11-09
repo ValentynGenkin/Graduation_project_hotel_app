@@ -18,35 +18,19 @@ import {
 export const addRoomToBooking = asyncHandler(async (req, res, next) => {
   const updatedBooking = await addRoomToBookingTransaction(req, next);
 
-  return res
-    .status(200)
-    .cookie("booking", updatedBooking, {
-      expires: new Date(
-        Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
-      ),
-    })
-    .json({
-      success: true,
-      booking: updatedBooking,
-    });
+  return res.status(200).json({
+    success: true,
+    booking: updatedBooking,
+  });
 });
 
 export const removeRoomFromBooking = asyncHandler(async (req, res, next) => {
   const updatedBooking = await removeRoomFromBookingTransaction(req, next);
 
-  return res
-    .status(200)
-    .cookie("booking", updatedBooking, {
-      httpOnly: true,
-      expires: new Date(
-        Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
-      ),
-      secure: false,
-    })
-    .json({
-      success: true,
-      updatedBooking: updatedBooking,
-    });
+  return res.status(200).json({
+    success: true,
+    updatedBooking: updatedBooking,
+  });
 });
 
 export const checkout = asyncHandler(async (req, res, next) => {
@@ -60,20 +44,10 @@ export const checkout = asyncHandler(async (req, res, next) => {
   booking.status = "pending";
   booking = await booking.save();
 
-  return res
-    .status(200)
-    .cookie("bookingInProgress", booking, {
-      httpOnly: true,
-      expires: new Date(
-        Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
-      ),
-      secure: false,
-    })
-    .clearCookie("booking")
-    .json({
-      success: true,
-      redirectUrl: payment._links.checkout.href,
-    });
+  return res.status(200).json({
+    success: true,
+    redirectUrl: payment._links.checkout.href,
+  });
 });
 
 export const getBookingStatus = asyncHandler(async (req, res, next) => {
