@@ -62,7 +62,7 @@ const LoginDropdownMenu = ({ res }) => {
   const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
-    (res && setUserName(res.customer.name)) ||
+    (res && setUserName(res.customer.firstname)) ||
       (response && setUserName(response.customer.firstname));
   }, [res, response]);
 
