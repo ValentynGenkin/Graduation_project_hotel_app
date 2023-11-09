@@ -1,7 +1,12 @@
-export const registrationEmail = (firstname) => {
+export const registrationEmail = (firstname, resetPasswordUrl) => {
   return String.raw`
   Welcome ${firstname},
   You have registered succesfully!
+  ${
+    resetPasswordUrl
+      ? "You can create your password with this link: " + resetPasswordUrl
+      : ""
+  }
   `;
 };
 
@@ -23,5 +28,14 @@ export const adminRegistrationEmail = (firstname, email, password) => {
   This is your Admin Account:
   Email: ${email},
   Password: ${password}
+  `;
+};
+
+export const inBranchBookingEmail = (firstname, bookingId) => {
+  return String.raw`
+  Welcome ${firstname},
+  Your booking is created successfully.
+  
+  Your Booking ID: ${bookingId}
   `;
 };

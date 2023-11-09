@@ -32,7 +32,7 @@ export const editRoom = asyncHandler(async (req, res, next) => {
 });
 
 export const getSingleRoom = asyncHandler(async (req, res) => {
-  const room = req.rooms[0];
+  const room = req.room;
 
   return res.status(200).json({
     success: true,
@@ -45,5 +45,16 @@ export const getRooms = asyncHandler(async (req, res) => {
   return res.status(200).json({
     success: true,
     rooms: rooms,
+  });
+});
+
+export const getFilters = asyncHandler(async (req, res) => {
+  const roomTypes = await Room.distinct("roomType");
+  const facilities = await Room.distinct("facilities");
+  const bedCounts = await Room.distinct("bedCount");
+
+  return res.status(200).json({
+    success: true,
+    filters: { roomTypes, facilities, bedCounts },
   });
 });

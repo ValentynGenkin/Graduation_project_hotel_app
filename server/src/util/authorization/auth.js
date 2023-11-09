@@ -14,7 +14,12 @@ export const verifyUserToken = (token) => {
     }
     return {
       id: decoded.id,
-      name: decoded.name,
+      firstname: decoded.firstname,
+      lastname: decoded.lastname,
+      email: decoded.email,
+      phone: decoded.phone,
+      birthday: decoded.birthday,
+      payment: decoded.payment,
       role: decoded.role,
     };
   });

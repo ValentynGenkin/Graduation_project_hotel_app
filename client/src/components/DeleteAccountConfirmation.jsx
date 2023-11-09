@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Input from "./Input";
+import Input from "./InputComponent";
 
 import "./CSS/DeleteAccountPopUp.css";
 import ShowPasswordBtn from "./ShowPasswordBtn";
@@ -20,6 +20,7 @@ const DeleteAccountConfirmation = () => {
       </h5>
 
       <Input
+        id={"delete-account-password"}
         type={showPassword}
         label={"Password"}
         text={"Password"}

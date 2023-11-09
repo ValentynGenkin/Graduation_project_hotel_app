@@ -1,41 +1,59 @@
 import Nav from "react-bootstrap/Nav";
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 import "./CSS/Footer.css";
 import { Container } from "react-bootstrap";
 
 const Footer = () => {
   return (
-    <Container className="footer-container">
-      <Nav className=" footer" activeKey="/home">
-        <Nav.Item>
-          <Nav.Link as={Link} to={"/"}>
-            Home
+    <Container className="client-footer-container">
+      <Nav className="client-footer" activeKey="/home">
+        <div className="client-footer-links">
+          <Nav.Item>
+            <Nav.Link as={Link} to={"/"}>
+              Home
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link as={Link} to={"/"}>
+              Rooms
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link as={Link} to={"/"}>
+              Services
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link as={Link} to={"/"}>
+              About
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link as={Link} to={"/"}>
+              Contact
+            </Nav.Link>
+          </Nav.Item>
+        </div>
+        <div className="client-footer-social-media">
+          <Nav.Link as={Link} to="https://www.instagram.com">
+            <FaInstagram />
           </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link as={Link} to={"/"}>
-            Rooms
+          <Nav.Link as={Link} to="https://www.facebook.com">
+            <FaFacebook />
           </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link as={Link} to={"/"}>
-            Services
+          <Nav.Link as={Link} to="https://twitter.com/home">
+            <FaTwitter />
           </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link as={Link} to={"/"}>
-            About
+          <Nav.Link as={Link} to="https://www.linkedin.com">
+            <FaLinkedin />
           </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link as={Link} to={"/"}>
-            Contact
-          </Nav.Link>
-        </Nav.Item>
+        </div>
       </Nav>
-      <p className="text-center mt-4 mb-4">Or right-aligned HYF 2023</p>
+
+      <p className="footer-paragraph">Final Project HYF 2023</p>
     </Container>
   );
 };

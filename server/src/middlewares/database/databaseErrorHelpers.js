@@ -6,6 +6,9 @@ import {
 } from "../../util/authorization/auth.js";
 import ServerError from "../../util/error/ServerError.js";
 import Room from "../../models/Room.js";
+import Booking from "../../models/Booking.js";
+
+import { guestCustomerCheckOutHelper } from "../../util/checkout/guestCustomerCheckOutHelper.js";
 
 export const getCustomerAccess = asyncHandler(async (req, res, next) => {
   //get customer_access_token from cookies
@@ -33,28 +36,24 @@ export const getCustomerAccess = asyncHandler(async (req, res, next) => {
   }
   // add customer to request. to use next functions
   req.customer = customer;
+  if (res === null) {
+    return;
+  }
   next();
 });
 
-export const checkRoomsExist = asyncHandler(async (req, res, next) => {
-  const { roomId } = req.params;
-  const roomIds = [roomId];
-  const rooms = roomIds.map(async (roomId) => {
-    const room = await Room.findById(roomId);
+export const checkRoomExist = asyncHandler(async (req, res, next) => {
+  const roomId = req.params.roomId ? req.params.roomId : req.body.roomId;
 
-    if (!room) {
-      next(
-        new ServerError(
-          `There is not any room with this id. id: ${roomId}`,
-          404
-        )
-      );
-    }
-    return room;
-  });
-  await Promise.all(rooms).then((rooms) => {
-    req.rooms = rooms;
-  });
+  const room = await Room.findById(roomId);
+
+  if (!room) {
+    next(
+      new ServerError(`There is not any room with this id. id: ${roomId}`, 404)
+    );
+  }
+
+  req.room = room;
 
   next();
 });
@@ -84,5 +83,38 @@ export const getAdminAccess = asyncHandler(async (req, res, next) => {
 
   req.admin = admin;
 
+  next();
+});
+
+export const checkBookingExist = asyncHandler(async (req, res, next) => {
+  const guestCustomerId = req.cookies.guestCustomerId;
+  let booking;
+
+  if (guestCustomerId) {
+    booking = await Booking.findOne({
+      guestCustomerId: guestCustomerId,
+      status: "open",
+    });
+
+    if (!booking) {
+      booking = await Booking.create({ guestCustomerId: guestCustomerId });
+    }
+  } else {
+    // at this step we create req.customer.id if guestCustomerId is not exist in request.
+    getCustomerAccess(req, null, next);
+
+    booking = await Booking.findOne({
+      customerId: req.customer.id,
+      status: "open",
+    });
+    if (!booking) {
+      booking = await Booking.create({ customerId: req.customer.id });
+    }
+  }
+
+  if (guestCustomerId && req.originalUrl.includes("checkout")) {
+    booking = await guestCustomerCheckOutHelper(req, booking, next);
+  }
+  req.booking = booking;
   next();
 });

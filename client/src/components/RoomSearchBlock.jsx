@@ -1,5 +1,6 @@
 import { Button, Container } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Calendar from "react-calendar";
 import Accordion from "react-bootstrap/Accordion";
 import "react-calendar/dist/Calendar.css";
@@ -9,7 +10,7 @@ const RoomSearchBlock = () => {
   const [value, setValue] = useState(new Date());
   const [date, setDate] = useState(["yyyy-mm-dd", "yyyy-mm-dd"]);
   const [adult, setAdult] = useState(2);
-  const [childe, setChilde] = useState(0);
+  const [child, setChild] = useState(0);
   const [room, setRoom] = useState(1);
 
   const onChange = (nextValue) => {
@@ -54,7 +55,7 @@ const RoomSearchBlock = () => {
               </p>
 
               <p>
-                <span>{childe}</span> children
+                <span>{child}</span> children
               </p>
 
               <p>
@@ -95,17 +96,17 @@ const RoomSearchBlock = () => {
                     className="counter-btn"
                     variant="outline-secondary"
                     onClick={() => {
-                      increment(setChilde, childe);
+                      increment(setChild, child);
                     }}
                   >
                     +
                   </Button>
-                  <span className="counter">{childe}</span>
+                  <span className="counter">{child}</span>
                   <Button
                     className="counter-btn"
                     variant="outline-secondary"
                     onClick={() => {
-                      decrement(setChilde, childe);
+                      decrement(setChild, child);
                     }}
                   >
                     -
@@ -147,13 +148,17 @@ const RoomSearchBlock = () => {
               />
             </Container>
             <div className="search-btn-block">
-              <Button
-                className="search-btn"
-                variant="outline-success"
-                size="lg"
+              <Link
+                to={`/RoomInfoCard?checkIn=${value[0]}&checkOut=${value[1]}`}
               >
-                Search
-              </Button>
+                <Button
+                  className="search-btn"
+                  variant="outline-success"
+                  size="lg"
+                >
+                  Search
+                </Button>
+              </Link>
             </div>
           </Accordion.Body>
         </Accordion.Item>

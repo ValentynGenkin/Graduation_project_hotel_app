@@ -1,27 +1,39 @@
-.footer {
+.client-footer {
   justify-content: center;
+  flex-direction: column;
 }
-.footer a {
+.client-footer a {
   color: white;
 }
 
-.footer-container p {
+.client-footer-container p {
   color: white;
+  margin: 0 !important;
 }
 
-.footer a:hover {
+.client-footer a:hover {
   color: rgb(142, 142, 142);
   font-weight: bold;
 }
 
-.footer-container {
+.client-footer-container {
   background-color: rgb(68, 68, 68);
   height: 100%;
 }
 
-#map {
-  height: 180px;
+.footer-paragraph {
+  text-align: center;
+  padding: 5px;
 }
 
-@media screen and (max-width: 991px) {
+.client-footer-links {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.client-footer-social-media {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
 }
