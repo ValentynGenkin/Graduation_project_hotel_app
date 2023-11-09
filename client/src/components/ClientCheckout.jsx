@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { Button } from "react-bootstrap";
 
+import { default as useFetchAuth } from "../hooks/useFetch";
 import "./CSS/ClientCheckout.css";
 import Input from "./InputComponent";
 
 const ClientCheckout = () => {
+  const [authResponse, setAuthResponse] = useState(null);
+  const {
+    // isLoading: isLoadingAuth,
+    // error: errorAuth,
+    performFetch: performFetchAuth,
+  } = useFetchAuth("/customer/auth", (response) => {
+    setAuthResponse(response);
+  });
+
+  useEffect(() => {
+    performFetchAuth({
+      method: "GET",
+      credentials: "include",
+      headers: { "content-type": "application/json" },
+    });
+  }, [authResponse]);
+
   return (
     <Container className="client-checkout-container">
       <h5 className="checkout-title">Booking confirmation</h5>
@@ -20,7 +38,7 @@ const ClientCheckout = () => {
           label={"first name"}
           text={"First name"}
           changeability={true}
-          placeholder={"Name"}
+          // defaultValue={authResponse.customer.firstname}
         />
         <Input
           id={"checkout-last-name"}
@@ -28,7 +46,7 @@ const ClientCheckout = () => {
           label={"Last name"}
           text={"Last name"}
           changeability={true}
-          placeholder={"Name"}
+          defaultValue={"Name"}
         />
         <Input
           id={"checkout-email"}
@@ -36,7 +54,7 @@ const ClientCheckout = () => {
           label={"e-mail"}
           text={"E-mail"}
           changeability={true}
-          placeholder={"aaa@aaa.com"}
+          defaultValue={"aaa@aaa.com"}
         />
         <Input
           id={"checkout-phone-num"}
@@ -44,7 +62,7 @@ const ClientCheckout = () => {
           label={"Phone number"}
           text={"Phone number"}
           changeability={true}
-          placeholder={"0681234567"}
+          defaultValue={"0681234567"}
         />
       </div>
       <div className="checkout-booking-info">
