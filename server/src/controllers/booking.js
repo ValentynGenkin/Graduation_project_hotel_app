@@ -21,11 +21,9 @@ export const addRoomToBooking = asyncHandler(async (req, res, next) => {
   return res
     .status(200)
     .cookie("booking", updatedBooking, {
-      httpOnly: true,
       expires: new Date(
         Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
       ),
-      secure: false,
     })
     .json({
       success: true,
