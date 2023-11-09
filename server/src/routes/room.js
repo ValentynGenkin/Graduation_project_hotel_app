@@ -5,6 +5,7 @@ import {
   getSingleRoom,
   getRooms,
   deleteSingleRoom,
+  getFilters,
 } from "../controllers/room.js";
 import { imageUpload } from "../middlewares/imageUpload/imageUpload.js";
 import {
@@ -25,6 +26,7 @@ roomRouter.put(
   [getAdminAccess, imageUpload.array("roomImages", 10)],
   editRoom
 );
+roomRouter.get("/getFilters", getFilters);
 roomRouter.get("/:roomId", checkRoomExist, getSingleRoom);
 roomRouter.delete(
   "/:roomId/delete",

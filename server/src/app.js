@@ -12,6 +12,8 @@ import serverErrorHandler from "./middlewares/error/serverErrorHandler.js";
 import bookingRouter from "./routes/booking.js";
 import { checkCustomerIdentity } from "./middlewares/cookie/cookieHelpers.js";
 import customerRouter from "./routes/customer.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Create an express server
 const app = express();
@@ -26,8 +28,18 @@ process.env.NODE_ENV === "production"
 //cookie parser middleware
 app.use(cookieParser());
 
+// Image serving
+
+app.get("/public/images/:imageName", (req, res) => {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const imageName = req.params.imageName;
+  const imagePath = path.join(__dirname, "public", "images", imageName);
+  res.setHeader("Content-Type", "image/jpeg");
+  return res.sendFile(imagePath);
+});
 // Swagger documentation endpoint
-const specs = swaggerJsdoc(swaggerOptions);
+const specs = swaggerJsdoc(swaggerOptions(process.env.BASE_SERVER_URL));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 /****** Attach routes ******/
