@@ -47,3 +47,14 @@ export const getRooms = asyncHandler(async (req, res) => {
     rooms: rooms,
   });
 });
+
+export const getFilters = asyncHandler(async (req, res) => {
+  const roomTypes = await Room.distinct("roomType");
+  const facilities = await Room.distinct("facilities");
+  const bedCounts = await Room.distinct("bedCount");
+
+  return res.status(200).json({
+    success: true,
+    filters: { roomTypes, facilities, bedCounts },
+  });
+});
