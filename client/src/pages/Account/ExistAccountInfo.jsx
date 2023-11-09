@@ -13,6 +13,9 @@ import Form from "react-bootstrap/Form";
 import iDealImg from "../../assets/ideal.png";
 import PayPalImg from "../../assets/paypal.png";
 import CreditCardImg from "../../assets/credit-card.png";
+import { isValidEmail } from "../../util/emailValidation";
+import { isValidName } from "../../util/nameValidation";
+import { isValidPhoneNumber } from "../../util/phoneNumberValidation";
 
 const ExistAccountInfo = () => {
   const [update, setUpdate] = useState(true);
@@ -23,6 +26,11 @@ const ExistAccountInfo = () => {
   const [btnTitle, setBtnTitle] = useState("");
   const [response, setResponse] = useState(null);
   const [fetchUrl, setFetchUrl] = useState("/customer/auth");
+  const [newDataCheck, setNewDataCheck] = useState({
+    name: "none",
+    email: "none",
+    phone: "none",
+  });
 
   const [paymentSelect, setPaymentSelect] = useState("none");
 
@@ -42,11 +50,12 @@ const ExistAccountInfo = () => {
   }, []);
 
   useEffect(() => {
-    error &&
+    if (response && response.success === false) {
       setTimeout(() => {
         navigation("/");
       }, 3000);
-  }, [error]);
+    }
+  }, [response]);
 
   const accountUpdate = () => {
     setUpdate(!update);
@@ -106,6 +115,7 @@ const ExistAccountInfo = () => {
       ) : response && response.success === true ? (
         <>
           <h5 className="exist-account-title">Account info</h5>
+          {error && <p>{error.toString()}</p>}
           <div className="exist-account-form-inputs">
             <Input
               id={"account-first-name"}
@@ -115,7 +125,12 @@ const ExistAccountInfo = () => {
               defaultValue={response.customer.firstname}
               changeability={update}
               cb={(e) => {
-                updateCheck(e, "firstname");
+                if (isValidName(e.target.value)) {
+                  updateCheck(e, "firstname");
+                  setNewDataCheck({ ...newDataCheck, name: "none" });
+                } else {
+                  setNewDataCheck({ ...newDataCheck, name: "block" });
+                }
               }}
             />
             <Input
@@ -126,9 +141,24 @@ const ExistAccountInfo = () => {
               defaultValue={response.customer.lastname}
               changeability={update}
               cb={(e) => {
-                updateCheck(e, "lastname");
+                if (isValidName(e.target.value)) {
+                  updateCheck(e, "lastname");
+                  setNewDataCheck({ ...newDataCheck, name: "none" });
+                } else {
+                  setNewDataCheck({ ...newDataCheck, name: "block" });
+                }
               }}
             />
+            <p
+              style={{
+                display: newDataCheck.name,
+                color: "red",
+                fontSize: "11px",
+              }}
+            >
+              The name should consist of letters only, with hyphens allowed, and
+              should contain a minimum of two characters.
+            </p>
             <Input
               id={"account-email"}
               type={"text"}
@@ -137,9 +167,23 @@ const ExistAccountInfo = () => {
               defaultValue={response.customer.email}
               changeability={update}
               cb={(e) => {
-                updateCheck(e, "email");
+                if (isValidEmail(e.target.value)) {
+                  updateCheck(e, "email");
+                  setNewDataCheck({ ...newDataCheck, email: "none" });
+                } else {
+                  setNewDataCheck({ ...newDataCheck, email: "block" });
+                }
               }}
             />
+            <p
+              style={{
+                display: newDataCheck.email,
+                color: "red",
+                fontSize: "11px",
+              }}
+            >
+              Check e-mail format
+            </p>
             <Input
               id={"account-phone-num"}
               type={"tel"}
@@ -148,9 +192,23 @@ const ExistAccountInfo = () => {
               defaultValue={response.customer.phone}
               changeability={update}
               cb={(e) => {
-                updateCheck(e, "phone");
+                if (isValidPhoneNumber(e.target.value)) {
+                  updateCheck(e, "phone");
+                  setNewDataCheck({ ...newDataCheck, phone: "none" });
+                } else {
+                  setNewDataCheck({ ...newDataCheck, phone: "block" });
+                }
               }}
             />
+            <p
+              style={{
+                display: newDataCheck.phone,
+                color: "red",
+                fontSize: "11px",
+              }}
+            >
+              Enter an international phone number starting with +
+            </p>
             <Input
               id={"account-bday"}
               type={"date"}
