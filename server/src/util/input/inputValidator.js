@@ -88,7 +88,7 @@ export const validateCheckOutInput = (req, next) => {
 };
 
 export const validateEditUserInput = (req) => {
-  const { firstname, lastname, phone, email } = req.body;
+  const { firstname, lastname, phone, email, birthday, payment } = req.body;
   const editObj = {};
 
   if (firstname) {
@@ -102,6 +102,12 @@ export const validateEditUserInput = (req) => {
   }
   if (email) {
     editObj.email = email;
+  }
+  if (birthday) {
+    editObj.birthday = birthday;
+  }
+  if (payment) {
+    editObj.payment = payment;
   }
   return editObj;
 };

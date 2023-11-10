@@ -32,6 +32,12 @@ function RoomInfoCard() {
     }`,
     (response) => {
       setResponse(response);
+
+      const initialIdx = {};
+      response.rooms.forEach((room) => {
+        initialIdx[room.exampleRoom._id] = 0;
+      });
+      setRoomIdx(initialIdx);
     }
   );
 
@@ -46,12 +52,18 @@ function RoomInfoCard() {
     return () => cancelFetch();
   }, [filters]);
 
-  const nextSlide = (imageLength) => {
-    setRoomIdx((roomIdx + 1) % (imageLength || 0));
+  const nextSlide = (imageLength, roomId) => {
+    setRoomIdx((prevRoomIdx) => ({
+      ...prevRoomIdx,
+      [roomId]: (prevRoomIdx[roomId] + 1) % imageLength,
+    }));
   };
 
-  const prevSlide = (imageLength) => {
-    setRoomIdx((roomIdx - 1 + (imageLength || 1)) % (imageLength || 0));
+  const prevSlide = (imageLength, roomId) => {
+    setRoomIdx((prevRoomIdx) => ({
+      ...prevRoomIdx,
+      [roomId]: (prevRoomIdx[roomId] - 1 + imageLength) % imageLength,
+    }));
   };
 
   return (
@@ -65,7 +77,7 @@ function RoomInfoCard() {
         <p>Error: {error.message}</p>
       ) : response && response.rooms && response.rooms.length > 0 ? (
         response.rooms.map((room) => (
-          <div key={room._id} className="block-02">
+          <div key={room.exampleRoom.roomType + room._id} className="block-02">
             <div className="carousel-02">
               <BsArrowLeftCircleFill
                 className="arrow-02 arrow-left-02"
@@ -73,24 +85,23 @@ function RoomInfoCard() {
                   prevSlide(
                     room.exampleRoom && room.exampleRoom.images
                       ? room.exampleRoom.images.length
-                      : 0
+                      : 0,
+                    room.exampleRoom._id
                   )
                 }
               />
-              <div>
-                {room.exampleRoom && room.exampleRoom.images
-                  ? room.exampleRoom.images.map((image, room) => (
-                      <img
-                        key={
-                          room._id + room.exampleRoom && room.exampleRoom.images
-                            ? room.exampleRoom.images.indexOf(image)
-                            : 0
-                        }
-                        src={process.env.BASE_SERVER_URL + image}
-                        alt={room.roomType}
-                      />
-                    ))
-                  : []}
+              <div className="div-slider-02-02">
+                <img
+                  className="img-slider-02"
+                  src={
+                    room.exampleRoom && room.exampleRoom.images
+                      ? room.exampleRoom.images[
+                          roomIdx[room.exampleRoom._id] || 0
+                        ] // Fallback to 0 if undefined
+                      : ""
+                  }
+                  alt={room.roomType}
+                />
               </div>
               <BsArrowRightCircleFill
                 className="arrow-02 arrow-right-02"
@@ -98,7 +109,8 @@ function RoomInfoCard() {
                   nextSlide(
                     room.exampleRoom && room.exampleRoom.images
                       ? room.exampleRoom.images.length
-                      : 0
+                      : 0,
+                    room.exampleRoom._id
                   )
                 }
               />
@@ -106,9 +118,8 @@ function RoomInfoCard() {
 
             <div className="info-02">
               <div>
-                <p>Count:{room.count}</p>
-
                 <ul className="u-list-02">
+                  <li>Count:{room.count}</li>
                   <li>Room Type: {room.exampleRoom.roomType}</li>
                   <li>Room Description: {room.exampleRoom.roomDescription}</li>
                   <li>Bed Count: {room.exampleRoom.bedCount}</li>
@@ -116,7 +127,7 @@ function RoomInfoCard() {
                   <li>Facilities:</li>
                   <ul className="u-list-02">
                     {room.exampleRoom.facilities.map((facility, idx) => (
-                      <li key={idx}>{facility}</li>
+                      <li key={facility + idx}>{facility}</li>
                     ))}
                   </ul>
                 </ul>
