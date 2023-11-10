@@ -8,11 +8,8 @@ import { default as useFetchAuth } from "../hooks/useFetch";
 import { default as useFetchBooking } from "../hooks/useFetch";
 import "./CSS/ClientCheckout.css";
 import Input from "./InputComponent";
-// import { useBookingContext } from "../contexts/BookingContext";
 
 const ClientCheckout = () => {
-  // const { bookingContext, handleBookingContext } = useBookingContext();
-  // console.log(bookingContext);
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
