@@ -11,11 +11,12 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
     className: PropTypes.string.isRequired,
   };
   const { handleBookingContext } = useContext(BookingContext);
-
   const { isLoading, error, performFetch } = useFetch(
     "/booking/addRoomToBooking",
     (response) => {
       if (response.success === true) {
+        localStorage.setItem("booking", JSON.stringify(response.booking));
+
         handleBookingContext();
       }
     }

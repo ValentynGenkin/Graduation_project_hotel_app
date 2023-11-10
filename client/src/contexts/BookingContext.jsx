@@ -1,13 +1,19 @@
 import React, { createContext, useState } from "react";
-import Cookies from "js-cookie";
 import PropTypes from "prop-types";
+
 export const BookingContext = createContext();
 
 export function useBookingContext() {
-  const [bookingContext, setBookingContext] = useState();
+  const [bookingContext, setBookingContext] = useState(
+    localStorage.getItem("booking")
+      ? JSON.parse(localStorage.getItem("booking"))
+      : {}
+  );
 
   const handleBookingContext = () => {
-    const booking = JSON.parse(Cookies.get("booking"));
+    const booking = localStorage.getItem("booking")
+      ? JSON.parse(localStorage.getItem("booking"))
+      : {};
     setBookingContext(booking);
   };
   return { bookingContext, handleBookingContext };
