@@ -6,8 +6,8 @@ import PropTypes from "prop-types";
 const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
   AddRoomToBookingButton.propTypes = {
     roomId: PropTypes.string.isRequired,
-    checkIn: PropTypes.object.isRequired,
-    checkOut: PropTypes.object.isRequired,
+    checkIn: PropTypes.string.isRequired,
+    checkOut: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
   };
   const { handleBookingContext } = useContext(BookingContext);
