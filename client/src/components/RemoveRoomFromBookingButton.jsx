@@ -48,12 +48,12 @@ const RemoveRoomFromBookingButton = ({
         <>
           <p>Something went wrong. Error:{error.toString()}</p>
           <button className={className} onClick={handleClick}>
-            Remove Room Button
+            Remove Room X
           </button>
         </>
       ) : (
         <button className={className} onClick={handleClick}>
-          Remove Room Button
+          Remove Room X
         </button>
       )}
     </>

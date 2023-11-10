@@ -1,0 +1,41 @@
+/* BookingCart.css */
+
+.cart-container {
+  position: sticky;
+  top: 25%; /* Required for sticky positioning */
+  float: right;
+  z-index: 10; /* Ensure it's above other content */
+}
+
+.cart-button {
+  padding: 10px;
+  background: #f0f0f0;
+  cursor: pointer;
+  /* Ensure no right positioning is applied here */
+}
+
+.cart-details {
+  display: none; /* This will be overridden on hover to 'block' */
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 300px;
+  max-height: 300px; /* Set a maximum height for the details container */
+  overflow-y: auto; /* Enables vertical scrolling if content overflows */
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.cart-container:hover .cart-details {
+  display: block;
+}
+
+.cart-booking-detail {
+  padding: 10px;
+  border-bottom: 1px solid #e1e1e1;
+  /* Add any additional styling for individual cart items here */
+}
+
+.remove-room-button-in-cart {
+  float: right;
+}

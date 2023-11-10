@@ -5,12 +5,14 @@ import ScrollToTop from "react-scroll-to-top";
 import Footer from "./Footer";
 import ToTopImage from "../assets/to-top.png";
 import { BookingContextProvider } from "../contexts/BookingContext";
+import BookingCart from "./BookingCart";
 
 const MainLayout = () => {
   return (
     <>
       <BookingContextProvider>
         <NavigationBar />
+        <BookingCart />
 
         <Outlet />
 
