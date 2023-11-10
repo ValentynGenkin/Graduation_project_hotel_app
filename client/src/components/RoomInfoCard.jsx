@@ -20,14 +20,14 @@ function RoomInfoCard() {
 
   let checkIn = queryParams.get("checkIn");
   let checkOut = queryParams.get("checkOut");
-  checkIn = new Date(checkIn).toISOString();
-  checkOut = new Date(checkOut).toISOString();
+
+  checkIn = new Date(checkIn);
+  checkOut = new Date(checkOut);
 
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
     `/rooms?checkIn=${checkIn}&checkOut=${checkOut}`,
     (response) => {
       setResponse(response);
-      // console.log(response)
 
       const initialIdx = {};
       response.rooms.forEach((room) => {
