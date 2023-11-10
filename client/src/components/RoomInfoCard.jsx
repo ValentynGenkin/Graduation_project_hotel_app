@@ -10,18 +10,24 @@ import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
 
 function RoomInfoCard() {
   const [response, setResponse] = useState(null);
-  const [isPopupVisible, setPopupVisible] = useState(false);
+  const [isPopupVisible, setPopupVisible] = useState({
+    visible: false,
+    roomId: null,
+  });
   const [roomIdx, setRoomIdx] = useState({});
+
   const queryParams = new URLSearchParams(useLocation().search);
 
   let checkIn = queryParams.get("checkIn");
   let checkOut = queryParams.get("checkOut");
   checkIn = new Date(checkIn).toISOString();
   checkOut = new Date(checkOut).toISOString();
+
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
     `/rooms?checkIn=${checkIn}&checkOut=${checkOut}`,
     (response) => {
       setResponse(response);
+      // console.log(response)
 
       const initialIdx = {};
       response.rooms.forEach((room) => {
@@ -63,8 +69,8 @@ function RoomInfoCard() {
       ) : error ? (
         <p>Error: {error.message}</p>
       ) : response && response.rooms && response.rooms.length > 0 ? (
-        response.rooms.map((room) => (
-          <div key={room.exampleRoom.roomType + room._id} className="block-02">
+        response.rooms.map((room, index) => (
+          <div key={index} className="block-02">
             <div className="carousel-02">
               <BsArrowLeftCircleFill
                 className="arrow-02 arrow-left-02"
@@ -84,7 +90,7 @@ function RoomInfoCard() {
                     room.exampleRoom && room.exampleRoom.images
                       ? room.exampleRoom.images[
                           roomIdx[room.exampleRoom._id] || 0
-                        ] // Fallback to 0 if undefined
+                        ]
                       : ""
                   }
                   alt={room.roomType}
@@ -104,7 +110,7 @@ function RoomInfoCard() {
             </div>
 
             <div className="info-02">
-              <div>
+              <div className="info-02-02">
                 <ul className="u-list-02">
                   <li>Count:{room.count}</li>
                   <li>Room Type: {room.exampleRoom.roomType}</li>
@@ -123,7 +129,12 @@ function RoomInfoCard() {
               <div className="buttons-02">
                 <button
                   className="button-02"
-                  onClick={() => setPopupVisible(!isPopupVisible)}
+                  onClick={() => {
+                    setPopupVisible({
+                      visible: !isPopupVisible.visible,
+                      roomId: room.exampleRoom._id,
+                    });
+                  }}
                 >
                   Information
                 </button>
@@ -138,18 +149,22 @@ function RoomInfoCard() {
           </div>
         ))
       ) : (
-        <p>No data to display</p>
+        <p>
+          No available rooms on that date.
+          <br />
+          please choose another date :)
+        </p>
       )}
-      {isPopupVisible && (
+      {isPopupVisible.visible && (
         <div className="popup-container-02">
           <div className="popup-content-02">
             <button
-              className="button-02"
+              className="button-x-02"
               onClick={() => setPopupVisible(false)}
             >
               X
             </button>
-            <RoomDetailsCard />
+            <RoomDetailsCard roomId={isPopupVisible.roomId} />
           </div>
         </div>
       )}
