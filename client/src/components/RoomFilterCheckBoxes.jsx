@@ -7,20 +7,74 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
     setFilters: PropTypes.func.isRequired,
   };
   const [filterItems, setFilterItems] = useState({});
+  const [checkedState, setCheckedState] = useState({
+    facilities: {},
+    roomTypes: {},
+    bedCounts: {},
+  });
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
     "/rooms/getFilters",
-    (response) => setFilterItems(response.filters)
+    (response) => {
+      setFilterItems(response.filters);
+      let currentCheckedState;
+      if (!localStorage.getItem("filterPreferences")) {
+        currentCheckedState = {
+          facilities: response.filters.facilities.reduce((acc, facility) => {
+            acc[facility] = false;
+            return acc;
+          }, {}),
+          roomTypes: response.filters.roomTypes.reduce((acc, type) => {
+            acc[type] = false;
+            return acc;
+          }, {}),
+          bedCounts: response.filters.bedCounts.reduce((acc, count) => {
+            acc[count] = false;
+            return acc;
+          }, {}),
+        };
+        localStorage.setItem(
+          "filterOptions",
+          JSON.stringify(currentCheckedState)
+        );
+      } else {
+        currentCheckedState = JSON.parse(localStorage.getItem("filterOptions"));
+      }
+
+      setCheckedState(currentCheckedState);
+    }
   );
 
   const handleOnChange = (event) => {
-    const { name, attributes } = event.target;
+    const { name, attributes, checked } = event.target;
     const group = attributes.group.value;
-    setFilters((prevFilters) => {
-      return {
-        ...prevFilters,
-        [group]: prevFilters[group] ? prevFilters[group] + "," + name : name,
-      };
-    });
+    if (checked === true) {
+      setFilters((prevFilters) => {
+        return {
+          ...prevFilters,
+          [group]: prevFilters[group] ? prevFilters[group] + "," + name : name,
+        };
+      });
+    } else {
+      setFilters((prevFilters) => {
+        return {
+          ...prevFilters,
+          [group]: prevFilters[group]
+            ? prevFilters[group]
+                .split(",")
+                .filter((filterName) => filterName !== name)
+                .join(",")
+            : "",
+        };
+      });
+    }
+
+    setCheckedState((prev) => ({
+      ...prev,
+      [group]: {
+        ...prev[group],
+        [name]: checked,
+      },
+    }));
   };
   useEffect(() => {
     performFetch();
@@ -36,7 +90,7 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
               type="checkbox"
               group="facilities"
               name={facility}
-              checked={false}
+              checked={checkedState["facilities"][facility]}
               onChange={handleOnChange}
             />
           </label>
@@ -52,7 +106,7 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
               type="checkbox"
               group="roomType"
               name={type}
-              checked={false}
+              checked={checkedState["facilities"][type]}
               onChange={handleOnChange}
             />
           </label>
@@ -68,7 +122,7 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
               type="checkbox"
               group="bedCount"
               name={count}
-              checked={false}
+              checked={checkedState["facilities"][count]}
               onChange={handleOnChange}
             />
           </label>
@@ -81,10 +135,20 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
   ) : (
     <>
       {error ? <p>{error.message}</p> : ""}
-      <div>
-        <div className="filter-group">Room Types: {roomTypes} </div>
-        <div className="filter-group">Facilities: {facilities} </div>
-        <div className="filter-group">Bed Count: {bedCounts} </div>
+      <div className="room-filters">
+        <div className="filter-group">
+          <span className="filter-group-title">Room Types:</span>
+
+          {roomTypes}
+        </div>
+        <div className="filter-group">
+          <span className="filter-group-title">Facilities:</span>
+          {facilities}{" "}
+        </div>
+        <div className="filter-group">
+          <span className="filter-group-title">Bed Count:</span>
+          {bedCounts}{" "}
+        </div>
       </div>
     </>
   );

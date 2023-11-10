@@ -70,6 +70,7 @@ function RoomInfoCard() {
     <Container>
       <br />
       <br />
+      <br />
       <RoomFilterCheckBoxes setFilters={setFilters} />
       {isLoading ? (
         <p>Loading...</p>
