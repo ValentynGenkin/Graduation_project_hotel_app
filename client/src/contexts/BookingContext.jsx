@@ -1,9 +1,14 @@
 import React, { createContext, useState } from "react";
 import PropTypes from "prop-types";
+
 export const BookingContext = createContext();
 
 export function useBookingContext() {
-  const [bookingContext, setBookingContext] = useState();
+  const [bookingContext, setBookingContext] = useState(
+    localStorage.getItem("booking")
+      ? JSON.parse(localStorage.getItem("booking"))
+      : {}
+  );
 
   const handleBookingContext = () => {
     const booking = localStorage.getItem("booking")
