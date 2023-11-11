@@ -131,3 +131,20 @@ export const cancelBooking = asyncHandler(async (req, res, next) => {
     message: "Booking is cancelled successfully.",
   });
 });
+
+export const bookingDetailStatus = asyncHandler(async (req, res, next) => {
+  const { bookingId } = req.params;
+  const booking = await Booking.findById(bookingId);
+  if (!booking) {
+    return next(
+      new ServerError(
+        "There is no booking associated with this booking id.",
+        404
+      )
+    );
+  }
+  return res.status(200).json({
+    success: true,
+    booking: booking,
+  });
+});

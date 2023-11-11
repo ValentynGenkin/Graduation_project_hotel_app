@@ -12,6 +12,7 @@ import {
   getBookingStatus,
   inBranchBooking,
   cancelBooking,
+  bookingDetailStatus,
 } from "../controllers/booking.js";
 import { chooseAvailableRoom } from "../middlewares/query/chooseAvailableRoom.js";
 
@@ -39,5 +40,6 @@ bookingRouter.post(
   inBranchBooking
 );
 bookingRouter.get("/cancel/:bookingId", getAdminAccess, cancelBooking);
+bookingRouter.get("/bookingDetail/status/:bookingId", bookingDetailStatus);
 
 export default bookingRouter;
