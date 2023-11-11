@@ -63,7 +63,8 @@
   border: 1px solid #0d99ff;
   border-radius: 0.4rem;
   width: 100%;
-  margin: 100px auto;
+  margin: auto;
+  margin-bottom: 100px;
 }
 
 .buttons-02 {
@@ -118,6 +119,41 @@
   overflow-y: auto;
   max-height: 80%;
 }
+.room-filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.filter-group {
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  padding: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.filter-group label {
+  margin: 0;
+  font-size: 14px;
+}
+
+.filter-group input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.filter-group-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+/*TODO: add responsivity to room filters. Hasan*/
+
 @media screen and (max-width: 991px) {
   .carousel-02 {
     position: relative;
