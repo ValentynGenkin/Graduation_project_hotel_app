@@ -1,18 +1,23 @@
 import React, { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import useFetch from "../hooks/useFetch";
-
-export const BookingContext = createContext();
+import Cookies from "js-cookie";
+export const BookingContext = createContext(
+  localStorage.getItem("booking")
+    ? JSON.parse(localStorage.getItem("booking"))
+    : {}
+);
 
 export function useBookingContext() {
-  const bookingCookie = localStorage.getItem("booking");
+  const bookingCookie = Cookies.get("booking")
+    ?.split(":")[1]
+    .replace(/['"]+/g, "");
+
   const [bookingContext, setBookingContext] = useState(
-    bookingCookie ? JSON.parse(bookingCookie) : {}
+    bookingCookie ? JSON.parse(localStorage.getItem("booking")) : {}
   );
   const { performFetch } = useFetch(
-    `/booking/bookingDetail/status/${
-      bookingCookie ? JSON.parse(bookingCookie)._id : ""
-    }`,
+    `/booking/bookingDetail/status/${bookingCookie ? bookingCookie : ""}`,
     (response) => {
       if (response.success === true) {
         setBookingContext(response.booking);
@@ -26,8 +31,8 @@ export function useBookingContext() {
     }
   }, []);
   const handleBookingContext = () => {
-    const booking = bookingCookie ? JSON.parse(bookingCookie) : {};
-    setBookingContext(booking);
+    performFetch();
+    setBookingContext(JSON.parse(localStorage.getItem("booking")));
   };
   return { bookingContext, handleBookingContext };
 }

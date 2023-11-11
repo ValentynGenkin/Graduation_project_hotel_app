@@ -6,7 +6,7 @@ import RemoveRoomFromBookingButton from "./RemoveRoomFromBookingButton";
 const BookingCart = () => {
   const { bookingContext } = useContext(BookingContext);
 
-  const cartItems = bookingContext.bookingDetails
+  const cartItems = bookingContext?.bookingDetails
     ? bookingContext.bookingDetails.map((bookingDetail) => {
         const dayDiff = getDayDifference(
           new Date(bookingDetail.checkIn),
@@ -39,7 +39,7 @@ const BookingCart = () => {
   return (
     <div className="cart-container">
       <div className="cart-button">
-        Your Booking(s) ({bookingContext.bookingDetails?.length || 0})
+        Your Booking(s) ({bookingContext?.bookingDetails?.length || 0})
       </div>
       <div className="cart-details">{cartItems}</div>
     </div>

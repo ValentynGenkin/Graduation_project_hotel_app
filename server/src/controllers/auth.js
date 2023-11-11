@@ -43,18 +43,16 @@ export const register = asyncHandler(async (req, res, next) => {
   let guestCustomerBooking;
   if (req.cookies.booking && req.cookies.guestCustomerId) {
     guestCustomerBooking = await Booking.findByIdAndUpdate(
-      req.cookies.booking._id,
+      req.cookies.booking,
       {
         customerId: user._id,
         guestCustomerId: null,
       }
     );
-    res.cookie("booking", guestCustomerBooking, {
-      httpOnly: true,
+    res.cookie("booking", guestCustomerBooking._id, {
       expires: new Date(
         Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
       ),
-      secure: false,
     });
   }
   return res
@@ -93,20 +91,31 @@ export const login = asyncHandler(async (req, res, next) => {
   let guestCustomerBooking;
   if (req.cookies.booking && req.cookies.guestCustomerId) {
     guestCustomerBooking = await Booking.findByIdAndUpdate(
-      req.cookies.booking._id,
+      req.cookies.booking,
       {
         customerId: user._id,
         guestCustomerId: null,
       },
       { new: true }
     );
-    res.cookie("booking", guestCustomerBooking, {
-      httpOnly: true,
+    res.cookie("booking", guestCustomerBooking._id, {
       expires: new Date(
         Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
       ),
-      secure: false,
     });
+  }
+  if (!req.cookies.booking && req.cookies.guestCustomerId) {
+    guestCustomerBooking = await Booking.findOne({
+      customerId: user._id,
+      status: "open",
+    });
+    if (guestCustomerBooking) {
+      res.cookie("booking", guestCustomerBooking._id, {
+        expires: new Date(
+          Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
+        ),
+      });
+    }
   }
 
   return res
@@ -217,6 +226,7 @@ export const logout = asyncHandler(async (req, res) => {
       expires: new Date(Date.now()),
       secure: false,
     })
+    .clearCookie("booking")
     .json({
       success: true,
       message: "You have logged out successfully",
