@@ -4,6 +4,7 @@ import { getDayDifference } from "../util/dateHelper";
 import "./CSS/BookingCart.css";
 import RemoveRoomFromBookingButton from "./RemoveRoomFromBookingButton";
 import BookingTimeCounter from "./BookingTimeCounter";
+import { BsBox2Heart } from "react-icons/bs";
 const BookingCart = () => {
   const { bookingContext } = useContext(BookingContext);
 
@@ -20,18 +21,21 @@ const BookingCart = () => {
               roomId={bookingDetail.roomId._id}
               bookingDetailId={bookingDetail._id}
             />
-            <p>Room Number: {bookingDetail.roomId.roomNo}</p>
-            <p>Room Type: {bookingDetail.roomId.roomType}</p>
-            <p>Bed Count: {bookingDetail.roomId.bedCount}</p>
-            <p>
-              Room Cost:{" "}
-              {`${dayDiff} night(s) x ${
-                bookingDetail.roomId.roomPrice.$numberDecimal
-              } / per night = ${
-                dayDiff *
-                parseFloat(bookingDetail.roomId.roomPrice.$numberDecimal)
-              }`}
-            </p>
+            <ul>
+              <li>Room Number: {bookingDetail.roomId.roomNo}</li>
+              <li>Room Type: {bookingDetail.roomId.roomType}</li>
+              <li>Bed Count: {bookingDetail.roomId.bedCount}</li>
+              <li>
+                Room Cost:{" "}
+                {`${dayDiff} night(s) x ${
+                  bookingDetail.roomId.roomPrice.$numberDecimal
+                } / per night = ${
+                  dayDiff *
+                  parseFloat(bookingDetail.roomId.roomPrice.$numberDecimal)
+                }`}
+              </li>
+            </ul>
+
             <BookingTimeCounter createdAt={bookingDetail.createdAt} />
           </div>
         );
@@ -48,6 +52,7 @@ const BookingCart = () => {
       }}
     >
       <div className="cart-button">
+        <BsBox2Heart className="box-icon-03" />
         <BookingTimeCounter
           createdAt={bookingContext?.bookingDetails?.reduce(
             (accumulator, bookingDetail) =>
