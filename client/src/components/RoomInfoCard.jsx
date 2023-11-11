@@ -179,7 +179,11 @@ function RoomInfoCard() {
             >
               X
             </button>
-            <RoomDetailsCard roomId={isPopupVisible.roomId} />
+            <RoomDetailsCard
+              checkIn={checkIn}
+              checkOut={checkOut}
+              roomId={isPopupVisible.roomId}
+            />
           </div>
         </div>
       )}

@@ -5,23 +5,22 @@ import PropTypes from "prop-types";
 import { Container } from "react-bootstrap";
 import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
 
-function RoomDetailsCard({ roomId }) {
+function RoomDetailsCard({ roomId, checkIn, checkOut }) {
   RoomDetailsCard.propTypes = {
     data: PropTypes.array.isRequired,
     roomId: PropTypes.string.isRequired,
+    checkIn: PropTypes.string.isRequired,
+    checkOut: PropTypes.string.isRequired,
   };
 
   const [sliderData, setSliderData] = useState([]);
   const [extraBed, setExtraBed] = useState("");
-  const [isAdded, setIsAdded] = useState(false);
-  const [roomCount, setRoomCount] = useState(0);
   const [response, setResponse] = useState(null);
 
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
     `/rooms/${roomId}`,
     (response) => {
       setResponse(response);
-      // console.log(response)
       setSliderData(response?.room?.images || []);
     }
   );
@@ -39,13 +38,6 @@ function RoomDetailsCard({ roomId }) {
 
     return () => cancelFetch();
   }, []);
-
-  const handleAddButtonClick = () => {
-    setIsAdded(!isAdded);
-    setRoomCount(isAdded ? roomCount - 1 : roomCount + 1);
-  };
-
-  const addButtonLabel = isAdded ? "Delete" : "Add";
 
   const handleClick = (index) => {
     setSliderData([response.room.images[index]]);
@@ -124,11 +116,12 @@ function RoomDetailsCard({ roomId }) {
           </div>
 
           <div className="book-buttons-01">
-            <AddRoomToBookingButton roomId={""} className="button-02" />
-            <button className="button-02" onClick={handleAddButtonClick}>
-              {addButtonLabel}
-            </button>
-            <button className="button-02">Rooms Added: {roomCount}</button>
+            <AddRoomToBookingButton
+              roomId={roomId}
+              checkIn={checkIn}
+              checkOut={checkOut}
+              className="button-02"
+            />
           </div>
         </div>
       ) : (
