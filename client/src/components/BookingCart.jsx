@@ -3,6 +3,7 @@ import { BookingContext } from "../contexts/BookingContext";
 import { getDayDifference } from "../util/dateHelper";
 import "./CSS/BookingCart.css";
 import RemoveRoomFromBookingButton from "./RemoveRoomFromBookingButton";
+import BookingTimeCounter from "./BookingTimeCounter";
 const BookingCart = () => {
   const { bookingContext } = useContext(BookingContext);
 
@@ -31,15 +32,33 @@ const BookingCart = () => {
                 parseFloat(bookingDetail.roomId.roomPrice.$numberDecimal)
               }`}
             </p>
+            <BookingTimeCounter createdAt={bookingDetail.createdAt} />
           </div>
         );
       })
     : [];
 
   return (
-    <div className="cart-container">
+    <div
+      className="cart-container"
+      style={{
+        display: `${
+          bookingContext?.bookingDetails?.length === 0 ? "none" : "block"
+        }`,
+      }}
+    >
       <div className="cart-button">
-        Your Booking(s) ({bookingContext?.bookingDetails?.length || 0})
+        <BookingTimeCounter
+          createdAt={bookingContext?.bookingDetails?.reduce(
+            (accumulator, bookingDetail) =>
+              (accumulator =
+                new Date(bookingDetail.createdAt) <
+                new Date(accumulator ? accumulator : "2100-01-01T00:00:00")
+                  ? bookingDetail.createdAt
+                  : accumulator),
+            null
+          )}
+        />
       </div>
       <div className="cart-details">{cartItems}</div>
     </div>
