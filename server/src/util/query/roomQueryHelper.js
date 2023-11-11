@@ -19,7 +19,11 @@ export const filterRoomsAggregation = (req) => {
   // filter rooms with a bed count equal to or greater
   if (filterInputs.bedCount) {
     stages.push({
-      $match: { bedCount: { $gte: Number(filterInputs.bedCount) } },
+      $match: {
+        bedCount: {
+          $in: filterInputs.bedCount.split(",").map((count) => parseInt(count)),
+        },
+      },
     });
   }
 
