@@ -1,41 +1,53 @@
-.room-container {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  margin: 10px;
-  width: 300px;
-}
-
-.room-container h2 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.room-container p {
-  margin: 10px 0;
-}
-
-.facilities-list {
-  list-style: none;
-  padding: 0;
-}
-
-.facilities-list li {
-  margin-bottom: 5px;
-}
-
-.images-container {
+.room-registrationFormWrapper {
   display: flex;
-  flex-wrap: wrap;
-  margin-top: 20px;
+  justify-content: center;
+  align-items: start;
+  height: calc(100vh - 110px);
+  width: 400px;
+  flex-direction: column;
+  font-family: sans-serif;
+  font-weight: bold;
+  background-color: whitesmoke;
+
+  input {
+    width: 150px;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
 }
 
-.room-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+.room-registration-form {
+  width: 100%;
+  margin: auto;
+  padding: 20px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  background-color: #f9f9f9;
+}
+
+.room-form-group {
+  margin-bottom: 15px;
+}
+
+.room-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.room-register-button {
+  width: 150px; /* Making the button 150px wide */
+  padding: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px; /* Adding margin on top of the button */
+}
+
+.room-register-button:hover {
+  background-color: #0056b3;
 }
