@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { BookingContext } from "../contexts/BookingContext";
+import "./CSS/BookingCart.css";
 
 const BookingTimeCounter = ({ createdAt }) => {
   BookingTimeCounter.propTypes = {
@@ -39,7 +40,7 @@ const BookingTimeCounter = ({ createdAt }) => {
   }, [createdAt, targetDate, handleBookingContext]);
   return (
     <div>
-      <p> {timeLeft}</p>
+      <p className="time-left-03"> {timeLeft}</p>
     </div>
   );
 };
