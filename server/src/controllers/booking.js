@@ -149,6 +149,11 @@ export const cancelBooking = asyncHandler(async (req, res, next) => {
 
 export const bookingDetailStatus = asyncHandler(async (req, res, next) => {
   const { bookingId } = req.params;
+  if (bookingId === "no-id") {
+    return res.status(200).json({
+      success: false,
+    });
+  }
   const booking = await Booking.findById(bookingId).populate({
     path: "bookingDetails",
     populate: {
