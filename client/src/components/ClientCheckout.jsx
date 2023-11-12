@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Container, Spinner } from "react-bootstrap";
+import { Accordion, Container, Spinner } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { Button } from "react-bootstrap";
-
 import { default as useFetchAuth } from "../hooks/useFetch";
 import { default as useFetchBooking } from "../hooks/useFetch";
 import "./CSS/ClientCheckout.css";
 import Input from "./InputComponent";
+import { useBookingContext } from "../contexts/BookingContext";
+import { dateFormatter } from "../util/dateFormatter";
+import Carousel from "react-bootstrap/Carousel";
 
 const ClientCheckout = () => {
+  const { bookingContext, handleBookingContext } = useBookingContext();
+
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -56,6 +60,47 @@ const ClientCheckout = () => {
     }
   }, [authResponse, errorAuth]);
 
+  let totalCost = 0;
+
+  bookingContext &&
+    bookingContext.bookingDetails.forEach((bookingDetail) => {
+      const roomPrice = parseFloat(
+        bookingDetail.roomId.roomPrice.$numberDecimal
+      );
+      const checkInDate = new Date(bookingDetail.checkIn);
+      const checkOutDate = new Date(bookingDetail.checkOut);
+
+      checkInDate.setHours(14, 0, 0, 0);
+      checkOutDate.setHours(12, 0, 0, 0);
+
+      const timeCorrection = 2 * 60 * 60 * 1000;
+      const numberOfNights = Math.ceil(
+        (checkOutDate - checkInDate - timeCorrection) / (1000 * 60 * 60 * 24)
+      );
+
+      const roomCost = numberOfNights * roomPrice;
+      totalCost += roomCost;
+    });
+
+  function removeBookingById(idToRemove) {
+    const storedDataString = localStorage.getItem("booking");
+    const storedData = JSON.parse(storedDataString);
+
+    function removeBookingById(data, bookingId) {
+      const updatedBookingDetails = data.bookingDetails.filter(
+        (bookingDetail) => bookingDetail._id !== bookingId
+      );
+      return {
+        ...data,
+        bookingDetails: updatedBookingDetails,
+      };
+    }
+    const newData = removeBookingById(storedData, idToRemove);
+
+    localStorage.setItem("booking", JSON.stringify(newData));
+    handleBookingContext();
+  }
+
   return (
     <Container className="client-checkout-container">
       <h5 className="checkout-title">Booking confirmation</h5>
@@ -64,7 +109,7 @@ const ClientCheckout = () => {
       ) : (
         <>
           <div className="checkout-tourist-info">
-            <h6>Tourist information</h6>
+            <h6 className="checkout-booking-title">Tourist information</h6>
 
             <Input
               id={"checkout-first-name"}
@@ -111,32 +156,75 @@ const ClientCheckout = () => {
               }}
             />
           </div>
-          <div className="checkout-booking-info">
-            <h6>Booking information</h6>
-            <div>
-              <p className="checkout-booking-info-title">Check-in date:</p>
-              <p className="checkout-booking-info-value">test</p>
-            </div>
-            <div>
-              <p className="checkout-booking-info-title"> Check-out date: </p>
-              <p className="checkout-booking-info-value">test</p>
-            </div>
-            <div>
-              <p className="checkout-booking-info-title"> Guests: </p>
-              <p className="checkout-booking-info-value">test</p>
-            </div>
-            <div>
-              <p className="checkout-booking-info-title"> Bad type: </p>
-              <p className="checkout-booking-info-value">test</p>
-            </div>
-            <div>
-              <p className="checkout-booking-info-title"> Extra: </p>
-              <p className="checkout-booking-info-value">test</p>
-            </div>
-          </div>
-          <div className="checkout-room-info">
-            <h6>Room information</h6>
-          </div>
+          <h6 className="checkout-booking-title">Booking information</h6>
+          {bookingContext.bookingDetails.map((item) => (
+            <Accordion key={item._id} className="checkout-accordion">
+              <Accordion.Item
+                eventKey="0"
+                style={{ border: "1px solid lightgrey" }}
+              >
+                <Accordion.Header className="checkout-accordion-header">
+                  <div className="checkout-booking-info">
+                    <div>
+                      <p className="checkout-booking-info-title">Check-in:</p>
+                      <p className="checkout-booking-info-value">
+                        {dateFormatter(new Date(item.checkIn))}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="checkout-booking-info-title">Check-out:</p>
+                      <p className="checkout-booking-info-value">
+                        {dateFormatter(new Date(item.checkOut))}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="checkout-booking-info-title">Room type:</p>
+                      <p className="checkout-booking-info-value room-type-value">
+                        {item.roomId.roomType}
+                      </p>
+                    </div>
+                  </div>
+                </Accordion.Header>
+                <Accordion.Body className="accordion-body-block">
+                  <div className="checkout-accordion-body">
+                    <Carousel indicators={false} className="checkout-carousel">
+                      {item.roomId.images.map((img) => (
+                        <Carousel.Item key={img}>
+                          <img
+                            src={img}
+                            alt="Room photo"
+                            className="checkout-carousel-img"
+                          />
+                        </Carousel.Item>
+                      ))}
+                    </Carousel>
+                    <div className="checkout-room-info">
+                      <h6>{item.roomId.roomDescription}</h6>
+                      <ul>
+                        {item.roomId.facilities.map((li) => (
+                          <li key={li}>{li}</li>
+                        ))}
+                      </ul>
+                      <h6>
+                        Price per night: €{item.roomId.roomPrice.$numberDecimal}
+                      </h6>
+                    </div>
+                  </div>
+                  <div className="checkout-delete-room-btn">
+                    <Button
+                      variant="danger"
+                      onClick={() => {
+                        removeBookingById(item._id);
+                      }}
+                    >
+                      Delete room
+                    </Button>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          ))}
+
           <br />
           <div className="checkout-comments">
             <h6>Add comment</h6>
@@ -151,7 +239,7 @@ const ClientCheckout = () => {
             <br />
             <div className="checkout-amount">
               <p className="checkout-booking-info-title"> Total amount: </p>
-              <p className="checkout-booking-info-value">250.00 euro</p>
+              <p className="checkout-booking-info-value">€{totalCost}</p>
             </div>
             <div className="checkout-confirmation-btn">
               <Button variant="outline-secondary" className="">
