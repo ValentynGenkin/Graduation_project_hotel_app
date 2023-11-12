@@ -94,7 +94,7 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
     booking = await Booking.findOne({
       guestCustomerId: guestCustomerId,
       status: "open",
-    });
+    }).sort({ createdAt: -1 });
 
     if (!booking) {
       booking = await Booking.create({ guestCustomerId: guestCustomerId });
@@ -108,7 +108,7 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
       booking = await Booking.findOne({
         customerId: req.customer.id,
         status: "open",
-      });
+      }).sort({ createdAt: -1 });
     }
 
     if (!booking) {
