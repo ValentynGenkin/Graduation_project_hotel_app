@@ -21,6 +21,9 @@ export function useBookingContext() {
     (response) => {
       if (response.success === true) {
         setBookingContext(response.booking);
+        if (response.booking.bookingDetails.length === 0) {
+          Cookies.remove("booking");
+        }
         localStorage.setItem("booking", JSON.stringify(response.booking));
       }
     }
