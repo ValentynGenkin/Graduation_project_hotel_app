@@ -43,15 +43,19 @@ const BookingCart = () => {
     : [];
 
   return (
-    <div
-      className="cart-container"
-      style={{
-        display: `${
-          bookingContext?.bookingDetails?.length === 0 ? "none" : "block"
-        }`,
-      }}
-    >
-      <div className="cart-button">
+    <div className="cart-container">
+      <div
+        style={{
+          display: `${
+            bookingContext.bookingDetails
+              ? bookingContext.bookingDetails.length === 0
+                ? "none"
+                : "flex"
+              : "none"
+          }`,
+        }}
+        className="cart-button"
+      >
         <BsBox2Heart className="box-icon-03" />
         <BookingTimeCounter
           createdAt={bookingContext?.bookingDetails?.reduce(

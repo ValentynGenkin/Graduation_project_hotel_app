@@ -5,7 +5,7 @@ import "./CSS/BookingCart.css";
 
 const BookingTimeCounter = ({ createdAt }) => {
   BookingTimeCounter.propTypes = {
-    createdAt: PropTypes.string.isRequired,
+    createdAt: PropTypes.string,
   };
   const targetDate = createdAt
     ? new Date(new Date(createdAt).getTime() + 15 * 60000)
