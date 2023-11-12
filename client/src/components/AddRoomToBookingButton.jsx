@@ -46,12 +46,12 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
         <>
           <p>Something went wrong. Error:{error.toString()}</p>
           <button className={className} onClick={handleClick}>
-            Add Room Button
+            Add Room
           </button>
         </>
       ) : (
         <button className={className} onClick={handleClick}>
-          Add Room Button
+          Add Room
         </button>
       )}
     </>

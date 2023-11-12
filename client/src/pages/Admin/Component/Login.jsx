@@ -37,6 +37,7 @@ const LoginForm = () => {
     if (email && password) {
       performFetch({
         method: "POST",
+        credentials: "include",
         body: JSON.stringify(formData),
       });
     } else {

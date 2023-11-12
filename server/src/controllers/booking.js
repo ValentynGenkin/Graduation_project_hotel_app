@@ -18,19 +18,33 @@ import {
 export const addRoomToBooking = asyncHandler(async (req, res, next) => {
   const updatedBooking = await addRoomToBookingTransaction(req, next);
 
-  return res.status(200).json({
-    success: true,
-    booking: updatedBooking,
-  });
+  return res
+    .status(200)
+    .cookie("booking", updatedBooking._id, {
+      expires: new Date(
+        Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
+      ),
+    })
+    .json({
+      success: true,
+      booking: updatedBooking,
+    });
 });
 
 export const removeRoomFromBooking = asyncHandler(async (req, res, next) => {
   const updatedBooking = await removeRoomFromBookingTransaction(req, next);
 
-  return res.status(200).json({
-    success: true,
-    updatedBooking: updatedBooking,
-  });
+  return res
+    .status(200)
+    .cookie("booking", updatedBooking._id, {
+      expires: new Date(
+        Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
+      ),
+    })
+    .json({
+      success: true,
+      booking: updatedBooking,
+    });
 });
 
 export const checkout = asyncHandler(async (req, res, next) => {
@@ -44,9 +58,10 @@ export const checkout = asyncHandler(async (req, res, next) => {
   booking.status = "pending";
   booking = await booking.save();
 
-  return res.status(200).json({
+  return res.status(200).cookie("bookingInProcess", booking._id).json({
     success: true,
     redirectUrl: payment._links.checkout.href,
+    bookingInProcess: booking,
   });
 });
 
@@ -62,7 +77,7 @@ export const getBookingStatus = asyncHandler(async (req, res, next) => {
     );
   }
   if (booking.status === "closed") {
-    res.clearCookie("bookingInProgress");
+    res.clearCookie("bookingInProcess");
   }
 
   return res.status(200).json({
@@ -129,5 +144,28 @@ export const cancelBooking = asyncHandler(async (req, res, next) => {
   return res.status(200).json({
     success: true,
     message: "Booking is cancelled successfully.",
+  });
+});
+
+export const bookingDetailStatus = asyncHandler(async (req, res, next) => {
+  const { bookingId } = req.params;
+  const booking = await Booking.findById(bookingId).populate({
+    path: "bookingDetails",
+    populate: {
+      path: "roomId",
+      model: "Room",
+    },
+  });
+  if (!booking) {
+    return next(
+      new ServerError(
+        "There is no booking associated with this booking id.",
+        404
+      )
+    );
+  }
+  return res.status(200).json({
+    success: true,
+    booking: booking,
   });
 });

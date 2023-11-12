@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "concurrently": "^6.4.0",
-    "js-cookie": "^3.0.5"
+    "js-cookie": "^3.0.5",
+    "react-icons": "^4.11.0"
   }
 }
