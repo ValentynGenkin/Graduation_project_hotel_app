@@ -101,21 +101,30 @@ const ClientCheckout = () => {
   }
 
   const handleCheckout = () => {
-    if (dataCheck(userData)) {
+    if (!authResponse) {
+      if (dataCheck(userData)) {
+        performFetchCheckout({
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+      } else {
+        setNewDataCheck({ ...newDataCheck, allData: "block" });
+      }
+    }
+
+    if (authResponse && authResponse.success === true) {
       performFetchCheckout({
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(
-          authResponse && authResponse.success === true
-            ? { returnUrl: userData.returnUrl }
-            : userData
-        ),
+        body: JSON.stringify({ returnUrl: userData.returnUrl }),
       });
-    } else {
-      setNewDataCheck({ ...newDataCheck, allData: "block" });
     }
   };
 
