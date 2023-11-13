@@ -75,12 +75,12 @@ function RoomInfoCard() {
 
   return (
     <Container>
+      <br />
+      <br />
+      <br />
       <Button as={Link} to={"/checkout"}>
         Checkout
       </Button>
-      <br />
-      <br />
-      <br />
       <RoomFilterCheckBoxes setFilters={setFilters} />
 
       {isLoading ? (
