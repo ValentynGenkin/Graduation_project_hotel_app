@@ -3,19 +3,19 @@ import PropTypes from "prop-types";
 import { BookingContext } from "../contexts/BookingContext";
 import "./CSS/BookingCart.css";
 
-const BookingTimeCounter = ({ createdAt }) => {
+const BookingTimeCounter = ({ updatedAt }) => {
   BookingTimeCounter.propTypes = {
-    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
   };
-  const targetDate = createdAt
-    ? new Date(new Date(createdAt).getTime() + 15 * 60000)
+  const targetDate = updatedAt
+    ? new Date(new Date(updatedAt).getTime() + 15 * 60000)
     : null;
 
   const [timeLeft, setTimeLeft] = useState("");
   const { handleBookingContext } = useContext(BookingContext);
 
   useEffect(() => {
-    if (createdAt) {
+    if (updatedAt) {
       const interval = setInterval(() => {
         const now = new Date();
         const difference = targetDate - now;
@@ -37,7 +37,7 @@ const BookingTimeCounter = ({ createdAt }) => {
     } else {
       setTimeLeft("");
     }
-  }, [createdAt, targetDate, handleBookingContext]);
+  }, [updatedAt, targetDate, handleBookingContext]);
   return (
     <div>
       <p className="time-left-03"> {timeLeft}</p>

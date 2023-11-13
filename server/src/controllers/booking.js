@@ -47,13 +47,9 @@ export const removeRoomFromBooking = asyncHandler(async (req, res, next) => {
     });
 });
 
-export const checkout = asyncHandler(async (req, res, next) => {
+export const checkout = asyncHandler(async (req, res) => {
   let booking = req.booking;
-  if (parseFloat(booking.cost.toString()) === 0) {
-    return next(
-      new ServerError("You can not go to checkout. Your booking is empty!", 400)
-    );
-  }
+
   const payment = await createMolliePayment(req);
   booking.status = "pending";
   booking = await booking.save();
