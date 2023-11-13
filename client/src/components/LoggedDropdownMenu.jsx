@@ -15,6 +15,7 @@ const LoggedDropdownMenu = ({ name }) => {
     "/auth/logout",
     (response) => {
       setResponse(response);
+      localStorage.removeItem("booking");
     }
   );
   const userLogOut = () => {

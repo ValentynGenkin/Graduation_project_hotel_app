@@ -94,7 +94,7 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
     booking = await Booking.findOne({
       guestCustomerId: guestCustomerId,
       status: "open",
-    });
+    }).sort({ createdAt: -1 });
 
     if (!booking) {
       booking = await Booking.create({ guestCustomerId: guestCustomerId });
@@ -102,16 +102,29 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   } else {
     // at this step we create req.customer.id if guestCustomerId is not exist in request.
     getCustomerAccess(req, null, next);
+    if (req.cookies.booking) {
+      booking = await Booking.findById(req.cookies.booking);
+    } else {
+      booking = await Booking.findOne({
+        customerId: req.customer.id,
+        status: "open",
+      }).sort({ createdAt: -1 });
+    }
 
-    booking = await Booking.findOne({
-      customerId: req.customer.id,
-      status: "open",
-    });
     if (!booking) {
       booking = await Booking.create({ customerId: req.customer.id });
     }
   }
-
+  if (req.originalUrl.includes("checkout")) {
+    if (parseFloat(booking.cost.toString()) === 0) {
+      return next(
+        new ServerError(
+          "You can not go to checkout. Your booking is empty!",
+          400
+        )
+      );
+    }
+  }
   if (guestCustomerId && req.originalUrl.includes("checkout")) {
     booking = await guestCustomerCheckOutHelper(req, booking, next);
   }

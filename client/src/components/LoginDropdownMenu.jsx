@@ -1,6 +1,6 @@
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Form, InputGroup } from "react-bootstrap";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./CSS/LoginDropdownMenu.css";
 import PopUp from "./PopUp";
@@ -10,13 +10,15 @@ import { isValidEmail } from "../util/emailValidation.js";
 import { Spinner } from "react-bootstrap";
 import LoggedDropdownMenu from "./LoggedDropdownMenu";
 import PropTypes from "prop-types";
+import { BookingContext } from "../contexts/BookingContext";
+import Cookies from "js-cookie";
 
 const LoginDropdownMenu = ({ res }) => {
   const [userData, setUserData] = useState({ email: null, password: null });
   const [response, setResponse] = useState(null);
   const [errorMsg, setErrorMsg] = useState("none");
   const [userName, setUserName] = useState("");
-
+  const { handleBookingContext } = useContext(BookingContext);
   const [show, setShow] = useState();
   const menuRef = useRef(null);
 
@@ -24,6 +26,9 @@ const LoginDropdownMenu = ({ res }) => {
     "/auth/login",
     (response) => {
       setResponse(response);
+      if (Cookies.get("booking")) {
+        handleBookingContext();
+      }
     }
   );
 
@@ -56,7 +61,10 @@ const LoginDropdownMenu = ({ res }) => {
   }, []);
 
   useEffect(() => {
-    if (response && response.success === true) setShow();
+    if (response && response.success === true) {
+      location.reload();
+      setShow();
+    }
   }, [response]);
 
   const [modalShow, setModalShow] = useState(false);

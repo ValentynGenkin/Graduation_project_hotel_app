@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Booking from "./Booking.js";
 
 const BookingDetailSchema = new mongoose.Schema({
   bookingId: {
@@ -19,19 +18,6 @@ const BookingDetailSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-});
-
-BookingDetailSchema.post("save", async function (doc, next) {
-  setTimeout(async () => {
-    //TODO: handle errors here or transaction?//not sure setTimeOut
-    const booking = await Booking.findById(doc.bookingId);
-    if (booking.status === "open") {
-      await doc.remove();
-      booking.bookingDetails.splice(booking.bookingDetails.indexOf(doc._id), 1);
-      await booking.save();
-    }
-  }, 1000 * 60 * 15);
-  next();
 });
 
 const BookingDetail = mongoose.model("BookingDetail", BookingDetailSchema);
