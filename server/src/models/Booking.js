@@ -26,6 +26,10 @@ const BookingSchema = new mongoose.Schema({
     type: String,
     default: "open",
   },
+  updatedAt: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 const Booking = mongoose.model("Booking", BookingSchema);
