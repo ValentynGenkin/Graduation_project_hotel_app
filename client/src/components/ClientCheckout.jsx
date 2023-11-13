@@ -95,6 +95,8 @@ const ClientCheckout = () => {
     });
   };
 
+  useEffect(() => {}, [checkoutResponse]);
+
   useEffect(() => {
     if (authResponse && authResponse.success === true) {
       setInputChange(true);
