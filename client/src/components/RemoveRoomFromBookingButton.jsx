@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { BookingContext } from "../contexts/BookingContext";
 import PropTypes from "prop-types";
@@ -14,8 +14,9 @@ const RemoveRoomFromBookingButton = ({
     className: PropTypes.string.isRequired,
   };
   const { handleBookingContext } = useContext(BookingContext);
+  const [clickEvent, setClickEvent] = useState();
 
-  const { isLoading, error, performFetch } = useFetch(
+  const { isLoading, error, performFetch, cancelFetch } = useFetch(
     "/booking/removeRoomFromBooking",
     (response) => {
       if (response.success === true) {
@@ -24,9 +25,7 @@ const RemoveRoomFromBookingButton = ({
       }
     }
   );
-  const handleClick = (event) => {
-    event.preventDefault();
-
+  const handleClick = () => {
     performFetch({
       method: "POST",
       credentials: "include",
@@ -39,7 +38,14 @@ const RemoveRoomFromBookingButton = ({
       }),
     });
   };
-
+  useEffect(() => {
+    if (clickEvent) {
+      handleClick();
+    }
+    return () => {
+      cancelFetch();
+    };
+  }, [clickEvent]);
   return (
     <>
       {isLoading ? (
@@ -47,13 +53,16 @@ const RemoveRoomFromBookingButton = ({
       ) : error ? (
         <>
           <p>Something went wrong. Error:{error.toString()}</p>
-          <button className={className} onClick={handleClick}>
-            Remove Room Button
+          <button
+            className={className}
+            onClick={() => setClickEvent(new Date())}
+          >
+            Remove
           </button>
         </>
       ) : (
-        <button className={className} onClick={handleClick}>
-          Remove Room Button
+        <button className={className} onClick={() => setClickEvent(new Date())}>
+          Remove
         </button>
       )}
     </>

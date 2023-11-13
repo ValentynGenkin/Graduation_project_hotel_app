@@ -18,36 +18,58 @@ import {
 export const addRoomToBooking = asyncHandler(async (req, res, next) => {
   const updatedBooking = await addRoomToBookingTransaction(req, next);
 
-  return res.status(200).json({
-    success: true,
-    booking: updatedBooking,
-  });
+  return res
+    .status(200)
+    .cookie("booking", updatedBooking._id, {
+      expires: new Date(
+        Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
+      ),
+    })
+    .json({
+      success: true,
+      booking: updatedBooking,
+    });
 });
 
 export const removeRoomFromBooking = asyncHandler(async (req, res, next) => {
   const updatedBooking = await removeRoomFromBookingTransaction(req, next);
 
-  return res.status(200).json({
-    success: true,
-    updatedBooking: updatedBooking,
-  });
+  return res
+    .status(200)
+    .cookie("booking", updatedBooking._id, {
+      expires: new Date(
+        Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
+      ),
+    })
+    .json({
+      success: true,
+      booking: updatedBooking,
+    });
 });
 
-export const checkout = asyncHandler(async (req, res, next) => {
+export const checkout = asyncHandler(async (req, res) => {
   let booking = req.booking;
-  if (parseFloat(booking.cost.toString()) === 0) {
-    return next(
-      new ServerError("You can not go to checkout. Your booking is empty!", 400)
-    );
-  }
+
   const payment = await createMolliePayment(req);
   booking.status = "pending";
   booking = await booking.save();
-
-  return res.status(200).json({
-    success: true,
-    redirectUrl: payment._links.checkout.href,
+  const updatedBooking = await Booking.findById(booking._id).populate({
+    path: "bookingDetails",
+    populate: {
+      path: "roomId",
+      model: "Room",
+    },
   });
+
+  return res
+    .status(200)
+    .cookie("bookingInProcess", booking._id)
+    .clearCookie("booking")
+    .json({
+      success: true,
+      redirectUrl: payment._links.checkout.href,
+      bookingInProcess: updatedBooking,
+    });
 });
 
 export const getBookingStatus = asyncHandler(async (req, res, next) => {
@@ -61,8 +83,8 @@ export const getBookingStatus = asyncHandler(async (req, res, next) => {
       )
     );
   }
-  if (booking.status === "closed") {
-    res.clearCookie("bookingInProgress");
+  if (booking.status !== "pending") {
+    res.clearCookie("bookingInProcess");
   }
 
   return res.status(200).json({
@@ -129,5 +151,33 @@ export const cancelBooking = asyncHandler(async (req, res, next) => {
   return res.status(200).json({
     success: true,
     message: "Booking is cancelled successfully.",
+  });
+});
+
+export const bookingDetailStatus = asyncHandler(async (req, res, next) => {
+  const { bookingId } = req.params;
+  if (bookingId === "no-id") {
+    return res.status(200).json({
+      success: false,
+    });
+  }
+  const booking = await Booking.findById(bookingId).populate({
+    path: "bookingDetails",
+    populate: {
+      path: "roomId",
+      model: "Room",
+    },
+  });
+  if (!booking) {
+    return next(
+      new ServerError(
+        "There is no booking associated with this booking id.",
+        404
+      )
+    );
+  }
+  return res.status(200).json({
+    success: true,
+    booking: booking,
   });
 });
