@@ -17,6 +17,9 @@ import { useNavigate } from "react-router-dom";
 import iDealImg from "../assets/ideal.png";
 import PayPalImg from "../assets/paypal.png";
 import CreditCardImg from "../assets/credit-card.png";
+import { isValidEmail } from "../util/emailValidation";
+import { isValidName } from "../util/nameValidation";
+import { isValidPhoneNumber } from "../util/phoneNumberValidation";
 
 const ClientCheckout = () => {
   const { bookingContext, handleBookingContext } = useBookingContext();
@@ -26,10 +29,16 @@ const ClientCheckout = () => {
     lastname: "",
     email: "",
     phone: "",
+    birthday: "",
     payment: "",
     returnUrl: "http://localhost:8080/checkout-confirmation",
   });
-
+  const [newDataCheck, setNewDataCheck] = useState({
+    name: "none",
+    email: "none",
+    phone: "none",
+    allData: "none",
+  });
   const [inputChange, setInputChange] = useState(true);
   const [authResponse, setAuthResponse] = useState(null);
   const [checkoutResponse, setCheckoutResponse] = useState(true);
@@ -59,6 +68,7 @@ const ClientCheckout = () => {
       handleBookingContext();
     }
   });
+
   const handleClick = (roomId, bookingId) => {
     performFetchRemoveRoom({
       method: "POST",
@@ -80,22 +90,44 @@ const ClientCheckout = () => {
   } = useFetchCheckout("/booking/checkout", (response) => {
     setCheckoutResponse(response);
   });
+
+  function dataCheck(obj) {
+    for (const data in obj) {
+      if (obj[data] === null || obj[data] === "") {
+        return false;
+      }
+    }
+    return true;
+  }
+
   const handleCheckout = () => {
-    performFetchCheckout({
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(
-        authResponse && authResponse.success === true
-          ? { returnUrl: userData.returnUrl }
-          : userData
-      ),
-    });
+    if (dataCheck(userData)) {
+      performFetchCheckout({
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          authResponse && authResponse.success === true
+            ? { returnUrl: userData.returnUrl }
+            : userData
+        ),
+      });
+    } else {
+      setNewDataCheck({ ...newDataCheck, allData: "block" });
+    }
   };
 
-  useEffect(() => {}, [checkoutResponse]);
+  useEffect(() => {
+    if (checkoutResponse && checkoutResponse.success === true) {
+      localStorage.setItem(
+        "bookingInProcess",
+        JSON.stringify(checkoutResponse)
+      );
+      window.location.href = checkoutResponse.redirectUrl;
+    }
+  }, [checkoutResponse]);
 
   useEffect(() => {
     if (authResponse && authResponse.success === true) {
@@ -106,6 +138,7 @@ const ClientCheckout = () => {
         lastname: authResponse.customer.lastname,
         email: authResponse.customer.email,
         phone: authResponse.customer.phone,
+        birthday: authResponse.customer.birthday,
       });
     } else {
       setInputChange(false);
@@ -165,6 +198,11 @@ const ClientCheckout = () => {
               value={userData.firstname}
               cb={(e) => {
                 setUserData({ ...userData, firstname: e.target.value });
+                if (isValidName(e.target.value)) {
+                  setNewDataCheck({ ...newDataCheck, name: "none" });
+                } else {
+                  setNewDataCheck({ ...newDataCheck, name: "block" });
+                }
               }}
             />
             <Input
@@ -176,8 +214,23 @@ const ClientCheckout = () => {
               value={userData.lastname}
               cb={(e) => {
                 setUserData({ ...userData, lastname: e.target.value });
+                if (isValidName(e.target.value)) {
+                  setNewDataCheck({ ...newDataCheck, name: "none" });
+                } else {
+                  setNewDataCheck({ ...newDataCheck, name: "block" });
+                }
               }}
             />
+            <p
+              style={{
+                display: newDataCheck.name,
+                color: "red",
+                fontSize: "11px",
+              }}
+            >
+              The name should consist of letters only, with hyphens allowed, and
+              should contain a minimum of two characters.
+            </p>
             <Input
               id={"checkout-email"}
               type={"email"}
@@ -187,8 +240,22 @@ const ClientCheckout = () => {
               value={userData.email}
               cb={(e) => {
                 setUserData({ ...userData, email: e.target.value });
+                if (isValidEmail(e.target.value)) {
+                  setNewDataCheck({ ...newDataCheck, email: "none" });
+                } else {
+                  setNewDataCheck({ ...newDataCheck, email: "block" });
+                }
               }}
             />
+            <p
+              style={{
+                display: newDataCheck.email,
+                color: "red",
+                fontSize: "11px",
+              }}
+            >
+              Check e-mail format
+            </p>
             <Input
               id={"checkout-phone-num"}
               type={"tel"}
@@ -198,6 +265,38 @@ const ClientCheckout = () => {
               value={userData.phone}
               cb={(e) => {
                 setUserData({ ...userData, phone: e.target.value });
+                if (isValidPhoneNumber(e.target.value)) {
+                  setNewDataCheck({ ...newDataCheck, phone: "none" });
+                } else {
+                  setNewDataCheck({ ...newDataCheck, phone: "block" });
+                }
+              }}
+            />
+            <p
+              style={{
+                display: newDataCheck.phone,
+                color: "red",
+                fontSize: "11px",
+              }}
+            >
+              Enter an international phone number starting with +
+            </p>
+            <Input
+              id={"account-bday"}
+              type={"date"}
+              label={"Date of Birth"}
+              text={"Date of Birth"}
+              defaultValue={
+                userData.birthday === ""
+                  ? null
+                  : dateFormatter(new Date(userData.birthday))
+              }
+              changeability={inputChange}
+              cb={(e) => {
+                setUserData({
+                  ...userData,
+                  birthday: new Date(e.target.value),
+                });
               }}
             />
           </div>
@@ -360,6 +459,15 @@ const ClientCheckout = () => {
               <p className="checkout-booking-info-title"> Total amount: </p>
               <p className="checkout-booking-info-value">€{totalCost}</p>
             </div>
+            <p
+              style={{
+                display: newDataCheck.allData,
+                color: "red",
+                fontSize: "12px",
+              }}
+            >
+              All fields are required
+            </p>
             {errorCheckout && (
               <p style={{ color: "red" }}>{errorCheckout.toString()}</p>
             )}

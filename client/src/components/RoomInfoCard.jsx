@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import useFetch from "../hooks/useFetch.js";
 import "./CSS/roomInfoCard.css";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
-import { Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import RoomDetailsCard from "../components/RoomDetailsCard";
 import "chart.js/auto";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
 import RoomFilterCheckBoxes from "./RoomFilterCheckBoxes.jsx";
 
@@ -75,6 +75,9 @@ function RoomInfoCard() {
 
   return (
     <Container>
+      <Button as={Link} to={"/checkout"}>
+        Checkout
+      </Button>
       <br />
       <br />
       <br />
