@@ -8,11 +8,6 @@ const RemoveRoomFromBookingButton = ({
   bookingDetailId,
   className,
 }) => {
-  RemoveRoomFromBookingButton.propTypes = {
-    roomId: PropTypes.string.isRequired,
-    bookingDetailId: PropTypes.string.isRequired,
-    className: PropTypes.string.isRequired,
-  };
   const { handleBookingContext } = useContext(BookingContext);
 
   const { isLoading, error, performFetch } = useFetch(
@@ -61,3 +56,9 @@ const RemoveRoomFromBookingButton = ({
 };
 
 export default RemoveRoomFromBookingButton;
+
+RemoveRoomFromBookingButton.propTypes = {
+  roomId: PropTypes.string.isRequired,
+  bookingDetailId: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
+};

@@ -1,27 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { Accordion, Container, Spinner } from "react-bootstrap";
+import { Accordion, Container, InputGroup, Spinner } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { Button } from "react-bootstrap";
-import { default as useFetchAuth } from "../hooks/useFetch";
-import { default as useFetchBooking } from "../hooks/useFetch";
+import {
+  default as useFetchAuth,
+  default as useFetchRemoveRoom,
+} from "../hooks/useFetch";
+import { default as useFetchCheckout } from "../hooks/useFetch";
 import "./CSS/ClientCheckout.css";
 import Input from "./InputComponent";
 import { useBookingContext } from "../contexts/BookingContext";
 import { dateFormatter } from "../util/dateFormatter";
 import Carousel from "react-bootstrap/Carousel";
+import { useNavigate } from "react-router-dom";
+import iDealImg from "../assets/ideal.png";
+import PayPalImg from "../assets/paypal.png";
+import CreditCardImg from "../assets/credit-card.png";
 
 const ClientCheckout = () => {
   const { bookingContext, handleBookingContext } = useBookingContext();
-
+  const navigation = useNavigate();
   const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
     email: "",
-    phoneNumber: "",
+    phone: "",
+    payment: "",
+    returnUrl: "http://localhost:8080/checkout-confirmation",
   });
+
   const [inputChange, setInputChange] = useState(true);
   const [authResponse, setAuthResponse] = useState(null);
+  const [checkoutResponse, setCheckoutResponse] = useState(true);
   const {
     isLoading: isLoadingAuth,
     error: errorAuth,
@@ -39,21 +50,60 @@ const ClientCheckout = () => {
   }, []);
 
   const {
-    isLoading: isLoadingBooking,
-    // error: errorBooking,
-    // performFetch: performFetchBooking,
-  } = useFetchBooking("/customer/auth", (response) => {
-    setAuthResponse(response);
+    isLoading: isLoadingRemoveRoom,
+    error: errorRemoveRoom,
+    performFetch: performFetchRemoveRoom,
+  } = useFetchRemoveRoom("/booking/removeRoomFromBooking", (response) => {
+    if (response.success === true) {
+      localStorage.setItem("booking", JSON.stringify(response.booking));
+      handleBookingContext();
+    }
   });
+  const handleClick = (roomId, bookingId) => {
+    performFetchRemoveRoom({
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        roomId: roomId,
+        bookingDetailId: bookingId,
+      }),
+    });
+  };
+
+  const {
+    isLoading: isLoadingCheckout,
+    error: errorCheckout,
+    performFetch: performFetchCheckout,
+  } = useFetchCheckout("/booking/checkout", (response) => {
+    setCheckoutResponse(response);
+  });
+  const handleCheckout = () => {
+    performFetchCheckout({
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        authResponse && authResponse.success === true
+          ? { returnUrl: userData.returnUrl }
+          : userData
+      ),
+    });
+  };
 
   useEffect(() => {
     if (authResponse && authResponse.success === true) {
       setInputChange(true);
       setUserData({
-        firstName: authResponse.customer.firstname,
-        lastName: authResponse.customer.lastname,
+        ...userData,
+        firstname: authResponse.customer.firstname,
+        lastname: authResponse.customer.lastname,
         email: authResponse.customer.email,
-        phoneNumber: authResponse.customer.phone,
+        phone: authResponse.customer.phone,
       });
     } else {
       setInputChange(false);
@@ -62,7 +112,7 @@ const ClientCheckout = () => {
 
   let totalCost = 0;
 
-  bookingContext &&
+  if (bookingContext && bookingContext.bookingDetails) {
     bookingContext.bookingDetails.forEach((bookingDetail) => {
       const roomPrice = parseFloat(
         bookingDetail.roomId.roomPrice.$numberDecimal
@@ -81,31 +131,24 @@ const ClientCheckout = () => {
       const roomCost = numberOfNights * roomPrice;
       totalCost += roomCost;
     });
-
-  function removeBookingById(idToRemove) {
-    const storedDataString = localStorage.getItem("booking");
-    const storedData = JSON.parse(storedDataString);
-
-    function removeBookingById(data, bookingId) {
-      const updatedBookingDetails = data.bookingDetails.filter(
-        (bookingDetail) => bookingDetail._id !== bookingId
-      );
-      return {
-        ...data,
-        bookingDetails: updatedBookingDetails,
-      };
-    }
-    const newData = removeBookingById(storedData, idToRemove);
-
-    localStorage.setItem("booking", JSON.stringify(newData));
-    handleBookingContext();
   }
+
+  useEffect(() => {
+    if (
+      bookingContext &&
+      bookingContext.bookingDetails &&
+      bookingContext.bookingDetails.length <= 0
+    )
+      navigation(-1);
+  }, [bookingContext.bookingDetails]);
 
   return (
     <Container className="client-checkout-container">
       <h5 className="checkout-title">Booking confirmation</h5>
-      {isLoadingAuth || isLoadingBooking ? (
-        <Spinner />
+      {!bookingContext.bookingDetails ? (
+        <p>No rooms have been added to the order.</p>
+      ) : isLoadingAuth || isLoadingCheckout ? (
+        <Spinner as="div" animation="border" role="status" aria-hidden="true" />
       ) : (
         <>
           <div className="checkout-tourist-info">
@@ -117,9 +160,9 @@ const ClientCheckout = () => {
               label={"first name"}
               text={"First name"}
               changeability={inputChange}
-              value={userData.firstName}
+              value={userData.firstname}
               cb={(e) => {
-                setUserData({ ...userData, firstName: e.target.value });
+                setUserData({ ...userData, firstname: e.target.value });
               }}
             />
             <Input
@@ -128,9 +171,9 @@ const ClientCheckout = () => {
               label={"Last name"}
               text={"Last name"}
               changeability={inputChange}
-              value={userData.lastName}
+              value={userData.lastname}
               cb={(e) => {
-                setUserData({ ...userData, lastName: e.target.value });
+                setUserData({ ...userData, lastname: e.target.value });
               }}
             />
             <Input
@@ -150,9 +193,9 @@ const ClientCheckout = () => {
               label={"Phone number"}
               text={"Phone number"}
               changeability={inputChange}
-              value={userData.phoneNumber}
+              value={userData.phone}
               cb={(e) => {
-                setUserData({ ...userData, phoneNumber: e.target.value });
+                setUserData({ ...userData, phone: e.target.value });
               }}
             />
           </div>
@@ -210,14 +253,25 @@ const ClientCheckout = () => {
                       </h6>
                     </div>
                   </div>
+                  {errorRemoveRoom && <p>{errorRemoveRoom.toString()}</p>}
                   <div className="checkout-delete-room-btn">
                     <Button
                       variant="danger"
                       onClick={() => {
-                        removeBookingById(item._id);
+                        handleClick(item.roomId._id, item._id);
                       }}
                     >
-                      Delete room
+                      {isLoadingRemoveRoom ? (
+                        <Spinner
+                          as="div"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        "Delete room"
+                      )}
                     </Button>
                   </div>
                 </Accordion.Body>
@@ -236,17 +290,94 @@ const ClientCheckout = () => {
               />
             </FloatingLabel>
 
+            {!inputChange && (
+              <>
+                <br />
+                <InputGroup className="mb-3 payment-method-title">
+                  <InputGroup.Text id="basic-addon1">
+                    Payment method
+                  </InputGroup.Text>
+                </InputGroup>
+                <Form>
+                  <div
+                    key="inline-radio"
+                    className="mb-3 payment-method-select"
+                  >
+                    <div className="payment-method-select-component">
+                      <img src={iDealImg} alt="ideal" />
+                      <Form.Check
+                        inline
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setUserData({ ...userData, payment: "iDeal" });
+                          }
+                        }}
+                      />
+                    </div>
+                    <div className="payment-method-select-component">
+                      <img src={PayPalImg} alt="paypal" />
+                      <Form.Check
+                        inline
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setUserData({ ...userData, payment: "PayPal" });
+                          }
+                        }}
+                      />
+                    </div>
+                    <div className="payment-method-select-component">
+                      <img src={CreditCardImg} alt="credit card" />
+                      <Form.Check
+                        inline
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-3"
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setUserData({
+                              ...userData,
+                              payment: "Credit card",
+                            });
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                </Form>
+              </>
+            )}
+
             <br />
             <div className="checkout-amount">
               <p className="checkout-booking-info-title"> Total amount: </p>
               <p className="checkout-booking-info-value">€{totalCost}</p>
             </div>
+            {errorCheckout && (
+              <p style={{ color: "red" }}>{errorCheckout.toString()}</p>
+            )}
             <div className="checkout-confirmation-btn">
-              <Button variant="outline-secondary" className="">
+              <Button
+                variant="outline-secondary"
+                className=""
+                onClick={() => {
+                  navigation(-1);
+                }}
+              >
                 Back
               </Button>
 
-              <Button variant="outline-secondary" className="">
+              <Button
+                variant="outline-secondary"
+                onClick={() => {
+                  handleCheckout();
+                }}
+              >
                 Confirm
               </Button>
             </div>
