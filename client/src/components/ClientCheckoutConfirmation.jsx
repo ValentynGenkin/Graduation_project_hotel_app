@@ -29,7 +29,7 @@ const ClientCheckoutConfirmation = () => {
     performFetch();
   }, [bookingData]);
 
-  useEffect(()=>{},[response])
+  useEffect(() => {}, [response]);
 
   return (
     <Container className="client-checkout-confirmation-container">
