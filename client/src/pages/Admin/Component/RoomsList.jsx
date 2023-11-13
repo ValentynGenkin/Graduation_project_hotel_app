@@ -118,7 +118,7 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div style={{ width: 1000, height: 600, margin: 20 }}>
+        <div className="table-wrapper">
           <div className="grid-header">
             <div>
               Page Size:
@@ -175,13 +175,13 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
               </div>
             </div>
           </div>
-          <div className="ag-theme-alpine" style={{ width: 1000, height: 360 }}>
+          <div className="ag-theme-alpine grid-wrapper">
             <AgGridReact
-              ref={gridRef} // Ref for accessing Grid's API
-              rowData={rowData} // Row Data for Rows
-              columnDefs={columnDefs} // Column Defs for Columns
-              defaultColDef={defaultColDef} // Default Column Properties
-              animateRows={true} // Optional - set to 'true' to have rows animate when sorted
+              ref={gridRef}
+              rowData={rowData}
+              columnDefs={columnDefs}
+              defaultColDef={defaultColDef}
+              animateRows={true}
               paginationAutoPageSize={true}
               paginationPageSize={pageSize}
               pagination={true}

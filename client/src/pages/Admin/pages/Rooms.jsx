@@ -8,7 +8,7 @@ const Rooms = () => {
   const [showEditingModal, setShowEditingModal] = useState(false);
   const [editingRoomData, setEditingRoomId] = useState("");
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <div style={{ overflowX: "hidden", backgroundColor: "#f5f5f5" }}>
       <Navbar />
       <div
         style={{
@@ -39,14 +39,7 @@ const Rooms = () => {
               zIndex: "50",
             }}
           >
-            <div
-              style={{
-                width: "500px",
-                height: "600px",
-                border: "gray solid 2px",
-                backgroundColor: "white",
-              }}
-            >
+            <div>
               <EditRoom
                 roomData={editingRoomData}
                 setShowEditingModal={setShowEditingModal}

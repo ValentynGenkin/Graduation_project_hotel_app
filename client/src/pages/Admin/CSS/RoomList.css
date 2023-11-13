@@ -4,3 +4,12 @@
   align-items: center;
   flex-direction: row;
 }
+.table-wrapper {
+  width: 1000px;
+  height: calc(100vh - 120px);
+  background-color: white;
+}
+.grid-wrapper {
+  width: 1000px;
+  height: calc(100vh - 220px);
+}

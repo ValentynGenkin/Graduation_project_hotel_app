@@ -1,0 +1,45 @@
+.editroom-registrationForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 120px);
+  width: 400px;
+  flex-direction: column;
+  font-weight: semi-bold;
+  background-color: whitesmoke;
+  gap: 7px;
+  margin: 100px;
+  border-radius: 10px;
+}
+
+.editroom-form-group {
+  text-align: center;
+}
+
+.editroom-form-group label {
+  color: #222291;
+}
+
+.editroom-input {
+  width: 100%;
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.editroom-register-button {
+  width: 150px;
+  padding: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.editroom-register-button:hover {
+  background-color: #0056b3;
+}
