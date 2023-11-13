@@ -60,6 +60,11 @@ export const checkout = asyncHandler(async (req, res) => {
       model: "Room",
     },
   });
+  if (req.token) {
+    res
+      .cookie("customer_access_token", req.token)
+      .clearCookie("guestCustomerId");
+  }
 
   return res
     .status(200)
@@ -75,6 +80,7 @@ export const checkout = asyncHandler(async (req, res) => {
 export const getBookingStatus = asyncHandler(async (req, res, next) => {
   const booking = req.booking;
   const customer = req.customer;
+
   if (booking.customerId !== customer.id) {
     return next(
       new ServerError(

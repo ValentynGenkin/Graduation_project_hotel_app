@@ -7,6 +7,8 @@ export const guestCustomerCheckOutHelper = async (req, booking, next) => {
   const userObj = validateCheckOutInput(req, next);
   const customer = await User.create(userObj);
   const resetPasswordToken = customer.getResetPasswordTokenFromUser();
+  const token = customer.generateJwtFromUser();
+  req.token = token;
   await customer.save();
   const resetPasswordUrl = `${process.env.BASE_CLIENT_URL}/customer/resetpassword?reset_password_url=${process.env.BASE_SERVER_URL}/api/auth/resetpassword?resetPasswordToken=${resetPasswordToken}`;
   booking.customerId = customer._id;
