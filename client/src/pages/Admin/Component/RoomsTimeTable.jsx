@@ -8,7 +8,7 @@ const RoomTable = () => {
   const [endDate, setEndDate] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [pagination, setPagination] = useState(1);
 
   useEffect(() => {
     const today = new Date();
@@ -25,7 +25,7 @@ const RoomTable = () => {
     `/admin/dashboard/bookings?startDate=${startDate}&endDate=${endDate}&page=${currentPage}`,
     (res) => {
       setAvailability(res.rooms);
-      setTotalPages(res.pagination.totalPages);
+      setPagination(res.pagination);
     }
   );
 
@@ -101,7 +101,16 @@ const RoomTable = () => {
     setEndDate(formattedEndDateString);
     setCurrentPage(1);
   };
-
+  const handlePrevPage = () => {
+    if (currentPage - 1 !== 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  const handleNextPage = () => {
+    if (pagination.next) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
   return (
     <div className="body-wrapper">
       <div className="date-navigation">
@@ -165,16 +174,28 @@ const RoomTable = () => {
             ))}
         </div>
       </div>
-      <div className="pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentPage(index + 1)}
-            className={currentPage === index + 1 ? "active" : ""}
-          >
-            {index + 1}
-          </button>
-        ))}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "10px",
+          marginTop: "10px",
+        }}
+      >
+        <button onClick={handlePrevPage}>-</button>
+        <p
+          style={{
+            width: "40px",
+            border: "none",
+            outline: "none",
+            marginBottom: "0px",
+          }}
+        >
+          {currentPage}
+        </p>
+        <button onClick={handleNextPage}>+</button>
+        Total Rooms : {pagination.total}
       </div>
     </div>
   );

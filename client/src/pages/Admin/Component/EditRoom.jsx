@@ -1,42 +1,37 @@
 import React, { useState, useEffect } from "react";
 import useFetch from "../../../hooks/useFetch";
 import PropTypes from "prop-types";
-import "../CSS/EditRooms.css";
+import "../CSS/AddRooms.css";
 
-const EditRoom = ({ roomData, setShowEditingModal }) => {
-  // State for room details
+const EditRoom = ({ roomData }) => {
   const [roomDetails, setRoomDetails] = useState(roomData);
 
-  // State for input validation and feedback
   const [inputError, setInputError] = useState(false);
   const [inputErrorMsg, setInputErrorMsg] = useState("");
   const [addError, setAddError] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Custom hook for handling API requests
   const { performFetch } = useFetch(`/rooms/${roomData?._id}/edit`, () => {
     setSuccess(true);
   });
 
-  // Handle input changes for text inputs
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+
     setRoomDetails((prevRoomDetails) => ({
       ...prevRoomDetails,
       [name]: value,
     }));
   };
-
-  // Handle input changes for file input (images)
-  const handleImageInputChange = (event) => {
-    const { name, files } = event.target;
+  const handleImageInputChange = (e) => {
+    const files = e.target.files;
+    // Do something with the selected image files
+    // For example, you can store them in the component state
     setRoomDetails((prevRoomDetails) => ({
       ...prevRoomDetails,
-      [name]: files,
+      images: files,
     }));
   };
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -50,7 +45,6 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
       images,
     } = roomDetails;
 
-    // Validate input fields
     if (
       !roomNo ||
       !roomDescription ||
@@ -63,24 +57,21 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
       setInputError(true);
       setInputErrorMsg("Please fill in all fields");
     } else {
-      // If validation passes, submit the form
       editRoom();
     }
   };
 
-  // Send API request to edit room
   const editRoom = () => {
     performFetch({
-      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
+      method: "PUT",
       body: JSON.stringify(roomDetails),
     });
   };
 
-  // Handle feedback messages
   useEffect(() => {
     if (success || addError || inputError) {
       const timeout = setTimeout(() => {
@@ -93,119 +84,90 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
     }
   }, [success, addError, inputError]);
 
-  // Close the modal
-  const closeModal = () => {
-    setShowEditingModal(false);
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="editroom-registrationForm">
-      <div style={{ width: "100%", display: "flex", justifyContent: "end" }}>
-        <p onClick={closeModal} style={{ margin: "5px" }}>
-          X
-        </p>
-      </div>
-
-      {/* Room Number Input */}
-      <label className="editroom-form-group">
-        Room Number:
+    <form onSubmit={handleSubmit} className="room-registrationForm">
+      <div className="input-wrapper">
+        <label className="inputLabel">Room Number:</label>
         <input
           type="text"
           name="roomNo"
           value={roomDetails.roomNo}
           onChange={handleInputChange}
-          className="editroom-input"
+          className="room-input"
         />
-      </label>
-
-      {/* Room Description Input */}
-      <label className="editroom-form-group">
-        Room Description:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Room Description:</label>
         <input
           type="text"
           name="roomDescription"
           value={roomDetails.roomDescription}
           onChange={handleInputChange}
-          className="editroom-input"
+          className="room-input"
         />
-      </label>
-
-      {/* Room Type Input */}
-      <label className="editroom-form-group">
-        Room Type:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Room Type:</label>
         <input
           type="text"
           name="roomType"
           value={roomDetails.roomType}
           onChange={handleInputChange}
-          className="editroom-input"
+          className="room-input"
         />
-      </label>
-
-      {/* Bed Count Input */}
-      <label className="editroom-form-group">
-        Bed Count:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Bed Count:</label>
         <input
           type="number"
           name="bedCount"
           value={roomDetails.bedCount}
           onChange={handleInputChange}
-          className="editroom-input"
+          className="room-input"
         />
-      </label>
-
-      {/* Room Price Input */}
-      <label className="editroom-form-group">
-        Room Price:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Room Price:</label>
         <input
           type="number"
           name="roomPrice"
           value={roomDetails.roomPrice}
           onChange={handleInputChange}
-          className="editroom-input"
+          className="room-input"
         />
-      </label>
-
-      {/* Facilities Input */}
-      <label className="editroom-form-group">
-        Facilities:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Facilities:</label>
         <input
           type="text"
           name="facilities"
           value={roomDetails.facilities}
           onChange={handleInputChange}
-          className="editroom-input"
+          className="room-input"
         />
-      </label>
-
-      {/* Images Input */}
-      <label className="editroom-form-group">
-        Images:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Images:</label>
         <input
           type="file"
           name="images"
           onChange={(e) => handleImageInputChange(e)}
-          className="editroom-input"
+          className="room-input"
           multiple={true}
         />
-      </label>
-
-      {/* Submit Button */}
-      <button type="submit" className="editroom-register-button">
+      </div>
+      <button type="submit" className="room-register-button">
         Save
       </button>
-
-      {/* Feedback Messages */}
       {inputError && <p>{inputErrorMsg}</p>}
-      {success && <p>Edit is successful</p>}
-      {addError && <p>Failed to Edit Room</p>}
+      {success && <p>changed is success</p>}
+      {addError && <p>Failed to change Room details</p>}
     </form>
   );
 };
 
+export default EditRoom;
 EditRoom.propTypes = {
   roomData: PropTypes.object,
   setShowEditingModal: PropTypes.func,
 };
-
-export default EditRoom;

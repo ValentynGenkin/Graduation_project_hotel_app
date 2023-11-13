@@ -21,6 +21,15 @@ const AddRoomForm = () => {
 
   const { performFetch } = useFetch("/rooms/add", () => {
     setSuccess(true);
+    setRoomDetails({
+      roomNo: "",
+      roomDescription: "",
+      roomType: "",
+      bedCount: "",
+      roomPrice: "",
+      facilities: [],
+      images: [],
+    });
   });
 
   const handleInputChange = (event) => {
@@ -67,14 +76,13 @@ const AddRoomForm = () => {
   };
 
   const AddRoom = (data) => {
-    // da
     performFetch({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: data,
+      body: JSON.stringify(data),
     });
   };
   useEffect(() => {
@@ -83,7 +91,7 @@ const AddRoomForm = () => {
         setSuccess(false);
         setInputError(false);
         setAddError(false);
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timeout);
     }
@@ -161,12 +169,28 @@ const AddRoomForm = () => {
           multiple={true}
         />
       </div>
-      <button type="submit" className="room-register-button">
-        Add Room
+
+      <button
+        type="submit"
+        className="room-register-button"
+        style={{
+          backgroundColor: inputError
+            ? "red"
+            : success
+            ? "green"
+            : addError
+            ? "green"
+            : "blue",
+        }}
+      >
+        {inputError
+          ? inputErrorMsg
+          : success
+          ? "success"
+          : addError
+          ? "Failed"
+          : "Add Room"}
       </button>
-      {inputError && <p>{inputErrorMsg}</p>}
-      {success && <p>New Room Added</p>}
-      {addError && <p>Failed to add Room</p>}
     </form>
   );
 };

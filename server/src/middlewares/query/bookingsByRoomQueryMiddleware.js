@@ -9,11 +9,10 @@ export const bookingsByRoomQueryMiddleware = asyncHandler(
     // Assuming the date string is in the format DD/MM/YYYY
     let formattedStartDate = `${startDateParts[2]}-${startDateParts[1]}-${startDateParts[0]}`;
     let startDate = new Date(formattedStartDate);
-    let endDateParts = req.query.startDate.split("/");
+    let endDateParts = req.query.endDate.split("/");
     // Assuming the date string is in the format DD/MM/YYYY
     let formattedEndDate = `${endDateParts[2]}-${endDateParts[1]}-${endDateParts[0]}`;
     let endDate = new Date(formattedEndDate);
-
     if (isNaN(startDate) || isNaN(endDate)) {
       startDate = new Date();
       endDate = new Date();

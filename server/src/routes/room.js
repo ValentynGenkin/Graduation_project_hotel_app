@@ -18,7 +18,7 @@ const roomRouter = express.Router();
 
 roomRouter.post(
   "/add",
-  [getAdminAccess, imageUpload.array("images", 10)],
+  [getAdminAccess, imageUpload.array("roomImages", 10)],
   addRoom
 );
 roomRouter.put(

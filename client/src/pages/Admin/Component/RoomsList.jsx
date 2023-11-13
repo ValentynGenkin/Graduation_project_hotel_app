@@ -19,6 +19,7 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
   const [pageSize, setPageSize] = useState(5);
   const [rowData, setRowData] = useState();
   const [reload, setReload] = useState(false);
+  const gridStyle = useMemo(() => ({ height: "400px", width: "100%" }), []);
 
   const { loading, performFetch } = useFetch(
     `/admin/dashboard/rooms?page=${currentPage}&limit=${pageSize}`,
@@ -45,7 +46,7 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
     },
 
     {
-      field: "D",
+      field: "Delete",
       width: "50px",
       height: "50px",
       cellRenderer: (params) => (
@@ -53,7 +54,7 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
       ),
     },
     {
-      field: "D",
+      field: "Edit",
       width: "50px",
       height: "50px",
       cellRenderer: (params) => (
@@ -85,6 +86,10 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
     editable: true,
     enableRowGroup: true,
     resizable: true,
+    filter: true,
+    flex: 1,
+    minWidth: 100,
+    maxHeight: 500,
   }));
   const onPageSizeChanged = useCallback(() => {
     var value = document.getElementById("page-size").value;
@@ -114,36 +119,30 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
   };
 
   return (
-    <div>
+    <div className="table-container">
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div className="table-wrapper">
+        <>
           <div className="grid-header">
-            <div>
-              Page Size:
-              <select onChange={onPageSizeChanged} id="page-size">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-              </select>
-            </div>
             <div
               style={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                height: "100%",
+                marginLeft: "10px",
               }}
             >
-              <button onClick={onBtPrevious}>-</button>
-              <input
-                type="number"
-                value={currentPage}
-                onChange={(e) => handlePageChange(e)}
-                style={{ width: "40px" }}
-              />
-              <button onClick={onBtNext}>+</button>
+              <p style={{ margin: "0px" }}>Page Size:</p>
+              <select
+                onChange={onPageSizeChanged}
+                id="page-size"
+                style={{ marginLeft: "6px" }}
+              >
+                <option value="4">4</option>
+                <option value="8">8</option>
+              </select>
             </div>
             <div
               style={{
@@ -153,6 +152,34 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
                 gap: "10px",
               }}
             >
+              <button
+                onClick={onBtPrevious}
+                style={{ outline: "none", width: "30px", border: "none" }}
+              >
+                <p style={{ margin: "0px" }}>-</p>
+              </button>
+              <input
+                type="number"
+                value={currentPage}
+                onChange={(e) => handlePageChange(e)}
+                style={{ width: "40px", border: "none", outline: "none" }}
+              />
+              <button
+                style={{ outline: "none", width: "30px", border: "none" }}
+                onClick={onBtNext}
+              >
+                +
+              </button>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                marginRight: "10px",
+              }}
+            >
               <div
                 style={{
                   display: "flex",
@@ -160,8 +187,8 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
                   alignItems: "center",
                 }}
               >
-                <p>Total Rooms :</p>
-                <p>{totalRooms}</p>
+                <p style={{ margin: "0px" }}>Total Rooms :</p>
+                <p style={{ margin: "0px" }}>{totalRooms}</p>
               </div>
               <div
                 style={{
@@ -170,12 +197,14 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
                   alignItems: "center",
                 }}
               >
-                <p>Total Page :</p>
-                <p>{Math.ceil(totalRooms / pageSize)}</p>
+                <p style={{ margin: "0px" }}>Total Page :</p>
+                <p style={{ margin: "0px" }}>
+                  {Math.ceil(totalRooms / pageSize)}
+                </p>
               </div>
             </div>
           </div>
-          <div className="ag-theme-alpine grid-wrapper">
+          <div className="ag-theme-alpine --ag-borders" style={gridStyle}>
             <AgGridReact
               ref={gridRef}
               rowData={rowData}
@@ -188,7 +217,7 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
               suppressPaginationPanel={true}
             />
           </div>
-        </div>
+        </>
       )}
     </div>
   );
