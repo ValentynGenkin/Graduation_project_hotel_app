@@ -57,12 +57,23 @@ export const checkout = asyncHandler(async (req, res, next) => {
   const payment = await createMolliePayment(req);
   booking.status = "pending";
   booking = await booking.save();
-
-  return res.status(200).cookie("bookingInProcess", booking._id).json({
-    success: true,
-    redirectUrl: payment._links.checkout.href,
-    bookingInProcess: booking,
+  const updatedBooking = await Booking.findById(booking._id).populate({
+    path: "bookingDetails",
+    populate: {
+      path: "roomId",
+      model: "Room",
+    },
   });
+
+  return res
+    .status(200)
+    .cookie("bookingInProcess", booking._id)
+    .clearCookie("booking")
+    .json({
+      success: true,
+      redirectUrl: payment._links.checkout.href,
+      bookingInProcess: updatedBooking,
+    });
 });
 
 export const getBookingStatus = asyncHandler(async (req, res, next) => {
@@ -76,7 +87,7 @@ export const getBookingStatus = asyncHandler(async (req, res, next) => {
       )
     );
   }
-  if (booking.status === "closed") {
+  if (booking.status !== "pending") {
     res.clearCookie("bookingInProcess");
   }
 
@@ -149,6 +160,11 @@ export const cancelBooking = asyncHandler(async (req, res, next) => {
 
 export const bookingDetailStatus = asyncHandler(async (req, res, next) => {
   const { bookingId } = req.params;
+  if (bookingId === "no-id") {
+    return res.status(200).json({
+      success: false,
+    });
+  }
   const booking = await Booking.findById(bookingId).populate({
     path: "bookingDetails",
     populate: {

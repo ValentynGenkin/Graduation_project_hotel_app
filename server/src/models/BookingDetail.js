@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import Booking from "./Booking.js";
 import Room from "./Room.js";
-import { getDayDifference } from "../util/dateHelper.js";
 
 const BookingDetailSchema = new mongoose.Schema({
   bookingId: {
@@ -30,11 +29,10 @@ BookingDetailSchema.post("save", async function (doc, next) {
     if (booking.status === "open") {
       await doc.remove();
       const room = await Room.findById(doc.roomId).select("roomPrice");
-      const dayDiff = getDayDifference(
-        new Date(doc.checkIn),
-        new Date(doc.checkOut)
+      const diffInDays = Math.floor(
+        (doc.checkOut - doc.checkIn) / (1000 * 60 * 60 * 24)
       );
-      const removedPrice = dayDiff * parseFloat(room.roomPrice.toString());
+      const removedPrice = diffInDays * parseFloat(room.roomPrice.toString());
       booking.bookingDetails.splice(booking.bookingDetails.indexOf(doc._id), 1);
       booking.cost = (
         parseFloat(booking.cost.toString()) - removedPrice

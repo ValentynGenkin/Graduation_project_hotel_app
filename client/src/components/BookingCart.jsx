@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { BookingContext } from "../contexts/BookingContext";
-import { getDayDifference } from "../util/dateHelper";
 import "./CSS/BookingCart.css";
 import RemoveRoomFromBookingButton from "./RemoveRoomFromBookingButton";
 import BookingTimeCounter from "./BookingTimeCounter";
@@ -10,9 +9,9 @@ const BookingCart = () => {
 
   const cartItems = bookingContext?.bookingDetails
     ? bookingContext.bookingDetails.map((bookingDetail) => {
-        const dayDiff = getDayDifference(
-          new Date(bookingDetail.checkIn),
-          new Date(bookingDetail.checkOut)
+        const diffInDays = Math.floor(
+          (new Date(bookingDetail.checkOut) - new Date(bookingDetail.checkIn)) /
+            (1000 * 60 * 60 * 24)
         );
         return (
           <div key={bookingDetail._id} className="cart-booking-detail">
@@ -27,10 +26,10 @@ const BookingCart = () => {
               <li>Bed Count: {bookingDetail.roomId.bedCount}</li>
               <li>
                 Room Cost:{" "}
-                {`${dayDiff} night(s) x ${
+                {`${diffInDays} night(s) x ${
                   bookingDetail.roomId.roomPrice.$numberDecimal
                 } / per night = ${
-                  dayDiff *
+                  diffInDays *
                   parseFloat(bookingDetail.roomId.roomPrice.$numberDecimal)
                 }`}
               </li>

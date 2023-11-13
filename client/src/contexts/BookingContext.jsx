@@ -17,7 +17,7 @@ export function useBookingContext() {
     bookingCookie ? JSON.parse(localStorage.getItem("booking")) : {}
   );
   const { performFetch } = useFetch(
-    `/booking/bookingDetail/status/${bookingCookie ? bookingCookie : ""}`,
+    `/booking/bookingDetail/status/${bookingCookie ? bookingCookie : "no-id"}`,
     (response) => {
       if (response.success === true) {
         setBookingContext(response.booking);
