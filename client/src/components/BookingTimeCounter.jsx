@@ -8,7 +8,7 @@ const BookingTimeCounter = ({ createdAt }) => {
     createdAt: PropTypes.string,
   };
   const targetDate = createdAt
-    ? new Date(new Date(createdAt).getTime() + 1 * 60000)
+    ? new Date(new Date(createdAt).getTime() + 15 * 60000)
     : null;
 
   const [timeLeft, setTimeLeft] = useState("");
