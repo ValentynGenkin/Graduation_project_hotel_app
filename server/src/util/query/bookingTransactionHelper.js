@@ -39,6 +39,7 @@ export const addRoomToBookingTransaction = async (req, next) => {
     booking.cost =
       parseFloat(booking.cost.toString()) +
       parseFloat(availableRoom.roomPrice.toString()) * diffInDays;
+    booking.updatedAt = new Date();
     await booking.save({ session });
 
     await session.commitTransaction();
@@ -108,7 +109,7 @@ export const removeRoomFromBookingTransaction = async (req, next) => {
     booking.cost =
       parseFloat(booking.cost.toString()) -
       parseFloat(room.roomPrice.toString()) * diffInDays;
-
+    booking.updatedAt = new Date();
     await booking.save({ session });
 
     await session.commitTransaction();

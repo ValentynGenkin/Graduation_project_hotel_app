@@ -115,7 +115,16 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
       booking = await Booking.create({ customerId: req.customer.id });
     }
   }
-
+  if (req.originalUrl.includes("checkout")) {
+    if (parseFloat(booking.cost.toString()) === 0) {
+      return next(
+        new ServerError(
+          "You can not go to checkout. Your booking is empty!",
+          400
+        )
+      );
+    }
+  }
   if (guestCustomerId && req.originalUrl.includes("checkout")) {
     booking = await guestCustomerCheckOutHelper(req, booking, next);
   }

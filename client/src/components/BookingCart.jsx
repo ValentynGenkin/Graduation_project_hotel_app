@@ -35,7 +35,7 @@ const BookingCart = () => {
               </li>
             </ul>
 
-            <BookingTimeCounter createdAt={bookingDetail.createdAt} />
+            <BookingTimeCounter updatedAt={bookingContext.updatedAt} />
           </div>
         );
       })
@@ -56,17 +56,7 @@ const BookingCart = () => {
         className="cart-button"
       >
         <BsBox2Heart className="box-icon-03" />
-        <BookingTimeCounter
-          createdAt={bookingContext?.bookingDetails?.reduce(
-            (accumulator, bookingDetail) =>
-              (accumulator =
-                new Date(bookingDetail.createdAt) <
-                new Date(accumulator ? accumulator : "2100-01-01T00:00:00")
-                  ? bookingDetail.createdAt
-                  : accumulator),
-            null
-          )}
-        />
+        <BookingTimeCounter updatedAt={bookingContext.updatedAt} />
       </div>
       <div className="cart-details">{cartItems}</div>
     </div>
