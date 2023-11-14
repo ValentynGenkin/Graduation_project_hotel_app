@@ -56,8 +56,8 @@ const ClientCheckoutConfirmation = () => {
           }, 1500);
         } else {
           statusTimeout = setTimeout(() => {
-            navigation("current-bookings");
-          }, 2000);
+            navigation("/current-bookings");
+          }, 5000);
         }
       }
 
@@ -65,7 +65,7 @@ const ClientCheckoutConfirmation = () => {
         setFirstRequestCompleted(true);
 
         redirectTimeout = setTimeout(() => {
-          navigation("current-bookings");
+          navigation("/current-bookings");
         }, 3 * 60 * 1000);
       }
     };

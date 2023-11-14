@@ -66,6 +66,7 @@ const ClientCheckout = () => {
   } = useFetchRemoveRoom("/booking/removeRoomFromBooking", (response) => {
     if (response.success === true) {
       localStorage.setItem("booking", JSON.stringify(response.booking));
+
       handleBookingContext();
     }
   });
@@ -165,8 +166,8 @@ const ClientCheckout = () => {
       const checkInDate = new Date(bookingDetail.checkIn);
       const checkOutDate = new Date(bookingDetail.checkOut);
 
-      checkInDate.setHours(14, 0, 0, 0);
-      checkOutDate.setHours(12, 0, 0, 0);
+      checkInDate.setUTCHours(14, 0, 0, 0);
+      checkOutDate.setUTCHours(12, 0, 0, 0);
 
       const timeCorrection = 2 * 60 * 60 * 1000;
       const numberOfNights = Math.ceil(
@@ -322,13 +323,15 @@ const ClientCheckout = () => {
                     <div>
                       <p className="checkout-booking-info-title">Check-in:</p>
                       <p className="checkout-booking-info-value">
-                        {dateFormatter(new Date(item.checkIn))}
+                        {dateFormatter(new Date(item.checkIn)).toLocaleString()}
                       </p>
                     </div>
                     <div>
                       <p className="checkout-booking-info-title">Check-out:</p>
                       <p className="checkout-booking-info-value">
-                        {dateFormatter(new Date(item.checkOut))}
+                        {dateFormatter(
+                          new Date(item.checkOut)
+                        ).toLocaleString()}
                       </p>
                     </div>
                     <div>
