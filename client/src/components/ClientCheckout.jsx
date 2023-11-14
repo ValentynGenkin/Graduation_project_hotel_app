@@ -22,6 +22,7 @@ import { isValidName } from "../util/nameValidation";
 import { isValidPhoneNumber } from "../util/phoneNumberValidation";
 
 const ClientCheckout = () => {
+  const serverDomain = window.location.origin;
   const { bookingContext, handleBookingContext } = useBookingContext();
   const navigation = useNavigate();
   const [userData, setUserData] = useState({
@@ -31,8 +32,7 @@ const ClientCheckout = () => {
     phone: "",
     birthday: "",
     payment: "",
-    returnUrl:
-      "https://hyf-c44-grou-checkout-uqzhr81n.herokuapp.com/checkout-confirmation", //TODO: this is checkout branch's deployment link. this should be configured. process.env.BASE_SERVER_URL doesn't work in deployment.
+    returnUrl: `${serverDomain}/checkout-confirmation`,
   });
   const [newDataCheck, setNewDataCheck] = useState({
     name: "none",
