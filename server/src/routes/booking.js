@@ -13,6 +13,7 @@ import {
   inBranchBooking,
   cancelBooking,
   bookingDetailStatus,
+  mollieHook,
 } from "../controllers/booking.js";
 import { chooseAvailableRoom } from "../middlewares/query/chooseAvailableRoom.js";
 
@@ -41,5 +42,6 @@ bookingRouter.post(
 );
 bookingRouter.get("/cancel/:bookingId", getAdminAccess, cancelBooking);
 bookingRouter.get("/bookingDetail/status/:bookingId", bookingDetailStatus);
+bookingRouter.post("/mollie-hook", mollieHook);
 
 export default bookingRouter;

@@ -98,7 +98,7 @@ export const login = asyncHandler(async (req, res, next) => {
       },
       { new: true }
     );
-    res.cookie("booking", guestCustomerBooking._id, {
+    res.cookie("booking", guestCustomerBooking?._id, {
       expires: new Date(
         Date.now() + parseInt(process.env.JWT_COOKIE) * 1000 * 60
       ),
