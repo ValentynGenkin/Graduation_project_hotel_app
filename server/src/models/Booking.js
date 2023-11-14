@@ -27,6 +27,10 @@ const BookingSchema = new mongoose.Schema({
     type: String,
     default: "open",
   },
+  createdAt: {
+    type: Date,
+    default: new Date(),
+  },
   updatedAt: {
     type: Date,
     default: new Date(),

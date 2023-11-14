@@ -31,7 +31,8 @@ const ClientCheckout = () => {
     phone: "",
     birthday: "",
     payment: "",
-    returnUrl: "http://localhost:8080/checkout-confirmation",
+    returnUrl:
+      "https://hyf-c44-grou-checkout-uqzhr81n.herokuapp.com/checkout-confirmation", //TODO: this is checkout branch's deployment link. this should be configured. process.env.BASE_SERVER_URL doesn't work in deployment.
   });
   const [newDataCheck, setNewDataCheck] = useState({
     name: "none",
