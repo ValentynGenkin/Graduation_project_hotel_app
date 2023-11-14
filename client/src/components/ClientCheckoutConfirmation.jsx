@@ -26,7 +26,13 @@ const ClientCheckoutConfirmation = () => {
   }, []);
 
   useEffect(() => {
-    performFetch();
+    performFetch({
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
   }, [bookingData]);
 
   useEffect(() => {}, [response]);

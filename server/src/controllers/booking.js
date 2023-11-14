@@ -81,7 +81,7 @@ export const getBookingStatus = asyncHandler(async (req, res, next) => {
   const booking = req.booking;
   const customer = req.customer;
 
-  if (booking.customerId !== customer.id) {
+  if (booking.customerId.toString() !== customer.id) {
     return next(
       new ServerError(
         "You do not have authorization to access this route.",
