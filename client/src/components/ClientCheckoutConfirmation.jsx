@@ -10,7 +10,7 @@ const ClientCheckoutConfirmation = () => {
   const [response, setResponse] = useState(null);
   const navigation = useNavigate();
   const bookingId = bookingData && bookingData.bookingInProcess._id;
-
+  const [firstRequestCompleted, setFirstRequestCompleted] = useState(false);
   const { isLoading, error, performFetch } = useFetch(
     `/booking/status/${bookingId}`,
     (response) => {
@@ -41,8 +41,6 @@ const ClientCheckoutConfirmation = () => {
   useEffect(() => {
     let statusTimeout;
     let redirectTimeout;
-
-    const [firstRequestCompleted, setFirstRequestCompleted] = useState(false);
 
     const handleResponse = () => {
       if (response) {
