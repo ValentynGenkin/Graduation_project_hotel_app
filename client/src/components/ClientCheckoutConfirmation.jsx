@@ -39,6 +39,8 @@ const ClientCheckoutConfirmation = () => {
   }, [bookingData]);
 
   useEffect(() => {
+    localStorage.removeItem("bookingInProcess");
+
     let statusTimeout;
     let redirectTimeout;
 
