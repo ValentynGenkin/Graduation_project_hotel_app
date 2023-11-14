@@ -17,7 +17,7 @@ import { fileURLToPath } from "url";
 import morgan from "morgan";
 // Create an express server
 const app = express();
-app.use(morgan("dev"));
+process.env.NODE_ENV === "production" && app.use(morgan("dev"));
 // Tell express to use the json middleware
 app.use(express.json());
 // Allow everyone to access our API. In a real application, we would need to restrict this!
