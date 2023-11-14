@@ -39,26 +39,6 @@ const ClientCheckoutConfirmation = () => {
   }, [bookingData]);
 
   useEffect(() => {
-    if (response) {
-      if (response && response.status === "pending") {
-        setTimeout(() => {
-          performFetch({
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          });
-        }, 1500);
-      } else {
-        setTimeout(() => {
-          navigation("current-bookings");
-        }, 2000);
-      }
-    }
-  }, [response]);
-
-  useEffect(() => {
     let statusTimeout;
     let redirectTimeout;
 
