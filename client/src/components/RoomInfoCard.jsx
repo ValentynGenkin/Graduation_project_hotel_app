@@ -9,6 +9,7 @@ import { Link, useLocation } from "react-router-dom";
 import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
 import RoomFilterCheckBoxes from "./RoomFilterCheckBoxes.jsx";
 import BookingCart from "./BookingCart.jsx";
+import { formatDateString } from "../util/formatDateString.js";
 
 function RoomInfoCard() {
   const [response, setResponse] = useState(null);
@@ -26,8 +27,8 @@ function RoomInfoCard() {
 
   const queryParams = new URLSearchParams(useLocation().search);
 
-  let checkIn = queryParams.get("checkIn");
-  let checkOut = queryParams.get("checkOut");
+  let checkIn = formatDateString(queryParams.get("checkIn"));
+  let checkOut = formatDateString(queryParams.get("checkOut"));
 
   checkIn = new Date(checkIn).toString();
   checkOut = new Date(checkOut).toString();
