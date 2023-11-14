@@ -17,6 +17,17 @@ const Navbar = () => {
     setUserData(parsed);
   }, []);
   const navigate = useNavigate();
+  const authFetch = useFetch("/admin/dashboard", () => {});
+  useEffect(() => {
+    authFetch.performFetch({ credentials: "include" });
+    if (authFetch.error) {
+      navigate("/Admin/login");
+    } else {
+      return () => authFetch.cancelFetch();
+    }
+
+    return () => authFetch.cancelFetch();
+  }, [authFetch.error]);
   const { performFetch } = useFetch("/admin/logout", () => {
     navigate("/Admin/login");
     localStorage.clear("admin");

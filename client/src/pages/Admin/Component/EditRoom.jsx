@@ -3,7 +3,7 @@ import useFetch from "../../../hooks/useFetch";
 import PropTypes from "prop-types";
 import "../CSS/AddRooms.css";
 
-const EditRoom = ({ roomData, setShowEditingModal }) => {
+const EditRoom = ({ roomData }) => {
   const [roomDetails, setRoomDetails] = useState(roomData);
 
   const [inputError, setInputError] = useState(false);
@@ -23,7 +23,15 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
       [name]: value,
     }));
   };
-
+  const handleImageInputChange = (e) => {
+    const files = e.target.files;
+    // Do something with the selected image files
+    // For example, you can store them in the component state
+    setRoomDetails((prevRoomDetails) => ({
+      ...prevRoomDetails,
+      images: files,
+    }));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -76,18 +84,10 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
     }
   }, [success, addError, inputError]);
 
-  const closeModal = () => {
-    setShowEditingModal(false);
-  };
   return (
     <form onSubmit={handleSubmit} className="room-registrationForm">
-      <div style={{ width: "100%", display: "flex", justifyContent: "end" }}>
-        <p onClick={closeModal} style={{ margin: "5px" }}>
-          X
-        </p>
-      </div>
-      <label className="room-form-group">
-        Room Number:
+      <div className="input-wrapper">
+        <label className="inputLabel">Room Number:</label>
         <input
           type="text"
           name="roomNo"
@@ -95,9 +95,9 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
           onChange={handleInputChange}
           className="room-input"
         />
-      </label>
-      <label className="room-form-group">
-        Room Description:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Room Description:</label>
         <input
           type="text"
           name="roomDescription"
@@ -105,9 +105,9 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
           onChange={handleInputChange}
           className="room-input"
         />
-      </label>
-      <label className="room-form-group">
-        Room Type:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Room Type:</label>
         <input
           type="text"
           name="roomType"
@@ -115,9 +115,9 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
           onChange={handleInputChange}
           className="room-input"
         />
-      </label>
-      <label className="room-form-group">
-        Bed Count:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Bed Count:</label>
         <input
           type="number"
           name="bedCount"
@@ -125,9 +125,9 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
           onChange={handleInputChange}
           className="room-input"
         />
-      </label>
-      <label className="room-form-group">
-        Room Price:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Room Price:</label>
         <input
           type="number"
           name="roomPrice"
@@ -135,9 +135,9 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
           onChange={handleInputChange}
           className="room-input"
         />
-      </label>
-      <label className="room-form-group">
-        Facilities:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Facilities:</label>
         <input
           type="text"
           name="facilities"
@@ -145,23 +145,23 @@ const EditRoom = ({ roomData, setShowEditingModal }) => {
           onChange={handleInputChange}
           className="room-input"
         />
-      </label>
-      <label className="room-form-group">
-        Images:
+      </div>
+      <div className="input-wrapper">
+        <label className="inputLabel">Images:</label>
         <input
-          type="text"
+          type="file"
           name="images"
-          value={roomDetails.images}
-          onChange={handleInputChange}
+          onChange={(e) => handleImageInputChange(e)}
           className="room-input"
+          multiple={true}
         />
-      </label>
+      </div>
       <button type="submit" className="room-register-button">
-        Edit room
+        Save
       </button>
       {inputError && <p>{inputErrorMsg}</p>}
-      {success && <p>Edit is success</p>}
-      {addError && <p>Failed to Edit Room</p>}
+      {success && <p>changed is success</p>}
+      {addError && <p>Failed to change Room details</p>}
     </form>
   );
 };

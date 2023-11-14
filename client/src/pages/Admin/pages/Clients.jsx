@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../Component/Navbar";
 import RegistrationForm from "../Component/RegistrationForm";
 import UserList from "../Component/UserList";
+import Footer from "../Component/Footer";
 
 const Clients = () => {
   const [reload, setReload] = useState(false);
@@ -22,6 +23,7 @@ const Clients = () => {
         <UserList reload={reload} />
         <RegistrationForm reload={reload} setReload={setReload} />
       </div>
+      <Footer />
     </div>
   );
 };

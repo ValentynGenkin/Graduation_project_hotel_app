@@ -3,4 +3,25 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
+  border-left: 1px solid #babfc7;
+  border-right: 1px solid #babfc7;
+  border-top: 1px solid #babfc7;
+  height: 40px;
+  font-weight: 700;
+  color: #181d1f;
+}
+.table-container {
+  min-width: 1000px;
+  /* height: 300px; */
+  background-color: white;
+  margin: 20px;
+  /* border: 1px gray solid; */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the values for your desired shadow effect */
+}
+/* .grid-wrapper { */
+/* width: 1000px; */
+/* height: calc(100vh - 220px); */
+/* } */
+.--ag-borders {
+  border: none;
 }

@@ -13,7 +13,7 @@ const HotelRoomCircle = () => {
           value={occupiedPercentage}
           styles={{
             path: { stroke: "red" },
-            trail: { stroke: "whitesmoke" },
+            trail: { stroke: "rgb(222, 184, 184)" },
           }}
           strokeWidth={10}
         >
