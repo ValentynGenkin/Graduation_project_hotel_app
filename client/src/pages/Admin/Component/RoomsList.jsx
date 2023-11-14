@@ -39,9 +39,10 @@ const RoomList = ({ setShowEditingModal, setEditingRoomId }) => {
       headerName: "Price",
       width: "80px",
       valueGetter: function (params) {
-        return params.data.roomPrice
+        const priceValue = params.data.roomPrice
           ? params.data.roomPrice.$numberDecimal
           : "";
+        return ` ${priceValue} €`;
       },
     },
 
