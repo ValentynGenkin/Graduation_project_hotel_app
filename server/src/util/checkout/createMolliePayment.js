@@ -3,8 +3,8 @@ import { createMollieClient } from "@mollie/api-client";
 export const createMolliePayment = async (req) => {
   const booking = req.booking;
   const returnUrl = req.body.returnUrl;
-  const webhook =
-    "https://c44-group-c-5ea6be59db5d.herokuapp.com/api/booking/checkout/mollie-hook";
+  const origin = req.protocol + "://" + req.headers.host;
+  const webhook = `${origin}/api/booking/mollie-hook`;
 
   const mollieClient = createMollieClient({
     apiKey: process.env.MOLLIE_API_KEY,
@@ -15,11 +15,11 @@ export const createMolliePayment = async (req) => {
       currency: "EUR",
       value: parseFloat(booking.cost.toString()).toFixed(2),
     },
-    description: `Order ${booking._id}`,
+    description: `${booking._id}`,
     redirectUrl: returnUrl,
     webhookUrl: webhook,
     metadata: {
-      order_id: booking._id,
+      booking_id: booking._id,
     },
   });
 

@@ -102,8 +102,10 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   } else {
     // at this step we create req.customer.id if guestCustomerId is not exist in request.
     getCustomerAccess(req, null, next);
-    if (req.cookies.booking) {
-      booking = await Booking.findById(req.cookies.booking);
+    if (req.cookies.booking || req.cookies.bookingInProcess) {
+      booking = await Booking.findById(
+        req.cookies.booking || req.cookies.bookingInProcess
+      );
     } else {
       booking = await Booking.findOne({
         customerId: req.customer.id,
@@ -111,7 +113,7 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
       }).sort({ createdAt: -1 });
     }
 
-    if (!booking) {
+    if (!booking && !req.originalUrl.includes("status")) {
       booking = await Booking.create({ customerId: req.customer.id });
     }
   }

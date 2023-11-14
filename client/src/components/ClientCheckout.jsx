@@ -22,6 +22,7 @@ import { isValidName } from "../util/nameValidation";
 import { isValidPhoneNumber } from "../util/phoneNumberValidation";
 
 const ClientCheckout = () => {
+  const serverDomain = window.location.origin;
   const { bookingContext, handleBookingContext } = useBookingContext();
   const navigation = useNavigate();
   const [userData, setUserData] = useState({
@@ -31,7 +32,7 @@ const ClientCheckout = () => {
     phone: "",
     birthday: "",
     payment: "",
-    returnUrl: "http://localhost:8080/checkout-confirmation",
+    returnUrl: `${serverDomain}/checkout-confirmation`,
   });
   const [newDataCheck, setNewDataCheck] = useState({
     name: "none",
