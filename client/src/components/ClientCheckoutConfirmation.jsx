@@ -3,11 +3,12 @@ import { Container, Spinner } from "react-bootstrap";
 import "./CSS/ClientCheckoutConfirmation.css";
 import { MdFileDownloadDone } from "react-icons/md";
 import useFetch from "../hooks/useFetch";
+import { useNavigate } from "react-router-dom";
 
 const ClientCheckoutConfirmation = () => {
   const [bookingData, setBookingData] = useState(null);
   const [response, setResponse] = useState(null);
-
+  const navigation = useNavigate();
   const bookingId = bookingData && bookingData.bookingInProcess._id;
 
   const { isLoading, error, performFetch } = useFetch(
@@ -37,7 +38,67 @@ const ClientCheckoutConfirmation = () => {
     }
   }, [bookingData]);
 
-  useEffect(() => {}, [response]);
+  useEffect(() => {
+    if (response) {
+      if (response && response.status === "pending") {
+        setTimeout(() => {
+          performFetch({
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          });
+        }, 1500);
+      } else {
+        setTimeout(() => {
+          navigation("current-bookings");
+        }, 2000);
+      }
+    }
+  }, [response]);
+
+  useEffect(() => {
+    let statusTimeout;
+    let redirectTimeout;
+
+    const [firstRequestCompleted, setFirstRequestCompleted] = useState(false);
+
+    const handleResponse = () => {
+      if (response) {
+        if (response.status === "pending") {
+          statusTimeout = setTimeout(() => {
+            performFetch({
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            });
+          }, 1500);
+        } else {
+          statusTimeout = setTimeout(() => {
+            navigation("current-bookings");
+          }, 2000);
+        }
+      }
+
+      if (!firstRequestCompleted) {
+        setFirstRequestCompleted(true);
+
+        redirectTimeout = setTimeout(() => {
+          navigation("current-bookings");
+        }, 3 * 60 * 1000);
+      }
+    };
+
+    handleResponse();
+
+    return () => {
+      clearTimeout(statusTimeout);
+      clearTimeout(redirectTimeout);
+    };
+  }, [response]);
 
   return (
     <Container className="client-checkout-confirmation-container">
