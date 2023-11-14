@@ -3,13 +3,14 @@ import { Container, Spinner } from "react-bootstrap";
 import "./CSS/ClientCheckoutConfirmation.css";
 import { MdFileDownloadDone } from "react-icons/md";
 import useFetch from "../hooks/useFetch";
+import { useNavigate } from "react-router-dom";
 
 const ClientCheckoutConfirmation = () => {
   const [bookingData, setBookingData] = useState(null);
   const [response, setResponse] = useState(null);
-
+  const navigation = useNavigate();
   const bookingId = bookingData && bookingData.bookingInProcess._id;
-
+  const [firstRequestCompleted, setFirstRequestCompleted] = useState(false);
   const { isLoading, error, performFetch } = useFetch(
     `/booking/status/${bookingId}`,
     (response) => {
@@ -26,10 +27,58 @@ const ClientCheckoutConfirmation = () => {
   }, []);
 
   useEffect(() => {
-    performFetch();
+    if (bookingData) {
+      performFetch({
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+    }
   }, [bookingData]);
 
-  useEffect(() => {}, [response]);
+  useEffect(() => {
+    localStorage.removeItem("bookingInProcess");
+
+    let statusTimeout;
+    let redirectTimeout;
+
+    const handleResponse = () => {
+      if (response) {
+        if (response.status === "pending") {
+          statusTimeout = setTimeout(() => {
+            performFetch({
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            });
+          }, 1500);
+        } else {
+          statusTimeout = setTimeout(() => {
+            navigation("/current-bookings");
+          }, 5000);
+        }
+      }
+
+      if (!firstRequestCompleted) {
+        setFirstRequestCompleted(true);
+
+        redirectTimeout = setTimeout(() => {
+          navigation("/current-bookings");
+        }, 3 * 60 * 1000);
+      }
+    };
+
+    handleResponse();
+
+    return () => {
+      clearTimeout(statusTimeout);
+      clearTimeout(redirectTimeout);
+    };
+  }, [response]);
 
   return (
     <Container className="client-checkout-confirmation-container">
@@ -52,7 +101,12 @@ const ClientCheckoutConfirmation = () => {
             <br />
             <h6>Payment method: iDeal</h6>
             <br />
-            <h6>Payment status: ?????</h6>
+            {response && response.bookingStatus ? (
+              <h6>{`Payment status: ${response.bookingStatus}`}</h6>
+            ) : (
+              <Spinner />
+            )}
+
             <br />
             <p>You will receive an email with your booking information.</p>
           </>

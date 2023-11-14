@@ -10,7 +10,7 @@ import {
 import { default as useFetchCheckout } from "../hooks/useFetch";
 import "./CSS/ClientCheckout.css";
 import Input from "./InputComponent";
-import { useBookingContext } from "../contexts/BookingContext";
+import { BookingContext } from "../contexts/BookingContext";
 import { dateFormatter } from "../util/dateFormatter";
 import Carousel from "react-bootstrap/Carousel";
 import { useNavigate } from "react-router-dom";
@@ -20,10 +20,11 @@ import CreditCardImg from "../assets/credit-card.png";
 import { isValidEmail } from "../util/emailValidation";
 import { isValidName } from "../util/nameValidation";
 import { isValidPhoneNumber } from "../util/phoneNumberValidation";
+import { useContext } from "react";
 
 const ClientCheckout = () => {
   const serverDomain = window.location.origin;
-  const { bookingContext, handleBookingContext } = useBookingContext();
+  const { bookingContext, handleBookingContext } = useContext(BookingContext);
   const navigation = useNavigate();
   const [userData, setUserData] = useState({
     firstname: "",
@@ -66,6 +67,7 @@ const ClientCheckout = () => {
   } = useFetchRemoveRoom("/booking/removeRoomFromBooking", (response) => {
     if (response.success === true) {
       localStorage.setItem("booking", JSON.stringify(response.booking));
+
       handleBookingContext();
     }
   });
@@ -165,8 +167,8 @@ const ClientCheckout = () => {
       const checkInDate = new Date(bookingDetail.checkIn);
       const checkOutDate = new Date(bookingDetail.checkOut);
 
-      checkInDate.setHours(14, 0, 0, 0);
-      checkOutDate.setHours(12, 0, 0, 0);
+      checkInDate.setUTCHours(14, 0, 0, 0);
+      checkOutDate.setUTCHours(12, 0, 0, 0);
 
       const timeCorrection = 2 * 60 * 60 * 1000;
       const numberOfNights = Math.ceil(
@@ -322,13 +324,15 @@ const ClientCheckout = () => {
                     <div>
                       <p className="checkout-booking-info-title">Check-in:</p>
                       <p className="checkout-booking-info-value">
-                        {dateFormatter(new Date(item.checkIn))}
+                        {dateFormatter(new Date(item.checkIn)).toLocaleString()}
                       </p>
                     </div>
                     <div>
                       <p className="checkout-booking-info-title">Check-out:</p>
                       <p className="checkout-booking-info-value">
-                        {dateFormatter(new Date(item.checkOut))}
+                        {dateFormatter(
+                          new Date(item.checkOut)
+                        ).toLocaleString()}
                       </p>
                     </div>
                     <div>
