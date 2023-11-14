@@ -3,12 +3,13 @@ import Navbar from "../Component/Navbar";
 import RoomsList from "../Component/RoomsList";
 import AddRooms from "../Component/AddRooms";
 import EditRoom from "../Component/EditRoom";
+import Footer from "../Component/Footer";
 
 const Rooms = () => {
   const [showEditingModal, setShowEditingModal] = useState(false);
   const [editingRoomData, setEditingRoomId] = useState("");
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <div style={{ overflowX: "hidden", backgroundColor: "#f5f5f5" }}>
       <Navbar />
       <div
         style={{
@@ -18,6 +19,7 @@ const Rooms = () => {
           display: "flex",
           alignItems: "start",
           justifyContent: "space-around",
+          position: "relative",
         }}
       >
         <RoomsList
@@ -26,25 +28,33 @@ const Rooms = () => {
         />
         <AddRooms />
         {showEditingModal && (
-          <div
-            style={{
-              position: "absolute",
-              top: "0",
-              left: "0",
-              width: "100vw",
-              height: "100vh",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: "50",
-            }}
-          >
+          <>
             <div
               style={{
-                width: "500px",
-                height: "600px",
-                border: "gray solid 2px",
-                backgroundColor: "white",
+                position: "absolute",
+                top: "0",
+                left: "0",
+                width: "100vw",
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: "40",
+                backgroundColor: "black",
+                opacity: "0.5",
+              }}
+              onClick={() => setShowEditingModal(false)}
+            ></div>
+            <div
+              style={{
+                position: "absolute",
+                top: "",
+                left: "+50%",
+                translate: "-50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: "50",
               }}
             >
               <EditRoom
@@ -52,9 +62,10 @@ const Rooms = () => {
                 setShowEditingModal={setShowEditingModal}
               />
             </div>
-          </div>
+          </>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

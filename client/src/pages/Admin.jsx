@@ -5,7 +5,7 @@ import Circle from "./Admin/Component/Circle";
 import Footer from "./Admin/Component/Footer";
 const Admin = () => {
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <div style={{ overflowX: "hidden", backgroundColor: "#f5f5f5" }}>
       <Navbar />
       <div
         style={{

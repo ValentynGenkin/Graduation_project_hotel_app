@@ -14,10 +14,10 @@ import { checkCustomerIdentity } from "./middlewares/cookie/cookieHelpers.js";
 import customerRouter from "./routes/customer.js";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import morgan from "morgan";
 // Create an express server
 const app = express();
-
+process.env.NODE_ENV === "production" && app.use(morgan("dev"));
 // Tell express to use the json middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

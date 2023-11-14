@@ -1,38 +1,35 @@
-.room-registrationFormWrapper {
+.room-registrationForm {
   display: flex;
   justify-content: center;
-  align-items: start;
-  height: calc(100vh - 110px);
+  align-items: center;
+  height: calc(100vh - 120px);
   width: 400px;
   flex-direction: column;
-  font-family: sans-serif;
-  font-weight: bold;
-  background-color: whitesmoke;
-
-  input {
-    width: 150px;
-    padding: 5px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-  }
+  font-weight: semi-bold;
+  background-color: white;
+  gap: 7px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the values for your desired shadow effect */
+}
+.input-wrapper {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  width: 320px;
+  gap: 10px;
 }
 
-.room-registration-form {
+.room-input {
   width: 100%;
-  margin: auto;
-  padding: 20px;
+  padding: 5px;
+  font-size: 16px;
   border: 1px solid #ccc;
-  background-color: #f9f9f9;
+  border-radius: 3px;
 }
 
-.room-form-group {
-  margin-bottom: 15px;
-}
-
-.room-form-group label {
-  display: block;
-  margin-bottom: 5px;
+.inputLabel {
   color: #333;
 }
 
@@ -45,7 +42,7 @@
   border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-top: 10px; /* Adding margin on top of the button */
+  margin: 10px 0px; /* Adding margin on top of the button */
 }
 
 .room-register-button:hover {
