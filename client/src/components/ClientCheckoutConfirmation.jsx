@@ -26,13 +26,15 @@ const ClientCheckoutConfirmation = () => {
   }, []);
 
   useEffect(() => {
-    performFetch({
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
+    if (bookingData) {
+      performFetch({
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+    }
   }, [bookingData]);
 
   useEffect(() => {}, [response]);
@@ -58,7 +60,12 @@ const ClientCheckoutConfirmation = () => {
             <br />
             <h6>Payment method: iDeal</h6>
             <br />
-            <h6>Payment status: ?????</h6>
+            {response && response.bookingStatus ? (
+              <h6>{`Payment status: ${response.bookingStatus}`}</h6>
+            ) : (
+              <Spinner />
+            )}
+
             <br />
             <p>You will receive an email with your booking information.</p>
           </>
