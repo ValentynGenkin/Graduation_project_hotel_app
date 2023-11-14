@@ -15,21 +15,42 @@
   margin: 0 auto;
 }
 
+.checkout-carousel {
+  max-width: 250px;
+}
+.checkout-carousel-img {
+  max-width: 250px;
+}
+.checkout-accordion-body {
+  display: flex;
+  flex-wrap: wrap;
+}
 .checkout-tourist-info span {
   width: 160px;
 }
 
-.checkout-booking-info {
-  max-width: 600px;
-  margin: 0 auto;
+.checkout-booking-title {
+  text-align: center;
 }
-
+.checkout-booking-info {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.checkout-accordion {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-bottom: 5px;
+}
 .checkout-booking-info div {
   display: flex;
+  margin: 5px;
 }
 
 .checkout-booking-info-title {
-  min-width: 160px;
+  min-width: 90px;
   background-color: rgb(248, 249, 250);
   align-items: center;
   border-bottom: 1px solid rgb(222, 226, 230);
@@ -40,11 +61,24 @@
   display: flex;
   padding: 6px 12px;
   text-align: center;
+  font-size: 13px;
+  margin: 0;
+}
+.checkout-accordion-header button {
+  display: flex !important;
 }
 
+.checkout-accordion-header button::after {
+  display: block;
+  margin-right: 3px;
+}
+.checkout-accordion-header {
+  margin: auto 0;
+  display: flex;
+}
 .checkout-booking-info-value {
-  width: 100%;
-  max-width: 440px;
+  width: 105px;
+
   background-color: rgb(233, 236, 239);
   align-items: center;
   border: 1px solid rgb(222, 226, 230);
@@ -53,8 +87,13 @@
   display: flex;
   padding: 6px 12px;
   text-align: center;
+  font-size: 13px;
+  margin: 0;
 }
 
+.room-type-value {
+  width: 70px;
+}
 .checkout-extra-options {
   max-width: 600px;
   margin: 0 auto;
@@ -87,9 +126,38 @@
   margin: 0 auto;
 }
 
+.checkout-room-info {
+  margin-left: 15px;
+}
+.accordion-body-block {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+}
+
+.checkout-delete-room-btn {
+  display: flex;
+  justify-content: center;
+}
+.checkout-delete-room-btn button {
+  margin: 5px;
+}
+
 @media screen and (max-width: 991px) {
   .client-checkout-container {
     margin-top: 0;
     min-height: calc(100vh - 185px);
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .checkout-room-info {
+    margin-left: 0px;
+  }
+  .checkout-accordion-body {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
   }
 }

@@ -35,7 +35,9 @@ const BookingCart = () => {
               </li>
             </ul>
 
-            <BookingTimeCounter updatedAt={bookingContext.updatedAt} />
+            <BookingTimeCounter
+              updatedAt={bookingContext && bookingContext.updatedAt}
+            />
           </div>
         );
       })
@@ -46,7 +48,7 @@ const BookingCart = () => {
       <div
         style={{
           display: `${
-            bookingContext.bookingDetails
+            bookingContext && bookingContext.bookingDetails
               ? bookingContext.bookingDetails.length === 0
                 ? "none"
                 : "flex"
@@ -56,7 +58,9 @@ const BookingCart = () => {
         className="cart-button"
       >
         <BsBox2Heart className="box-icon-03" />
-        <BookingTimeCounter updatedAt={bookingContext.updatedAt} />
+        <BookingTimeCounter
+          updatedAt={bookingContext && bookingContext.updatedAt}
+        />
       </div>
       <div className="cart-details">{cartItems}</div>
     </div>

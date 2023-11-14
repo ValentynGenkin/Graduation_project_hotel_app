@@ -14,6 +14,7 @@ import {
   inBranchBookingEmail,
   registrationEmail,
 } from "../util/mailer/mailTemplates.js";
+import { createMollieClient } from "@mollie/api-client";
 
 export const addRoomToBooking = asyncHandler(async (req, res, next) => {
   const updatedBooking = await addRoomToBookingTransaction(req, next);
@@ -60,6 +61,11 @@ export const checkout = asyncHandler(async (req, res) => {
       model: "Room",
     },
   });
+  if (req.token) {
+    res
+      .cookie("customer_access_token", req.token)
+      .clearCookie("guestCustomerId");
+  }
 
   return res
     .status(200)
@@ -75,7 +81,13 @@ export const checkout = asyncHandler(async (req, res) => {
 export const getBookingStatus = asyncHandler(async (req, res, next) => {
   const booking = req.booking;
   const customer = req.customer;
-  if (booking.customerId !== customer.id) {
+  if (!booking) {
+    return next(
+      new ServerError("You do not have any processing booking.", 404)
+    );
+  }
+
+  if (booking.customerId.toString() !== customer.id) {
     return next(
       new ServerError(
         "You do not have authorization to access this route.",
@@ -180,4 +192,23 @@ export const bookingDetailStatus = asyncHandler(async (req, res, next) => {
     success: true,
     booking: booking,
   });
+});
+export const mollieHook = asyncHandler(async (req, res) => {
+  const mollieClient = createMollieClient({
+    apiKey: process.env.MOLLIE_API_KEY,
+  });
+  const payment = await mollieClient.payments.get(req.body.id);
+
+  const booking = await Booking.findById(payment.metadata.booking_id);
+
+  if (
+    payment.status === "paid" ||
+    payment.status === "failed" ||
+    payment.status === "canceled" ||
+    payment.status === "expired"
+  ) {
+    booking.status = payment.status;
+    await booking.save();
+  }
+  return res.status(200).json({ success: true });
 });

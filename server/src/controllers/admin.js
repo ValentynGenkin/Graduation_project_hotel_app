@@ -126,3 +126,7 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 
   return res.status(200).json({ success: true, users });
 });
+
+export const getDashboardAccess = asyncHandler(async (req, res) => {
+  return res.status(200).json({ success: true });
+});
