@@ -1,6 +1,7 @@
 import React from "react";
 import { Carousel, Container } from "react-bootstrap";
 import PropTypes from "prop-types";
+import { dateFormatter } from "../util/dateFormatter";
 
 const ClientBookingItem = ({ requestBlok, bookingControl, data }) => {
   return (
@@ -9,12 +10,12 @@ const ClientBookingItem = ({ requestBlok, bookingControl, data }) => {
         <div>
           <span>Check-in: </span>
 
-          <span>12.11.2023 14:00</span>
+          <span>{`${dateFormatter(new Date(data.checkIn))} 14:00`}</span>
         </div>
         <div>
           <span>Check-out: </span>
 
-          <span>15.11.2023 12:00{data}</span>
+          <span>{`${dateFormatter(new Date(data.checkOut))}  12:00`}</span>
         </div>
       </div>
 
@@ -23,7 +24,7 @@ const ClientBookingItem = ({ requestBlok, bookingControl, data }) => {
       <div className="bookings-description-block">
         <div className="bookings-img-carousel">
           <Carousel indicators={false}>
-            {/* {item.roomId.images.map((img) => (
+            {data.roomId.images.map((img) => (
               <Carousel.Item key={img}>
                 <img
                   src={img}
@@ -31,24 +32,15 @@ const ClientBookingItem = ({ requestBlok, bookingControl, data }) => {
                   className="checkout-carousel-img"
                 />
               </Carousel.Item>
-            ))} */}
+            ))}
           </Carousel>
         </div>
         <div className="bookings-description">
-          <h5>Room facilities:</h5>
-          <h6>
-            This air-conditioned double room features a private bathroom, a
-            private entrance and a tea and coffee maker.
-          </h6>
+          <h6>{data.roomId.roomDescription}</h6>
           <ul>
-            <li>Refrigerator</li>
-            <li>Safety deposit box</li>
-            <li>Hardwood or parquet floors</li>
-            <li>Air conditioning</li>
-            <li>Seating Area</li>
-            <li>
-              <b>Smoking:</b> No smoking
-            </li>
+            {data.roomId.facilities.map((li) => (
+              <li key={li}>{li}</li>
+            ))}
           </ul>
         </div>
       </div>
@@ -56,17 +48,17 @@ const ClientBookingItem = ({ requestBlok, bookingControl, data }) => {
         <div>
           <span>Booking ID: </span>
 
-          <span>165168165</span>
+          <span>{data.bookingId}</span>
         </div>
         <div>
           <span>Amount: </span>
 
-          <span>270.00 euro</span>
+          <span>{data.roomId.roomPrice.$numberDecimal}</span>
         </div>
         <div>
-          <span>Payment method: </span>
+          <span>Room number: </span>
 
-          <span>iDeal</span>
+          <span>{data.roomId.roomNo}</span>
         </div>
         <div>
           <span>Booking status: </span>

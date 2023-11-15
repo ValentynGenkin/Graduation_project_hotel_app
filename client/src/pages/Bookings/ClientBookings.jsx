@@ -7,7 +7,6 @@ import {
 } from "../../hooks/useFetch";
 import BookingRequestSender from "../../components/BookingRequestSender";
 import ClientBookingItem from "../../components/ClientBookingItem";
-import BookingControlBtn from "../../components/BookingControlBtn";
 import { useNavigate } from "react-router-dom";
 
 const ClientBookings = () => {
@@ -28,6 +27,7 @@ const ClientBookings = () => {
     performFetch: performFetchBookings,
   } = useFetchBookings("/customer/bookings", (response) => {
     setBookingResponse(response);
+    // console.log(response);
   });
 
   useEffect(() => {
@@ -68,15 +68,37 @@ const ClientBookings = () => {
           <p>{errorBookings.toString()}</p>
         ) : (
           <>
-            <ClientBookingItem
-              requestBlok={<BookingRequestSender />}
-              bookingControl={<BookingControlBtn />}
-            />
-            <h4>Booking history:</h4>
-            {bookingResponse &&
-              bookingResponse.bookings.map((booking) => (
-                <ClientBookingItem data={booking} key={booking._id} />
-              ))}
+            {bookingResponse.currentBookings.length >= 1 ? (
+              <>
+                <h4>Current bookings:</h4>
+                {bookingResponse &&
+                  bookingResponse.currentBookings.map((booking) => (
+                    <ClientBookingItem
+                      data={booking}
+                      key={booking._id}
+                      requestBlok={<BookingRequestSender />}
+                    />
+                  ))}
+              </>
+            ) : null}
+            {bookingResponse.upComingBookings.length >= 1 ? (
+              <>
+                <h4>Upcoming bookings:</h4>
+                {bookingResponse &&
+                  bookingResponse.upComingBookings.map((booking) => (
+                    <ClientBookingItem data={booking} key={booking._id} />
+                  ))}
+              </>
+            ) : null}
+            {bookingResponse.oldBookings.length >= 1 ? (
+              <>
+                <h4>Booking history:</h4>
+                {bookingResponse &&
+                  bookingResponse.oldBookings.map((booking) => (
+                    <ClientBookingItem data={booking} key={booking._id} />
+                  ))}
+              </>
+            ) : null}
           </>
         )
       ) : (
