@@ -55,7 +55,7 @@ BookingSchema.post("save", async function (doc, next) {
       next(error);
     }
     next();
-  }, 1000 * 60 * 1); // This timeout sets a delay of 15 minutes
+  }, 1000 * 60 * 15); // This timeout sets a delay of 15 minutes
 });
 
 const Booking = mongoose.model("Booking", BookingSchema);
