@@ -4,7 +4,7 @@ import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home/Home";
 import Admin from "../src/pages/Admin";
 import Clients from "./pages/Admin/pages/Clients";
-import AddRooms from "./pages/Admin/pages/AddRooms";
+import Rooms from "./pages/Admin/pages/Rooms";
 import Login from "./pages/Admin/Component/Login";
 import ClientRegistrationForm from "./pages/RegistrationForm/ClientRegistrationForm";
 import ExistAccountInfo from "./pages/Account/ExistAccountInfo";
@@ -31,15 +31,13 @@ const App = () => {
             path="checkout-confirmation"
             element={<ClientCheckoutConfirmation />}
           />
-          <Route path="reset-password" element={<PasswordReset />} />
+          <Route path="customer/resetpassword" element={<PasswordReset />} />
         </Route>
-        <Route path="admin" element={<Admin />} />
-        <Route path="clients" element={<Clients />} />
-        <Route path="AddRooms" element={<AddRooms />} />
-        <Route path="Login" element={<Login />} />
-        <Route path="Status" element={<RoomStatus />} />
-        <Route path="Login-admin" element={<Login />} />
-        <Route path="Status" element={<RoomStatus />} />
+        <Route path="Admin" element={<Admin />} />
+        <Route path="Admin/Clients" element={<Clients />} />
+        <Route path="Admin/AddRooms" element={<Rooms />} />
+        <Route path="Admin/Login" element={<Login />} />
+        <Route path="Admin/Status" element={<RoomStatus />} />
       </Routes>
     </>
   );

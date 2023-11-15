@@ -2,11 +2,12 @@ import ServerError from "../error/ServerError.js";
 import bcrypt from "bcryptjs";
 
 export const validateUserRegisterInput = (req, next) => {
-  const { firstname, lastname, phone, password, email } = req.body;
+  const { firstname, lastname, phone, password, email, birthday, payment } =
+    req.body;
   if (!(firstname && lastname && phone && password && email)) {
     return next(new ServerError("Please provide all required inputs", 400));
   }
-  return { firstname, lastname, phone, password, email };
+  return { firstname, lastname, phone, password, email, birthday, payment };
 };
 
 export const validateUserLoginInput = (req, next) => {
@@ -76,18 +77,18 @@ export const validateEditRoomInput = (req, next) => {
 };
 
 export const validateCheckOutInput = (req, next) => {
-  const { firstname, lastname, phone, email } = req.body;
-  if (!(firstname && lastname && phone && email)) {
+  const { firstname, lastname, phone, email, birthday, payment } = req.body;
+  if (!(firstname && lastname && phone && email && birthday && payment)) {
     return next(new ServerError("Please provide all required inputs", 400));
   }
-  const userObj = { firstname, lastname, phone, email };
+  const userObj = { firstname, lastname, phone, email, birthday, payment };
   userObj.password = req.cookies.guestCustomerId;
 
   return userObj;
 };
 
 export const validateEditUserInput = (req) => {
-  const { firstname, lastname, phone, email } = req.body;
+  const { firstname, lastname, phone, email, birthday, payment } = req.body;
   const editObj = {};
 
   if (firstname) {
@@ -101,6 +102,12 @@ export const validateEditUserInput = (req) => {
   }
   if (email) {
     editObj.email = email;
+  }
+  if (birthday) {
+    editObj.birthday = birthday;
+  }
+  if (payment) {
+    editObj.payment = payment;
   }
   return editObj;
 };

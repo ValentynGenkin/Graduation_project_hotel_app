@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import useFetch from "../../../hooks/useFetch";
 import "../CSS/Registration.css";
+import PropTypes from "prop-types";
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ reload, setReload }) => {
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -18,6 +19,7 @@ const RegistrationForm = () => {
   const [success, setSuccess] = useState(false);
 
   const { isLoading, error, performFetch } = useFetch("/admin/register", () => {
+    setReload(!reload);
     setSuccess(true);
   });
 
@@ -35,6 +37,7 @@ const RegistrationForm = () => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(data),
     });
   };
@@ -89,8 +92,8 @@ const RegistrationForm = () => {
   }, [error, addError]);
   return (
     <div className="admin-registrationFormWrapper">
+      <h1>Add new Admin</h1>
       <form onSubmit={handleSubmit} className="admin-registration-form">
-        <h2>Add new Admin</h2>
         <div className="admin-form-group">
           <label htmlFor="username">FirstName:</label>
           <input
@@ -169,6 +172,10 @@ const RegistrationForm = () => {
       </form>
     </div>
   );
+};
+RegistrationForm.propTypes = {
+  reload: PropTypes.bool.isRequired,
+  setReload: PropTypes.func.isRequired,
 };
 
 export default RegistrationForm;

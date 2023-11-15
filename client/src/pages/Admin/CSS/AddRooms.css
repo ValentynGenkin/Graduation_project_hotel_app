@@ -1,41 +1,50 @@
-.room-container {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  margin: 10px;
-  width: 300px;
-}
-
-.room-container h2 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.room-container p {
-  margin: 10px 0;
-}
-
-.facilities-list {
-  list-style: none;
-  padding: 0;
-}
-
-.facilities-list li {
-  margin-bottom: 5px;
-}
-
-.images-container {
+.room-registrationForm {
   display: flex;
-  flex-wrap: wrap;
-  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 120px);
+  width: 400px;
+  flex-direction: column;
+  font-weight: semi-bold;
+  background-color: white;
+  gap: 7px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the values for your desired shadow effect */
+}
+.input-wrapper {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  width: 320px;
+  gap: 10px;
 }
 
-.room-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+.room-input {
+  width: 100%;
+  padding: 5px;
+  font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  border-radius: 3px;
+}
+
+.inputLabel {
+  color: #333;
+}
+
+.room-register-button {
+  width: 150px; /* Making the button 150px wide */
+  padding: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 10px 0px; /* Adding margin on top of the button */
+}
+
+.room-register-button:hover {
+  background-color: #0056b3;
 }

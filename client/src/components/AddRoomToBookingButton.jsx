@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { BookingContext } from "../contexts/BookingContext";
 import PropTypes from "prop-types";
@@ -11,18 +11,18 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
     className: PropTypes.string.isRequired,
   };
   const { handleBookingContext } = useContext(BookingContext);
-
-  const { isLoading, error, performFetch } = useFetch(
+  const [clickEvent, setClickEvent] = useState();
+  const { isLoading, error, performFetch, cancelFetch } = useFetch(
     "/booking/addRoomToBooking",
     (response) => {
       if (response.success === true) {
+        localStorage.setItem("booking", JSON.stringify(response.booking));
+
         handleBookingContext();
       }
     }
   );
-  const handleClick = (event) => {
-    event.preventDefault();
-
+  const handleClick = () => {
     performFetch({
       method: "POST",
       credentials: "include",
@@ -36,7 +36,14 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
       }),
     });
   };
-
+  useEffect(() => {
+    if (clickEvent) {
+      handleClick();
+    }
+    return () => {
+      cancelFetch();
+    };
+  }, [clickEvent]);
   return (
     <>
       {isLoading ? (
@@ -44,13 +51,16 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
       ) : error ? (
         <>
           <p>Something went wrong. Error:{error.toString()}</p>
-          <button className={className} onClick={handleClick}>
-            Add Room Button
+          <button
+            className={className}
+            onClick={() => setClickEvent(new Date())}
+          >
+            Add Room
           </button>
         </>
       ) : (
-        <button className={className} onClick={handleClick}>
-          Add Room Button
+        <button className={className} onClick={() => setClickEvent(new Date())}>
+          Add Room
         </button>
       )}
     </>

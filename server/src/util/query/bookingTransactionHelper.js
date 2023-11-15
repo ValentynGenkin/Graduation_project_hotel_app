@@ -39,13 +39,18 @@ export const addRoomToBookingTransaction = async (req, next) => {
     booking.cost =
       parseFloat(booking.cost.toString()) +
       parseFloat(availableRoom.roomPrice.toString()) * diffInDays;
+    booking.updatedAt = new Date();
     await booking.save({ session });
 
     await session.commitTransaction();
 
-    const updatedBooking = Booking.findById(booking._id).populate(
-      "bookingDetails"
-    );
+    const updatedBooking = Booking.findById(booking._id).populate({
+      path: "bookingDetails",
+      populate: {
+        path: "roomId",
+        model: "Room",
+      },
+    });
     return updatedBooking;
   } catch (error) {
     await session.abortTransaction();
@@ -104,14 +109,18 @@ export const removeRoomFromBookingTransaction = async (req, next) => {
     booking.cost =
       parseFloat(booking.cost.toString()) -
       parseFloat(room.roomPrice.toString()) * diffInDays;
-
+    booking.updatedAt = new Date();
     await booking.save({ session });
 
     await session.commitTransaction();
 
-    const updatedBooking = await Booking.findById(booking._id).populate(
-      "bookingDetails"
-    );
+    const updatedBooking = await Booking.findById(booking._id).populate({
+      path: "bookingDetails",
+      populate: {
+        path: "roomId",
+        model: "Room",
+      },
+    });
 
     return updatedBooking;
   } catch (error) {

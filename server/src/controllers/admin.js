@@ -118,3 +118,15 @@ export const getAllRooms = asyncHandler(async (req, res) => {
     rooms: rooms,
   });
 });
+
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find()
+    .select("firstname lastname phone email role _id")
+    .sort({ createdAt: -1 });
+
+  return res.status(200).json({ success: true, users });
+});
+
+export const getDashboardAccess = asyncHandler(async (req, res) => {
+  return res.status(200).json({ success: true });
+});
