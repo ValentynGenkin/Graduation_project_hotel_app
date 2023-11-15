@@ -27,7 +27,6 @@ const ClientBookings = () => {
     performFetch: performFetchBookings,
   } = useFetchBookings("/customer/bookings", (response) => {
     setBookingResponse(response);
-    // console.log(response);
   });
 
   useEffect(() => {
@@ -76,7 +75,9 @@ const ClientBookings = () => {
                     <ClientBookingItem
                       data={booking}
                       key={booking._id}
-                      requestBlok={<BookingRequestSender />}
+                      requestBlok={
+                        <BookingRequestSender idControl={booking._id} />
+                      }
                     />
                   ))}
               </>

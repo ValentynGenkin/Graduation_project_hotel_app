@@ -4,32 +4,41 @@ import PropTypes from "prop-types";
 import { dateFormatter } from "../util/dateFormatter";
 
 const ClientBookingItem = ({ requestBlok, bookingControl, data }) => {
+  const totalAmount = (bookingDetail) => {
+    let totalCost = 0;
+    const roomPrice = parseFloat(bookingDetail.roomId.roomPrice.$numberDecimal);
+    const checkInDate = new Date(bookingDetail.checkIn);
+    const checkOutDate = new Date(bookingDetail.checkOut);
+
+    checkInDate.setUTCHours(14, 0, 0, 0);
+    checkOutDate.setUTCHours(12, 0, 0, 0);
+
+    const timeCorrection = 2 * 60 * 60 * 1000;
+    const numberOfNights = Math.ceil(
+      (checkOutDate - checkInDate - timeCorrection) / (1000 * 60 * 60 * 24)
+    );
+
+    const roomCost = numberOfNights * roomPrice;
+    return (totalCost += roomCost);
+  };
+
   return (
     <Container className="client-booking-item">
-      <div className="booking-date-information">
-        <div>
-          <span>Check-in: </span>
-
-          <span>{`${dateFormatter(new Date(data.checkIn))} 14:00`}</span>
-        </div>
-        <div>
-          <span>Check-out: </span>
-
-          <span>{`${dateFormatter(new Date(data.checkOut))}  12:00`}</span>
-        </div>
-      </div>
-
+      <div className="booking-date-information"></div>
       {bookingControl}
-
       <div className="bookings-description-block">
         <div className="bookings-img-carousel">
-          <Carousel indicators={false}>
+          <Carousel
+            indicators={false}
+            interval={null}
+            className="booking-carousel"
+          >
             {data.roomId.images.map((img) => (
               <Carousel.Item key={img}>
                 <img
                   src={img}
                   alt="Room photo"
-                  className="checkout-carousel-img"
+                  className="booking-carousel-img"
                 />
               </Carousel.Item>
             ))}
@@ -43,30 +52,45 @@ const ClientBookingItem = ({ requestBlok, bookingControl, data }) => {
             ))}
           </ul>
         </div>
+
+        <div className="booking-information-block">
+          <div>
+            <p className="booking-info-title">Check-in: </p>
+
+            <p className="booking-info-value">{`${dateFormatter(
+              new Date(data.checkIn)
+            )} 14:00`}</p>
+          </div>
+          <div>
+            <p className="booking-info-title">Check-out: </p>
+
+            <p className="booking-info-value">{`${dateFormatter(
+              new Date(data.checkOut)
+            )}  12:00`}</p>
+          </div>
+          <div>
+            <p className="booking-info-title">Room type: </p>
+
+            <p className="booking-info-value">{data.roomId.roomType}</p>
+          </div>
+          <div>
+            <p className="booking-info-title">Room number: </p>
+
+            <p className="booking-info-value">{data.roomId.roomNo}</p>
+          </div>
+          <div>
+            <p className="booking-info-title">Total amount: </p>
+
+            <p className="booking-info-value">€ {totalAmount(data)}</p>
+          </div>
+
+          <div>
+            <p className="booking-info-title">Booking status: </p>
+
+            <p className="booking-info-value">{data.status}</p>
+          </div>
+        </div>
       </div>
-      <div className="booking-information-block">
-        <div>
-          <span>Booking ID: </span>
-
-          <span>{data.bookingId}</span>
-        </div>
-        <div>
-          <span>Amount: </span>
-
-          <span>{data.roomId.roomPrice.$numberDecimal}</span>
-        </div>
-        <div>
-          <span>Room number: </span>
-
-          <span>{data.roomId.roomNo}</span>
-        </div>
-        <div>
-          <span>Booking status: </span>
-
-          <span>Confirmed</span>
-        </div>
-      </div>
-
       {requestBlok}
     </Container>
   );
