@@ -24,7 +24,6 @@ const ClientBookingItem = ({ requestBlok, bookingControl, data }) => {
 
   return (
     <Container className="client-booking-item">
-      <div className="booking-date-information"></div>
       {bookingControl}
       <div className="bookings-description-block">
         <div className="bookings-img-carousel">

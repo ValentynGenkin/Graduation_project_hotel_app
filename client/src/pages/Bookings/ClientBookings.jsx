@@ -65,6 +65,10 @@ const ClientBookings = () => {
       ) : authResponse && authResponse.success === true ? (
         errorBookings ? (
           <p>{errorBookings.toString()}</p>
+        ) : bookingResponse.currentBookings.length === 0 &&
+          bookingResponse.upComingBookings.length === 0 &&
+          bookingResponse.oldBookings.length === 0 ? (
+          <p>There are no bookings at this time.</p>
         ) : (
           <>
             {bookingResponse.currentBookings.length >= 1 ? (

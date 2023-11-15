@@ -89,7 +89,7 @@
 
 .bookings-description-block {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   justify-content: space-between;
 }
 .bookings-description {
@@ -138,11 +138,11 @@
     margin-top: 0;
   }
   .booking-carousel {
-    max-width: 350px;
     margin-top: 0px;
   }
-  .booking-carousel-img {
-    max-width: 350px;
+
+  .bookings-description-block {
+    flex-wrap: nowrap;
   }
 }
 
