@@ -50,18 +50,20 @@ export const getCustomerCurrentBookings = asyncHandler(async (req, res) => {
   let upComingBookings = [];
   allBookings.forEach((booking) => {
     booking.bookingDetails.forEach((bookingDetail) => {
-      bookingDetail.status = booking.status;
+      const bookingDetailObj = bookingDetail.toObject();
+      bookingDetailObj.status = booking.status;
+
       if (
         bookingDetail.checkIn <= currentDate &&
         bookingDetail.checkOut >= currentDate
       ) {
-        currentBookings.push(bookingDetail);
+        currentBookings.push(bookingDetailObj);
       }
       if (bookingDetail.checkOut <= currentDate) {
-        oldBookings.push(bookingDetail);
+        oldBookings.push(bookingDetailObj);
       }
       if (bookingDetail.checkIn >= currentDate) {
-        upComingBookings.push(bookingDetail);
+        upComingBookings.push(bookingDetailObj);
       }
     });
   });
