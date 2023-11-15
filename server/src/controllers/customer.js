@@ -37,6 +37,7 @@ export const getCustomerCurrentBookings = asyncHandler(async (req, res) => {
   const currentDate = new Date();
   const bookings = await Booking.find({
     customerId: customerId,
+    status: { $ne: "open" },
   }).populate({
     path: "bookingDetails",
     match: {

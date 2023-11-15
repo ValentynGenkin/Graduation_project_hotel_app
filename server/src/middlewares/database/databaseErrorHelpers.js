@@ -44,7 +44,9 @@ export const getCustomerAccess = asyncHandler(async (req, res, next) => {
 
 export const checkRoomExist = asyncHandler(async (req, res, next) => {
   const roomId = req.params.roomId ? req.params.roomId : req.body.roomId;
-
+  if (!roomId) {
+    next(new ServerError("Please provide a room id.", 400));
+  }
   const room = await Room.findById(roomId);
 
   if (!room) {
@@ -102,6 +104,18 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   } else {
     // at this step we create req.customer.id if guestCustomerId is not exist in request.
     getCustomerAccess(req, null, next);
+    if (req.body.bookingId && req.originalUrl.includes("tasks")) {
+      const booking = await Booking.findById(req.body.bookingId).populate(
+        "bookingDetails"
+      );
+      if (!booking) {
+        return next(
+          new ServerError("There is no booking associated with this id.", 400)
+        );
+      }
+      req.booking = booking;
+      next();
+    }
     if (req.cookies.booking || req.cookies.bookingInProcess) {
       booking = await Booking.findById(
         req.cookies.booking || req.cookies.bookingInProcess
@@ -131,5 +145,39 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
     booking = await guestCustomerCheckOutHelper(req, booking, next);
   }
   req.booking = booking;
+  next();
+});
+export const checkTaskPermission = asyncHandler(async (req, res, next) => {
+  const booking = req.booking;
+  const { bookingDetailId } = req.body;
+  if (!bookingDetailId) {
+    next(new ServerError("Please provide a bookingDetailId", 400));
+  }
+  const bookingDetail = booking.bookingDetails.filter((bookingDetail) => {
+    if (bookingDetail._id === bookingDetailId) {
+      return bookingDetail;
+    }
+  });
+  if (bookingDetail.length === 0) {
+    next(
+      new ServerError(
+        "There is no association between provided room id and booking id."
+      )
+    );
+  }
+  if (
+    !(
+      new Date(bookingDetail[0].checkIn) <= new Date() &&
+      new Date(bookingDetail[0].checkOut) >= new Date()
+    )
+  ) {
+    next(
+      new ServerError(
+        "You can create task only for your current bookings!",
+        401
+      )
+    );
+  }
+  req.bookingDetail = bookingDetail;
   next();
 });
