@@ -44,7 +44,7 @@ BookingSchema.post("save", async function (doc, next) {
 
       const timeDifference =
         (currentTime - new Date(doc.updatedAt)) / (1000 * 60);
-      if (timeDifference >= 1) {
+      if (timeDifference >= 1 && doc.status === "open") {
         doc.bookingDetailIds = [];
         doc.cost = 0;
         await BookingDetail.deleteMany({ bookingId: doc._id });
