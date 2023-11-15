@@ -1,34 +1,8 @@
 import React from "react";
-import { Container } from "react-bootstrap";
-import AliceCarousel from "react-alice-carousel";
-import Room1Image from "../assets/room1.jpg";
-import Room2Image from "../assets/room2.jpg";
-import Room3Image from "../assets/room3.jpg";
-import Room4Image from "../assets/room4.jpg";
+import { Carousel, Container } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-const responsive = {
-  1060: { items: 1 },
-};
-
-const ClientBookingItem = ({ requestBlok, bookingControl }) => {
-  const items = [
-    <div className="main-screen-card-item" data-value="1" key={"1"}>
-      <img src={Room1Image} alt="" className="main-screen-card-img" />
-    </div>,
-    <div className="main-screen-card-item" data-value="2" key={"2"}>
-      <img src={Room2Image} alt="" className="main-screen-card-img" />
-    </div>,
-    <div className="main-screen-card-item" data-value="3" key={"3"}>
-      <img src={Room3Image} alt="" className="main-screen-card-img" />
-    </div>,
-    <div className="main-screen-card-item" data-value="4" key={"4"}>
-      <img src={Room4Image} alt="" className="main-screen-card-img" />
-    </div>,
-    <div className="main-screen-card-item" data-value="4" key={"5"}>
-      <img src={Room2Image} alt="" className="main-screen-card-img" />
-    </div>,
-  ];
+const ClientBookingItem = ({ requestBlok, bookingControl, data }) => {
   return (
     <Container className="client-booking-item">
       <div className="booking-date-information">
@@ -40,7 +14,7 @@ const ClientBookingItem = ({ requestBlok, bookingControl }) => {
         <div>
           <span>Check-out: </span>
 
-          <span>15.11.2023 12:00</span>
+          <span>15.11.2023 12:00{data}</span>
         </div>
       </div>
 
@@ -48,12 +22,17 @@ const ClientBookingItem = ({ requestBlok, bookingControl }) => {
 
       <div className="bookings-description-block">
         <div className="bookings-img-carousel">
-          <AliceCarousel
-            items={items}
-            responsive={responsive}
-            controlsStrategy="alternate"
-            disableDotsControls
-          />
+          <Carousel indicators={false}>
+            {/* {item.roomId.images.map((img) => (
+              <Carousel.Item key={img}>
+                <img
+                  src={img}
+                  alt="Room photo"
+                  className="checkout-carousel-img"
+                />
+              </Carousel.Item>
+            ))} */}
+          </Carousel>
         </div>
         <div className="bookings-description">
           <h5>Room facilities:</h5>
@@ -106,4 +85,5 @@ export default ClientBookingItem;
 ClientBookingItem.propTypes = {
   requestBlok: PropTypes.element,
   bookingControl: PropTypes.element,
+  data: PropTypes.object.isRequired,
 };

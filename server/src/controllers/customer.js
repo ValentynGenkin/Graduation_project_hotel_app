@@ -34,15 +34,11 @@ export const getCustomerAccessAndInfo = asyncHandler(async (req, res) => {
 
 export const getCustomerCurrentBookings = asyncHandler(async (req, res) => {
   const customerId = req.customer.id;
-  const currentDate = new Date();
   const bookings = await Booking.find({
     customerId: customerId,
+    status: { $ne: "open" },
   }).populate({
     path: "bookingDetails",
-    match: {
-      checkIn: { $lte: currentDate },
-      checkOut: { $gte: currentDate },
-    },
     populate: {
       path: "roomId",
       model: "Room",
