@@ -13,7 +13,12 @@ const BookingDetailSchema = new mongoose.Schema({
   },
   checkIn: { type: Date },
   checkOut: { type: Date },
-
+  taskIds: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Task",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
