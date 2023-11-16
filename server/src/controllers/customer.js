@@ -52,6 +52,7 @@ export const getCustomerCurrentBookings = asyncHandler(async (req, res) => {
     booking.bookingDetails.forEach((bookingDetail) => {
       const bookingDetailObj = bookingDetail.toObject();
       bookingDetailObj.status = booking.status;
+
       if (
         bookingDetail.checkIn <= currentDate &&
         bookingDetail.checkOut >= currentDate

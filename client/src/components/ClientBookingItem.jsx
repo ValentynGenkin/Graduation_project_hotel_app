@@ -1,101 +1,95 @@
 import React from "react";
-import { Container } from "react-bootstrap";
-import AliceCarousel from "react-alice-carousel";
-import Room1Image from "../assets/room1.jpg";
-import Room2Image from "../assets/room2.jpg";
-import Room3Image from "../assets/room3.jpg";
-import Room4Image from "../assets/room4.jpg";
+import { Carousel, Container } from "react-bootstrap";
 import PropTypes from "prop-types";
+import { dateFormatter } from "../util/dateFormatter";
 
-const responsive = {
-  1060: { items: 1 },
-};
+const ClientBookingItem = ({ requestBlok, bookingControl, data }) => {
+  const totalAmount = (bookingDetail) => {
+    let totalCost = 0;
+    const roomPrice = parseFloat(bookingDetail.roomId.roomPrice.$numberDecimal);
+    const checkInDate = new Date(bookingDetail.checkIn);
+    const checkOutDate = new Date(bookingDetail.checkOut);
 
-const ClientBookingItem = ({ requestBlok, bookingControl }) => {
-  const items = [
-    <div className="main-screen-card-item" data-value="1" key={"1"}>
-      <img src={Room1Image} alt="" className="main-screen-card-img" />
-    </div>,
-    <div className="main-screen-card-item" data-value="2" key={"2"}>
-      <img src={Room2Image} alt="" className="main-screen-card-img" />
-    </div>,
-    <div className="main-screen-card-item" data-value="3" key={"3"}>
-      <img src={Room3Image} alt="" className="main-screen-card-img" />
-    </div>,
-    <div className="main-screen-card-item" data-value="4" key={"4"}>
-      <img src={Room4Image} alt="" className="main-screen-card-img" />
-    </div>,
-    <div className="main-screen-card-item" data-value="4" key={"5"}>
-      <img src={Room2Image} alt="" className="main-screen-card-img" />
-    </div>,
-  ];
+    checkInDate.setUTCHours(14, 0, 0, 0);
+    checkOutDate.setUTCHours(12, 0, 0, 0);
+
+    const timeCorrection = 2 * 60 * 60 * 1000;
+    const numberOfNights = Math.ceil(
+      (checkOutDate - checkInDate - timeCorrection) / (1000 * 60 * 60 * 24)
+    );
+
+    const roomCost = numberOfNights * roomPrice;
+    return (totalCost += roomCost);
+  };
+
   return (
     <Container className="client-booking-item">
-      <div className="booking-date-information">
-        <div>
-          <span>Check-in: </span>
-
-          <span>12.11.2023 14:00</span>
-        </div>
-        <div>
-          <span>Check-out: </span>
-
-          <span>15.11.2023 12:00</span>
-        </div>
-      </div>
-
       {bookingControl}
-
       <div className="bookings-description-block">
         <div className="bookings-img-carousel">
-          <AliceCarousel
-            items={items}
-            responsive={responsive}
-            controlsStrategy="alternate"
-            disableDotsControls
-          />
+          <Carousel
+            indicators={false}
+            interval={null}
+            className="booking-carousel"
+          >
+            {data.roomId.images.map((img) => (
+              <Carousel.Item key={img}>
+                <img
+                  src={img}
+                  alt="Room photo"
+                  className="booking-carousel-img"
+                />
+              </Carousel.Item>
+            ))}
+          </Carousel>
         </div>
         <div className="bookings-description">
-          <h5>Room facilities:</h5>
-          <h6>
-            This air-conditioned double room features a private bathroom, a
-            private entrance and a tea and coffee maker.
-          </h6>
+          <h6>{data.roomId.roomDescription}</h6>
           <ul>
-            <li>Refrigerator</li>
-            <li>Safety deposit box</li>
-            <li>Hardwood or parquet floors</li>
-            <li>Air conditioning</li>
-            <li>Seating Area</li>
-            <li>
-              <b>Smoking:</b> No smoking
-            </li>
+            {data.roomId.facilities.map((li) => (
+              <li key={li}>{li}</li>
+            ))}
           </ul>
         </div>
+
+        <div className="booking-information-block">
+          <div>
+            <p className="booking-info-title">Check-in: </p>
+
+            <p className="booking-info-value">{`${dateFormatter(
+              new Date(data.checkIn)
+            )} 14:00`}</p>
+          </div>
+          <div>
+            <p className="booking-info-title">Check-out: </p>
+
+            <p className="booking-info-value">{`${dateFormatter(
+              new Date(data.checkOut)
+            )}  12:00`}</p>
+          </div>
+          <div>
+            <p className="booking-info-title">Room type: </p>
+
+            <p className="booking-info-value">{data.roomId.roomType}</p>
+          </div>
+          <div>
+            <p className="booking-info-title">Room number: </p>
+
+            <p className="booking-info-value">{data.roomId.roomNo}</p>
+          </div>
+          <div>
+            <p className="booking-info-title">Total amount: </p>
+
+            <p className="booking-info-value">€ {totalAmount(data)}</p>
+          </div>
+
+          <div>
+            <p className="booking-info-title">Booking status: </p>
+
+            <p className="booking-info-value">{data.status}</p>
+          </div>
+        </div>
       </div>
-      <div className="booking-information-block">
-        <div>
-          <span>Booking ID: </span>
-
-          <span>165168165</span>
-        </div>
-        <div>
-          <span>Amount: </span>
-
-          <span>270.00 euro</span>
-        </div>
-        <div>
-          <span>Payment method: </span>
-
-          <span>iDeal</span>
-        </div>
-        <div>
-          <span>Booking status: </span>
-
-          <span>Confirmed</span>
-        </div>
-      </div>
-
       {requestBlok}
     </Container>
   );
@@ -106,4 +100,5 @@ export default ClientBookingItem;
 ClientBookingItem.propTypes = {
   requestBlok: PropTypes.element,
   bookingControl: PropTypes.element,
+  data: PropTypes.object.isRequired,
 };

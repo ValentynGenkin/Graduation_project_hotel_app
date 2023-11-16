@@ -5,6 +5,8 @@ export const createMolliePayment = async (req) => {
   const returnUrl = req.body.returnUrl;
   const origin = req.protocol + "://" + req.headers.host;
   const webhook = `${origin}/api/booking/mollie-hook`;
+  // const webhook =
+  //   "https://c44-group-c-5ea6be59db5d.herokuapp.com/api/booking/mollie-hook";
 
   const mollieClient = createMollieClient({
     apiKey: process.env.MOLLIE_API_KEY,
