@@ -40,10 +40,16 @@ export const getCustomerCurrentBookings = asyncHandler(async (req, res) => {
     status: { $ne: "open" },
   }).populate({
     path: "bookingDetails",
-    populate: {
-      path: "roomId",
-      model: "Room",
-    },
+    populate: [
+      {
+        path: "roomId",
+        model: "Room",
+      },
+      {
+        path: "taskIds",
+        model: "Task",
+      },
+    ],
   });
   let oldBookings = [];
   let currentBookings = [];
