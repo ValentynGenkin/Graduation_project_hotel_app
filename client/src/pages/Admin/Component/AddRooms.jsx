@@ -179,14 +179,14 @@ const AddRoomForm = () => {
             : success
             ? "green"
             : addError
-            ? "green"
+            ? "orange"
             : "blue",
         }}
       >
         {inputError
           ? inputErrorMsg
           : success
-          ? "success"
+          ? "Success"
           : addError
           ? "Failed"
           : "Add Room"}

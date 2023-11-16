@@ -57,7 +57,7 @@ const RoomTable = () => {
   }, [startDate, currentPage]); // Include currentPage as a dependency
 
   const getCellBackgroundColor = (room, date, period) => {
-    let value = "white";
+    let value = "whitesmoke";
     if (room && room.bookings && room.bookings.length > 0) {
       room.bookings.forEach((booking) => {
         const checkIn = new Date(booking.checkIn);

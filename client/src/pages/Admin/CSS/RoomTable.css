@@ -37,7 +37,7 @@
   /* height: 100%; */
 
   font-weight: bold; /* Optional: Make header text bold */
-  background-color: lightgray; /* Optional: Add background color to header row */
+  background-color: #00a8cc; /* Optional: Add background color to header row */
 }
 
 .header-title,
@@ -58,6 +58,7 @@
   overflow: hidden; /* Hide overflow text */
   text-overflow: ellipsis; /* Show ellipsis (...) for overflow text */
   font-size: 16px; /* Set a default font size */
+  color: white;
 }
 .header-column.last {
   border-right: gray solid 1px;
