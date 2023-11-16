@@ -10,7 +10,7 @@ import Booking from "../../models/Booking.js";
 
 import { guestCustomerCheckOutHelper } from "../../util/checkout/guestCustomerCheckOutHelper.js";
 
-export const getCustomerAccess = asyncHandler(async (req, res, next) => {
+export const getCustomerAccess = (req, res, next) => {
   //get customer_access_token from cookies
   const token = isTokenIncluded(req);
 
@@ -40,7 +40,7 @@ export const getCustomerAccess = asyncHandler(async (req, res, next) => {
     return;
   }
   next();
-});
+};
 
 export const checkRoomExist = asyncHandler(async (req, res, next) => {
   const roomId = req.params.roomId ? req.params.roomId : req.body.roomId;
@@ -60,7 +60,7 @@ export const checkRoomExist = asyncHandler(async (req, res, next) => {
   next();
 });
 
-export const getAdminAccess = asyncHandler(async (req, res, next) => {
+export const getAdminAccess = (req, res, next) => {
   const token = isAdminTokenIncluded(req);
 
   if (!token) {
@@ -86,7 +86,7 @@ export const getAdminAccess = asyncHandler(async (req, res, next) => {
   req.admin = admin;
 
   next();
-});
+};
 
 export const checkBookingExist = asyncHandler(async (req, res, next) => {
   const guestCustomerId = req.cookies.guestCustomerId;
@@ -104,18 +104,7 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   } else {
     // at this step we create req.customer.id if guestCustomerId is not exist in request.
     getCustomerAccess(req, null, next);
-    if (req.body.bookingId && req.originalUrl.includes("task")) {
-      const booking = await Booking.findById(req.body.bookingId).populate(
-        "bookingDetails"
-      );
-      if (!booking) {
-        return next(
-          new ServerError("There is no booking associated with this id.", 400)
-        );
-      }
-      req.booking = booking;
-      next();
-    }
+
     if (req.cookies.booking || req.cookies.bookingInProcess) {
       booking = await Booking.findById(
         req.cookies.booking || req.cookies.bookingInProcess
@@ -133,7 +122,7 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   }
   if (req.originalUrl.includes("checkout")) {
     if (parseFloat(booking.cost.toString()) === 0) {
-      return next(
+      next(
         new ServerError(
           "You can not go to checkout. Your booking is empty!",
           400
@@ -148,7 +137,9 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   next();
 });
 export const checkTaskPermission = asyncHandler(async (req, res, next) => {
-  const booking = req.booking;
+  const booking = await Booking.findById(req.body.bookingId).populate(
+    "bookingDetails"
+  );
   if (req.customer.id !== booking.customerId.toString()) {
     next(
       new ServerError("You can create task for only your own bookings.", 401)
