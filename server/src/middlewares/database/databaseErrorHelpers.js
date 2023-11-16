@@ -104,7 +104,7 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   } else {
     // at this step we create req.customer.id if guestCustomerId is not exist in request.
     getCustomerAccess(req, null, next);
-    if (req.body.bookingId && req.originalUrl.includes("tasks")) {
+    if (req.body.bookingId && req.originalUrl.includes("task")) {
       const booking = await Booking.findById(req.body.bookingId).populate(
         "bookingDetails"
       );
@@ -149,19 +149,26 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
 });
 export const checkTaskPermission = asyncHandler(async (req, res, next) => {
   const booking = req.booking;
+  if (req.customer.id !== booking.customerId.toString()) {
+    next(
+      new ServerError("You can create task for only your own bookings.", 401)
+    );
+  }
   const { bookingDetailId } = req.body;
   if (!bookingDetailId) {
     next(new ServerError("Please provide a bookingDetailId", 400));
   }
+
   const bookingDetail = booking.bookingDetails.filter((bookingDetail) => {
-    if (bookingDetail._id === bookingDetailId) {
+    if (bookingDetail._id.toString() === bookingDetailId) {
       return bookingDetail;
     }
   });
   if (bookingDetail.length === 0) {
     next(
       new ServerError(
-        "There is no association between provided room id and booking id."
+        "There is no association between provided room id and booking id.",
+        400
       )
     );
   }
@@ -178,6 +185,6 @@ export const checkTaskPermission = asyncHandler(async (req, res, next) => {
       )
     );
   }
-  req.bookingDetail = bookingDetail;
+  req.bookingDetail = bookingDetail[0];
   next();
 });

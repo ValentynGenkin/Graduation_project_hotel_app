@@ -1,8 +1,8 @@
 import express from "express";
-import { addTask } from "../controllers/task";
+import { addTask } from "../controllers/task.js";
 import {
   checkBookingExist,
-  checkRoomExist,
+  checkTaskPermission,
   getCustomerAccess,
 } from "../middlewares/database/databaseErrorHelpers.js";
 
@@ -10,7 +10,7 @@ const taskRouter = express.Router();
 
 taskRouter.post(
   "/add",
-  [getCustomerAccess, checkBookingExist, checkRoomExist],
+  [getCustomerAccess, checkBookingExist, checkTaskPermission],
   addTask
 );
 

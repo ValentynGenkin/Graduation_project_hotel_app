@@ -6,10 +6,10 @@ const TaskSchema = new mongoose.Schema({
     required: true,
     ref: "Booking",
   },
-  roomId: {
+  bookingDetailId: {
     type: mongoose.Schema.ObjectId,
     required: true,
-    ref: "Room",
+    ref: "BookingDetail",
   },
   task: {
     type: String,
