@@ -8,6 +8,7 @@ import {
 import BookingRequestSender from "../../components/BookingRequestSender";
 import ClientBookingItem from "../../components/ClientBookingItem";
 import { useNavigate } from "react-router-dom";
+import { default as useFetchTask } from "../../hooks/useFetch";
 
 const ClientBookings = () => {
   const [authResponse, setAuthResponse] = useState(null);
@@ -27,6 +28,16 @@ const ClientBookings = () => {
     performFetch: performFetchBookings,
   } = useFetchBookings("/customer/bookings", (response) => {
     setBookingResponse(response);
+  });
+
+  const [responseTask, setResponseTask] = useState(null);
+
+  const {
+    isLoading: isLoadingTask,
+    error: errorTask,
+    performFetch: performFetchTask,
+  } = useFetchTask("/task/add", (response) => {
+    setResponseTask(response);
   });
 
   useEffect(() => {
@@ -56,7 +67,7 @@ const ClientBookings = () => {
         },
       });
     }
-  }, [authResponse]);
+  }, [authResponse, responseTask]);
 
   return (
     <Container className="client-booking-container">
@@ -80,7 +91,15 @@ const ClientBookings = () => {
                       data={booking}
                       key={booking._id}
                       requestBlok={
-                        <BookingRequestSender idControl={booking._id} />
+                        <BookingRequestSender
+                          idControl={booking._id}
+                          tasks={booking}
+                          bookingDetailId={booking._id}
+                          bookingId={booking.bookingId}
+                          performFetchTask={performFetchTask}
+                          isLoadingTask={isLoadingTask}
+                          errorTask={errorTask}
+                        />
                       }
                     />
                   ))}
