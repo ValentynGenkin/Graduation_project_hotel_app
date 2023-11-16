@@ -10,7 +10,7 @@ import Booking from "../../models/Booking.js";
 
 import { guestCustomerCheckOutHelper } from "../../util/checkout/guestCustomerCheckOutHelper.js";
 
-export const getCustomerAccess = asyncHandler(async (req, res, next) => {
+export const getCustomerAccess = (req, res, next) => {
   //get customer_access_token from cookies
   const token = isTokenIncluded(req);
 
@@ -40,11 +40,13 @@ export const getCustomerAccess = asyncHandler(async (req, res, next) => {
     return;
   }
   next();
-});
+};
 
 export const checkRoomExist = asyncHandler(async (req, res, next) => {
   const roomId = req.params.roomId ? req.params.roomId : req.body.roomId;
-
+  if (!roomId) {
+    next(new ServerError("Please provide a room id.", 400));
+  }
   const room = await Room.findById(roomId);
 
   if (!room) {
@@ -58,7 +60,7 @@ export const checkRoomExist = asyncHandler(async (req, res, next) => {
   next();
 });
 
-export const getAdminAccess = asyncHandler(async (req, res, next) => {
+export const getAdminAccess = (req, res, next) => {
   const token = isAdminTokenIncluded(req);
 
   if (!token) {
@@ -84,7 +86,7 @@ export const getAdminAccess = asyncHandler(async (req, res, next) => {
   req.admin = admin;
 
   next();
-});
+};
 
 export const checkBookingExist = asyncHandler(async (req, res, next) => {
   const guestCustomerId = req.cookies.guestCustomerId;
@@ -102,6 +104,7 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   } else {
     // at this step we create req.customer.id if guestCustomerId is not exist in request.
     getCustomerAccess(req, null, next);
+
     if (req.cookies.booking || req.cookies.bookingInProcess) {
       booking = await Booking.findById(
         req.cookies.booking || req.cookies.bookingInProcess
@@ -119,7 +122,7 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
   }
   if (req.originalUrl.includes("checkout")) {
     if (parseFloat(booking.cost.toString()) === 0) {
-      return next(
+      next(
         new ServerError(
           "You can not go to checkout. Your booking is empty!",
           400
@@ -131,5 +134,48 @@ export const checkBookingExist = asyncHandler(async (req, res, next) => {
     booking = await guestCustomerCheckOutHelper(req, booking, next);
   }
   req.booking = booking;
+  next();
+});
+export const checkTaskPermission = asyncHandler(async (req, res, next) => {
+  const booking = await Booking.findById(req.body.bookingId).populate(
+    "bookingDetails"
+  );
+  if (req.customer.id !== booking.customerId.toString()) {
+    next(
+      new ServerError("You can create task for only your own bookings.", 401)
+    );
+  }
+  const { bookingDetailId } = req.body;
+  if (!bookingDetailId) {
+    next(new ServerError("Please provide a bookingDetailId", 400));
+  }
+
+  const bookingDetail = booking.bookingDetails.filter((bookingDetail) => {
+    if (bookingDetail._id.toString() === bookingDetailId) {
+      return bookingDetail;
+    }
+  });
+  if (bookingDetail.length === 0) {
+    next(
+      new ServerError(
+        "There is no association between provided room id and booking id.",
+        400
+      )
+    );
+  }
+  if (
+    !(
+      new Date(bookingDetail[0].checkIn) <= new Date() &&
+      new Date(bookingDetail[0].checkOut) >= new Date()
+    )
+  ) {
+    next(
+      new ServerError(
+        "You can create task only for your current bookings!",
+        401
+      )
+    );
+  }
+  req.bookingDetail = bookingDetail[0];
   next();
 });

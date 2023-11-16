@@ -3,6 +3,7 @@ import { createMollieClient } from "@mollie/api-client";
 export const createMolliePayment = async (req) => {
   const booking = req.booking;
   const returnUrl = req.body.returnUrl;
+
   const origin = req.protocol + "://" + req.headers.host;
   const webhook = `${origin}/api/booking/mollie-hook`;
 

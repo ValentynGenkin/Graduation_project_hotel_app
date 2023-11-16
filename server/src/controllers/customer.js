@@ -35,21 +35,49 @@ export const getCustomerAccessAndInfo = asyncHandler(async (req, res) => {
 export const getCustomerCurrentBookings = asyncHandler(async (req, res) => {
   const customerId = req.customer.id;
   const currentDate = new Date();
-  const bookings = await Booking.find({
+  const allBookings = await Booking.find({
     customerId: customerId,
+    status: { $ne: "open" },
   }).populate({
     path: "bookingDetails",
-    match: {
-      checkIn: { $lte: currentDate },
-      checkOut: { $gte: currentDate },
-    },
-    populate: {
-      path: "roomId",
-      model: "Room",
-    },
+    populate: [
+      {
+        path: "roomId",
+        model: "Room",
+      },
+      {
+        path: "taskIds",
+        model: "Task",
+      },
+    ],
   });
+  let oldBookings = [];
+  let currentBookings = [];
+  let upComingBookings = [];
+  allBookings.forEach((booking) => {
+    booking.bookingDetails.forEach((bookingDetail) => {
+      const bookingDetailObj = bookingDetail.toObject();
+      bookingDetailObj.status = booking.status;
+
+      if (
+        bookingDetail.checkIn <= currentDate &&
+        bookingDetail.checkOut >= currentDate
+      ) {
+        currentBookings.push(bookingDetailObj);
+      }
+      if (bookingDetail.checkOut <= currentDate) {
+        oldBookings.push(bookingDetailObj);
+      }
+      if (bookingDetail.checkIn >= currentDate) {
+        upComingBookings.push(bookingDetailObj);
+      }
+    });
+  });
+
   return res.status(200).json({
     success: true,
-    bookings: bookings,
+    currentBookings: currentBookings,
+    oldBookings: oldBookings,
+    upComingBookings: upComingBookings,
   });
 });

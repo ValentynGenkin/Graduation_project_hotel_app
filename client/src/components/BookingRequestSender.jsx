@@ -4,17 +4,18 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 import { Button } from "react-bootstrap";
+import PropTypes from "prop-types";
 
-const BookingRequestSender = () => {
+const BookingRequestSender = ({ idControl }) => {
   return (
     <Accordion>
       <Accordion.Item eventKey="0" className="bookings-accordion">
         <Accordion.Header className="bookings-accordion-header">
-          Send a request
+          <span>Send a request</span>
         </Accordion.Header>
         <Accordion.Body>
           <h6>Send a request</h6>
-          <FloatingLabel controlId="floatingTextarea2" label="Comments">
+          <FloatingLabel controlId={idControl} label="Comments">
             <Form.Control
               as="textarea"
               placeholder="Leave a comment here"
@@ -52,3 +53,7 @@ const BookingRequestSender = () => {
 };
 
 export default BookingRequestSender;
+
+BookingRequestSender.propTypes = {
+  idControl: PropTypes.string.isRequired,
+};

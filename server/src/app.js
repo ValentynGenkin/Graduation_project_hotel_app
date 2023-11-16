@@ -15,6 +15,7 @@ import customerRouter from "./routes/customer.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import morgan from "morgan";
+import taskRouter from "./routes/task.js";
 // Create an express server
 const app = express();
 process.env.NODE_ENV === "production" && app.use(morgan("dev"));
@@ -56,6 +57,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/booking", bookingRouter);
 app.use("/api/customer", customerRouter);
 // Route to fetch the sum of the daily cost for each day per month
+app.use("/api/task", taskRouter);
 
 // Tell express to use "serverErrorHandler(err,req,res)" function as error handler
 app.use(serverErrorHandler);

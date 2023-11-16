@@ -6,10 +6,15 @@
 }
 
 .client-booking-item {
-  background-color: rgba(10, 202, 219, 0.449);
+  background-color: rgba(85, 192, 202, 0.574);
+  max-width: 1100px;
   padding: 10px;
-  margin: 5px auto;
+  margin: 20px auto;
+  border-radius: 10px;
+  border: 1px solid lightgrey;
+  box-shadow: 0 0 8px 2px lightgrey;
 }
+
 .bookings-img-carousel {
   width: 300px;
   margin: 5px;
@@ -22,12 +27,6 @@
 .booking-table-status {
   width: 20%;
   max-width: 150px;
-}
-
-.booking-information-block {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
 }
 
 .booking-date-information {
@@ -45,33 +44,66 @@
   border-radius: 5px;
 }
 .booking-information-block div {
-  background-color: white;
-  margin: 10px;
   display: flex;
-  justify-content: space-evenly;
-  border: 1px solid lightgrey;
-  width: 240px;
-  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.booking-carousel {
+  max-width: 300px;
+  margin-top: 15px;
+}
+.booking-carousel-img {
+  max-width: 300px;
+}
+
+.booking-info-title {
+  min-width: 135px;
+  background-color: rgb(248, 249, 250);
+  align-items: center;
+  border-bottom: 1px solid rgb(222, 226, 230);
+  border-top: 1px solid rgb(222, 226, 230);
+  border-left: 1px solid rgb(222, 226, 230);
+  border-bottom-left-radius: 6px;
+  border-top-left-radius: 6px;
+  display: flex;
+  padding: 6px 12px;
+  text-align: center;
+  font-size: 14px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.booking-info-value {
+  width: 150px;
+  background-color: rgb(233, 236, 239);
+  align-items: center;
+  border: 1px solid rgb(222, 226, 230);
+  border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
+  display: flex;
+  padding: 6px 12px;
+  text-align: center;
+  font-size: 14px;
+  margin: 0;
 }
 
 .bookings-description-block {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
+  justify-content: space-between;
 }
 .bookings-description {
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  max-width: 700px;
+  max-width: 400px;
+  margin-top: 15px;
 }
 
 .bookings-accordion {
-  width: 80%;
   margin: 10px auto;
 }
 
 .bookings-accordion-header button {
-  height: 70px;
+  height: 50px;
+  background-color: rgb(233, 236, 239) !important;
 }
 
 .request-send-btn {
@@ -91,16 +123,26 @@
   height: 100px !important;
 }
 
-@media screen and (max-width: 1200px) {
-  .bookings-description {
-    max-width: 600px;
+@media screen and (max-width: 1063px) {
+  .bookings-description-block {
+    flex-direction: column;
+    align-items: center;
   }
-}
+  .booking-information-block {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+  .bookings-description {
+    max-width: 100%;
+    margin-top: 0;
+  }
+  .booking-carousel {
+    margin-top: 0px;
+  }
 
-@media screen and (max-width: 1060px) {
-  .bookings-img-carousel {
-    width: 60%;
-    margin: 5px auto;
+  .bookings-description-block {
+    flex-wrap: nowrap;
   }
 }
 
@@ -108,11 +150,5 @@
   .client-booking-container {
     margin-top: 0;
     min-height: calc(100vh - 185px);
-  }
-}
-
-@media screen and (max-width: 770px) {
-  .bookings-img-carousel {
-    width: 80%;
   }
 }
