@@ -55,6 +55,7 @@ app.use("/api/rooms", roomRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/booking", bookingRouter);
 app.use("/api/customer", customerRouter);
+// Route to fetch the sum of the daily cost for each day per month
 
 // Tell express to use "serverErrorHandler(err,req,res)" function as error handler
 app.use(serverErrorHandler);

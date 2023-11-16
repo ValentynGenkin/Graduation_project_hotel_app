@@ -7,6 +7,7 @@ import {
   getAllRooms,
   getAllUsers,
   getDashboardAccess,
+  getAmountForChart,
 } from "../controllers/admin.js";
 import { getAdminAccess } from "../middlewares/database/databaseErrorHelpers.js";
 import { bookingsByRoomQueryMiddleware } from "../middlewares/query/bookingsByRoomQueryMiddleware.js";
@@ -26,5 +27,7 @@ adminRouter.get("/dashboard/rooms", getAdminAccess, getAllRooms);
 adminRouter.get("/dashboard/allUsers", getAdminAccess, getAllUsers);
 
 adminRouter.get("/dashboard", getAdminAccess, getDashboardAccess);
+
+adminRouter.get("/sum-daily-cost/:month/:year", getAmountForChart);
 
 export default adminRouter;
