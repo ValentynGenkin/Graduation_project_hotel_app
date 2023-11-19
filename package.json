@@ -51,9 +51,13 @@
     "husky": "^7.0.0"
   },
   "dependencies": {
+    "chart.js": "^4.4.0",
     "concurrently": "^6.4.0",
     "dotenv": "^16.3.1",
+    "echarts": "^5.4.3",
+    "echarts-for-react": "^3.0.2",
     "js-cookie": "^3.0.5",
+    "react-chartjs-2": "^5.2.0",
     "react-icons": "^4.11.0"
   }
 }

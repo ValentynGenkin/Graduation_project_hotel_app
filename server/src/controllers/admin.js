@@ -9,6 +9,14 @@ import { adminRegistrationEmail } from "../util/mailer/mailTemplates.js";
 import ServerError from "../util/error/ServerError.js";
 import Room from "../models/Room.js";
 import { paginationHelper } from "../util/query/roomQueryHelper.js";
+import Booking from "../models/Booking.js";
+import {
+  calculateTotalBookedDays,
+  getDaysInMonth,
+  getMonth,
+  getMonthBoundaries,
+} from "../util/dateHelper.js";
+import { calculateDailyCost } from "../util/admin/adminHelpers.js";
 
 export const registerAdmin = asyncHandler(async (req, res, next) => {
   const userObject = validateUserRegisterInput(req, next);
@@ -129,4 +137,60 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 
 export const getDashboardAccess = asyncHandler(async (req, res) => {
   return res.status(200).json({ success: true });
+});
+
+export const getAmountForChart = asyncHandler(async (req, res) => {
+  const { month, year, nextMonth, yearOfNextMonth } = getMonth(req);
+
+  const numberOfDays = getDaysInMonth(year, month);
+
+  const bookings = await Booking.find({
+    createdAt: {
+      $gte: new Date(`${year}-${month}-01T00:00:00.000Z`),
+      $lt: new Date(
+        `${yearOfNextMonth}-${
+          nextMonth < 10 ? `0${nextMonth}` : nextMonth
+        }-01T00:00:00.000Z`
+      ),
+    },
+  });
+
+  const dailyCosts = calculateDailyCost(bookings);
+
+  const resultArray = Array.from({ length: numberOfDays }, (_, index) => {
+    const day = index + 1;
+    return Object.prototype.hasOwnProperty.call(dailyCosts, day.toString())
+      ? dailyCosts[day]
+      : 0;
+  });
+
+  return res.status(200).json({ success: true, resultArray });
+});
+
+export const getOccupationByMonth = asyncHandler(async (req, res) => {
+  const { firstDayCurrentMonth, firstDayNextMonth } = getMonthBoundaries(
+    new Date()
+  );
+  const bookings = await Booking.find({
+    createdAt: {
+      $gte: firstDayCurrentMonth,
+      $lt: firstDayNextMonth,
+    },
+  }).populate("bookingDetails");
+
+  const totalBookedDaysOfMonth = calculateTotalBookedDays(bookings);
+
+  const totalRoomCount = await Room.countDocuments(Room.find({}));
+  const totalAvailableDays =
+    getDaysInMonth(
+      firstDayCurrentMonth.getFullYear(),
+      firstDayCurrentMonth.getMonth()
+    ) * totalRoomCount;
+
+  const occupationRateOfMonth = totalBookedDaysOfMonth / totalAvailableDays;
+
+  return res.status(200).json({
+    success: true,
+    occupation: occupationRateOfMonth,
+  });
 });
