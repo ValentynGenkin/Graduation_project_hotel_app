@@ -3,7 +3,13 @@ import ReactEcharts from "echarts-for-react";
 import useFetch from "../../../hooks/useFetch";
 
 const LineChart = () => {
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedYear, setSelectedYear] = useState(
+    new Date().getFullYear().toString()
+  );
+  const [selectedMonth, setSelectedMonth] = useState(
+    ("0" + (new Date().getMonth() + 1)).slice(-2)
+  );
+  const [response, setResponse] = useState();
   const [option, setOption] = useState({
     xAxis: {
       type: "category",
@@ -14,71 +20,47 @@ const LineChart = () => {
       type: "value",
       name: "Amount en €",
     },
-    series: [
-      {
-        // data: [0, 0, 0, 0, 0],
-        type: "line",
-      },
-    ],
+    series: [{ type: "line", data: [] }],
     tooltip: {
       trigger: "axis",
-      formatter: "{b}:{c}",
+      formatter: "{b}: {c}€",
     },
   });
-  const currentMonth = new Date().getMonth();
-  const [selectedMonth, setSelectedMonth] = useState(
-    (currentMonth + 1).toString()
-  );
 
   const { performFetch } = useFetch(
     `/admin/sum-daily-cost/${selectedMonth}/${selectedYear}`,
-    () => {}
+    (res) => {
+      setOption({
+        ...option,
+        series: [{ type: "line", data: res.resultArray }],
+      });
+      setResponse(res);
+    }
   );
 
-  const handleMonthChange = (m) => {
-    setSelectedMonth(m);
-  };
-
-  const fetchData = async () => {
-    try {
-      const response = performFetch({
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      if (!response) {
-        throw new Error("Error fetching data: Response is undefined");
-      }
-      // console.log("Response:", response);
-
-      const data = await response.json();
-
-      if (data.resultArray.length > 0) {
-        setOption((prevOption) => ({
-          ...prevOption,
-          series: [
-            {
-              ...prevOption.series[0],
-              data: data.resultArray,
-            },
-          ],
-        }));
-      }
-    } catch (error) {
-      throw new Error("Error fetching data:", error);
-    }
-  };
+  useEffect(() => {
+    performFetch({
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+  }, [selectedMonth, selectedYear]);
 
   useEffect(() => {
-    fetchData();
-  }, [selectedMonth, selectedYear, option]);
+    if (response && Array.isArray(response.resultArray)) {
+      setOption({
+        ...option,
+        series: [{ type: "line", data: response.resultArray }],
+      });
+    }
+  }, [response]);
 
   return (
     <div style={{ width: "1000px", height: "1200px" }}>
       <select
-        onChange={(e) => handleMonthChange(e.target.value)}
+        onChange={(e) => setSelectedMonth(e.target.value)}
         value={selectedMonth}
       >
         <option value="01">January</option>

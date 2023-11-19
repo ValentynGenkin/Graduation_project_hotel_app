@@ -10,6 +10,13 @@ import ServerError from "../util/error/ServerError.js";
 import Room from "../models/Room.js";
 import { paginationHelper } from "../util/query/roomQueryHelper.js";
 import Booking from "../models/Booking.js";
+import {
+  calculateTotalBookedDays,
+  getDaysInMonth,
+  getMonth,
+  getMonthBoundaries,
+} from "../util/dateHelper.js";
+import { calculateDailyCost } from "../util/admin/adminHelpers.js";
 
 export const registerAdmin = asyncHandler(async (req, res, next) => {
   const userObject = validateUserRegisterInput(req, next);
@@ -133,68 +140,57 @@ export const getDashboardAccess = asyncHandler(async (req, res) => {
 });
 
 export const getAmountForChart = asyncHandler(async (req, res) => {
-  let dailyCosts = [];
+  const { month, year, nextMonth, yearOfNextMonth } = getMonth(req);
 
-  try {
-    let month = parseInt(req.params.month);
-    let year = parseInt(req.params.year);
+  const numberOfDays = getDaysInMonth(year, month);
 
-    // Ensure month is formatted with leading zeros
-    month = month < 10 ? `0${month}` : month;
+  const bookings = await Booking.find({
+    createdAt: {
+      $gte: new Date(`${year}-${month}-01T00:00:00.000Z`),
+      $lt: new Date(
+        `${yearOfNextMonth}-${
+          nextMonth < 10 ? `0${nextMonth}` : nextMonth
+        }-01T00:00:00.000Z`
+      ),
+    },
+  });
 
-    // Calculate the next month and year
-    let nextMonth = month + 1;
-    let nextYear = year;
+  const dailyCosts = calculateDailyCost(bookings);
 
-    // If the month is December (12), set nextMonth to 1 and increment nextYear
-    if (nextMonth > 12) {
-      nextMonth = 1;
-      nextYear++;
-    }
+  const resultArray = Array.from({ length: numberOfDays }, (_, index) => {
+    const day = index + 1;
+    return Object.prototype.hasOwnProperty.call(dailyCosts, day.toString())
+      ? dailyCosts[day]
+      : 0;
+  });
 
-    const numberOfDays = getDaysInMonth(year, month);
-    // console.log({ year, month, numberOfDays });
-
-    // Fetch bookings for the specified month
-    const bookings = await Booking.find({
-      createdAt: {
-        $gte: new Date(`${year}-${month}-01T00:00:00.000Z`),
-        $lt: new Date(
-          `${nextYear}-${
-            nextMonth < 10 ? `0${nextMonth}` : nextMonth
-          }-01T00:00:00.000Z`
-        ),
-      },
-    });
-    // Calculate the sum of cost for each day
-    dailyCosts = bookings.reduce((acc, booking) => {
-      const date = booking.createdAt.getDate(); // Extract day from the date
-      const cost = booking.cost ? parseFloat(booking.cost.toString()) : 0;
-
-      if (!acc[date]) {
-        acc[date] = 0;
-      }
-
-      acc[date] += cost;
-
-      return acc;
-    }, {});
-    const resultArray = Array.from({ length: numberOfDays }, (_, index) => {
-      const day = index + 1;
-      return Object.prototype.hasOwnProperty.call(dailyCosts, day.toString())
-        ? dailyCosts[day]
-        : 0;
-    });
-
-    res.json({ resultArray });
-  } catch (error) {
-    throw new error("Error fetching sum of daily costs:", error);
-  }
-  res.status(200).json({ dailyCosts });
+  return res.status(200).json({ success: true, resultArray });
 });
 
-function getDaysInMonth(year, month) {
-  // Note: Months in JavaScript are zero-indexed (0 for January to 11 for December)
-  const lastDayOfMonth = new Date(year, month + 1, 0);
-  return lastDayOfMonth.getDate();
-}
+export const getOccupationByMonth = asyncHandler(async (req, res) => {
+  const { firstDayCurrentMonth, firstDayNextMonth } = getMonthBoundaries(
+    new Date()
+  );
+  const bookings = await Booking.find({
+    createdAt: {
+      $gte: firstDayCurrentMonth,
+      $lt: firstDayNextMonth,
+    },
+  }).populate("bookingDetails");
+
+  const totalBookedDaysOfMonth = calculateTotalBookedDays(bookings);
+
+  const totalRoomCount = await Room.countDocuments(Room.find({}));
+  const totalAvailableDays =
+    getDaysInMonth(
+      firstDayCurrentMonth.getFullYear(),
+      firstDayCurrentMonth.getMonth()
+    ) * totalRoomCount;
+
+  const occupationRateOfMonth = totalBookedDaysOfMonth / totalAvailableDays;
+
+  return res.status(200).json({
+    success: true,
+    occupation: occupationRateOfMonth,
+  });
+});
