@@ -1,3 +1,9 @@
+.room-info-card-container {
+  margin-top: 100px;
+  z-index: 1;
+  min-height: calc(100vh - 214px);
+}
+
 .carousel-02 {
   position: relative;
   display: flex;
@@ -98,6 +104,7 @@
   font-size: 16px;
   margin-top: 20px;
 }
+
 .popup-container-02 {
   position: fixed;
   top: 0;
@@ -155,6 +162,10 @@
 /*TODO: add responsivity to room filters. Hasan*/
 
 @media screen and (max-width: 991px) {
+  .room-info-card-container {
+    margin-top: 0;
+    min-height: calc(100vh - 185px);
+  }
   .carousel-02 {
     position: relative;
     display: flex;

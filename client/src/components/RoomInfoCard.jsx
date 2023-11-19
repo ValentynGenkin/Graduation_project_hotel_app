@@ -10,6 +10,7 @@ import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
 import RoomFilterCheckBoxes from "./RoomFilterCheckBoxes.jsx";
 import BookingCart from "./BookingCart.jsx";
 import { formatDateString } from "../util/formatDateString.js";
+import SearchResultsSearchBLock from "./SearchResultsSearchBlock.jsx";
 
 function RoomInfoCard() {
   const [response, setResponse] = useState(null);
@@ -33,7 +34,7 @@ function RoomInfoCard() {
   checkIn = new Date(checkIn).toString();
   checkOut = new Date(checkOut).toString();
 
-  const { isLoading, error, performFetch, cancelFetch } = useFetch(
+  const { isLoading, error, performFetch } = useFetch(
     `/rooms?checkIn=${checkIn}&checkOut=${checkOut}&roomType=${
       filters.roomType ? filters.roomType : ""
     }&facilities=${filters.facilities ? filters.facilities : ""}&bedCount=${
@@ -53,12 +54,11 @@ function RoomInfoCard() {
   useEffect(() => {
     performFetch({
       method: "GET",
+      credentials: "include",
       headers: {
         "content-type": "application/json",
       },
     });
-
-    return () => cancelFetch();
   }, [filters]);
 
   const nextSlide = (imageLength, roomId) => {
@@ -78,15 +78,13 @@ function RoomInfoCard() {
   return (
     <>
       <BookingCart />
-      <Container>
-        <br />
-        <br />
-        <br />
+      <Container className="room-info-card-container">
+        <SearchResultsSearchBLock />
+
+        <RoomFilterCheckBoxes setFilters={setFilters} />
         <Button as={Link} to={"/checkout"}>
           Checkout
         </Button>
-        <RoomFilterCheckBoxes setFilters={setFilters} />
-
         {isLoading ? (
           <p>Loading...</p>
         ) : error ? (
