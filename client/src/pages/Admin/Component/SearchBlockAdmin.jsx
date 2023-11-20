@@ -1,50 +1,26 @@
 import React, { useState, useEffect } from "react";
-import useFetch from "../hooks/useFetch.js";
-import "./CSS/roomInfoCard.css";
+import useFetch from "../../../hooks/useFetch.js";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
-import { Button, Container } from "react-bootstrap";
-import RoomDetailsCard from "../components/RoomDetailsCard";
-import "chart.js/auto";
-import { Link, useLocation } from "react-router-dom";
-import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
-import RoomFilterCheckBoxes from "./RoomFilterCheckBoxes.jsx";
-import BookingCart from "./BookingCart.jsx";
+import { Container } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
+import MakeBooking from "./MakeBooking";
+import "../CSS/Booking.css";
 
-function RoomInfoCard() {
+function SearchBlockAdmin() {
   const [response, setResponse] = useState(null);
-  const [isPopupVisible, setPopupVisible] = useState({
-    visible: false,
-    roomId: null,
-  });
-  const [roomIdx, setRoomIdx] = useState({});
 
-  const [filters, setFilters] = useState({
-    roomType: null,
-    facilities: null,
-    bedCount: null,
-  });
-  // const [adults, setAdults] = useState(2);
-  // const [children, setChildren] = useState(0);
+  const [roomIdx, setRoomIdx] = useState({});
 
   const queryParams = new URLSearchParams(useLocation().search);
 
   let checkIn = queryParams.get("checkIn");
   let checkOut = queryParams.get("checkOut");
-  let adultsFromURL = queryParams.get("adults");
-  let childrenFromURL = queryParams.get("children");
-
-  adultsFromURL = adultsFromURL ? parseInt(adultsFromURL, 10) : 2;
-  childrenFromURL = childrenFromURL ? parseInt(childrenFromURL, 10) : 0;
 
   checkIn = new Date(checkIn).toString();
   checkOut = new Date(checkOut).toString();
 
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
-    `/rooms?checkIn=${checkIn}&checkOut=${checkOut}&roomType=${
-      filters.roomType ? filters.roomType : ""
-    }&facilities=${filters.facilities ? filters.facilities : ""}&bedCount=${
-      filters.bedCount ? filters.bedCount : ""
-    }`,
+    `/rooms?checkIn=${checkIn}&checkOut=${checkOut}`,
     (response) => {
       setResponse(response);
 
@@ -57,8 +33,6 @@ function RoomInfoCard() {
   );
 
   useEffect(() => {
-    // setAdults(adultsFromURL);
-    // setChildren(childrenFromURL);
     performFetch({
       method: "GET",
       headers: {
@@ -67,7 +41,7 @@ function RoomInfoCard() {
     });
 
     return () => cancelFetch();
-  }, [filters, adultsFromURL, childrenFromURL]);
+  }, []);
 
   const nextSlide = (imageLength, roomId) => {
     setRoomIdx((prevRoomIdx) => ({
@@ -85,16 +59,7 @@ function RoomInfoCard() {
 
   return (
     <>
-      <BookingCart />
       <Container>
-        <br />
-        <br />
-        <br />
-        <Button as={Link} to={"/checkout"}>
-          Checkout
-        </Button>
-        <RoomFilterCheckBoxes setFilters={setFilters} />
-
         {isLoading ? (
           <p>Loading...</p>
         ) : error ? (
@@ -160,18 +125,7 @@ function RoomInfoCard() {
                 </div>
 
                 <div className="buttons-02">
-                  <button
-                    className="button-02"
-                    onClick={() => {
-                      setPopupVisible({
-                        visible: !isPopupVisible.visible,
-                        roomId: room.exampleRoom._id,
-                      });
-                    }}
-                  >
-                    Information
-                  </button>
-                  <AddRoomToBookingButton
+                  <MakeBooking
                     checkIn={checkIn}
                     checkOut={checkOut}
                     roomId={room.exampleRoom._id}
@@ -188,26 +142,9 @@ function RoomInfoCard() {
             please choose another date.
           </p>
         )}
-        {isPopupVisible.visible && (
-          <div className="popup-container-02">
-            <div className="popup-content-02">
-              <button
-                className="button-x-02"
-                onClick={() => setPopupVisible(false)}
-              >
-                X
-              </button>
-              <RoomDetailsCard
-                checkIn={checkIn}
-                checkOut={checkOut}
-                roomId={isPopupVisible.roomId}
-              />
-            </div>
-          </div>
-        )}
       </Container>
     </>
   );
 }
 
-export default RoomInfoCard;
+export default SearchBlockAdmin;
