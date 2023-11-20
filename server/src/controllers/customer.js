@@ -4,6 +4,9 @@ import {
   verifyUserToken,
 } from "../util/authorization/auth.js";
 import Booking from "../models/Booking.js";
+import { comparePassword } from "../util/input/inputValidator.js";
+import User from "../models/User.js";
+import ServerError from "../util/error/ServerError.js";
 
 export const getCustomerAccessAndInfo = asyncHandler(async (req, res) => {
   const token = isTokenIncluded(req);
@@ -79,5 +82,41 @@ export const getCustomerCurrentBookings = asyncHandler(async (req, res) => {
     currentBookings: currentBookings,
     oldBookings: oldBookings,
     upComingBookings: upComingBookings,
+  });
+});
+
+export const deleteCustomerAccount = asyncHandler(async (req, res, next) => {
+  const token = isTokenIncluded(req);
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      msg: "Invalid token or session expired",
+    });
+  }
+  const customer = verifyUserToken(token);
+  if (!customer) {
+    return res.status(401).json({
+      success: false,
+      msg: "Invalid token or session expired",
+    });
+  }
+
+  const { password } = req.body;
+
+  if (!password) {
+    return next(new ServerError("Please provide all required inputs", 400));
+  }
+
+  const user = await User.findOne({ _id: customer.id }).select("+password");
+  if (!comparePassword(password, user.password)) {
+    return next(new ServerError("Invalid password.", 401));
+  } else {
+    await User.deleteOne({ _id: customer.id });
+    await Booking.deleteMany({ _id: customer.id });
+  }
+
+  return res.status(200).json({
+    success: true,
+    msg: "Account and booking history deleted successfully.",
   });
 });
