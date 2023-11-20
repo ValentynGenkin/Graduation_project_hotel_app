@@ -10,7 +10,7 @@ const AddRoomForm = () => {
     bedCount: "",
     roomPrice: "",
     facilities: [],
-    images: [],
+    roomImages: [],
   });
 
   const [inputError, setInputError] = useState(false);
@@ -28,7 +28,7 @@ const AddRoomForm = () => {
       bedCount: "",
       roomPrice: "",
       facilities: [],
-      images: [],
+      roomImages: [],
     });
   });
 
@@ -45,9 +45,10 @@ const AddRoomForm = () => {
 
     setRoomDetails((prevRoomDetails) => ({
       ...prevRoomDetails,
-      [name]: files, // Use 'files' directly for multiple images
+      [name]: [...files], // Use spread operator to convert FileList to an array
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -163,7 +164,7 @@ const AddRoomForm = () => {
         <label className="inputLabel">Images:</label>
         <input
           type="file"
-          name="images"
+          name="roomImages"
           onChange={(e) => handleImageInputChange(e)}
           className="room-input"
           multiple={true}

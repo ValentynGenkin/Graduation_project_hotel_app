@@ -32,7 +32,7 @@ const RoomTable = () => {
   let [dateHeaders, setDateHeaders] = useState([]);
   useEffect(() => {
     let res = [];
-    if (startDate) {
+    if (startDate && endDate) {
       res.push(startDate);
       for (let i = 1; i <= 6; i++) {
         const forDate = new Date(
@@ -99,7 +99,7 @@ const RoomTable = () => {
     const formattedEndDateString = formattedEnd.toLocaleDateString("en-GB");
     setStartDate(formattedStartDayString);
     setEndDate(formattedEndDateString);
-    setCurrentPage(1);
+    // setCurrentPage(1);
   };
   const handlePrevPage = () => {
     if (currentPage - 1 !== 0) {

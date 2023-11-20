@@ -93,6 +93,7 @@ const RegistrationForm = ({ reload, setReload }) => {
   return (
     <div className="admin-registrationFormWrapper">
       <h1>Add new Admin</h1>
+      {isLoading && <p>Loading...</p>}
       <form onSubmit={handleSubmit} className="admin-registration-form">
         <div className="admin-form-group">
           <label htmlFor="username">FirstName:</label>
@@ -150,25 +151,35 @@ const RegistrationForm = ({ reload, setReload }) => {
         </div>
         <button
           type="submit"
-          disabled={isLoading}
-          className="admin-registre-button"
+          className="room-register-button"
+          style={{
+            backgroundColor: inputError
+              ? "red"
+              : success
+              ? "green"
+              : addError
+              ? "orange"
+              : "blue",
+          }}
         >
-          {isLoading ? "Adding..." : "Add"}
+          {inputError
+            ? inputErrorMsg
+            : success
+            ? "Success"
+            : addError
+            ? "Failed"
+            : "Add admin"}
         </button>
         <div
           style={{
-            width: "100%",
+            width: "50%",
             height: "40px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             marginTop: "10px",
           }}
-        >
-          {inputError && <p>{inputErrorMsg}</p>}
-          {success && <p>New Admin Added</p>}
-          {addError && <p>Failed to add Admin</p>}
-        </div>
+        ></div>
       </form>
     </div>
   );

@@ -16,7 +16,6 @@ const LineChart = () => {
     },
     series: [
       {
-        // data: [0, 0, 0, 0, 0],
         type: "line",
       },
     ],
@@ -25,37 +24,40 @@ const LineChart = () => {
       formatter: "{b}:{c}",
     },
   });
+
   const currentMonth = new Date().getMonth();
   const [selectedMonth, setSelectedMonth] = useState(
     (currentMonth + 1).toString()
   );
 
   const { performFetch } = useFetch(
-    `/admin/sum-daily-cost/${selectedMonth}/${selectedYear}`,
-    () => {}
+    `/admin/sum-daily-cost/${selectedMonth}/${selectedYear}`
   );
 
   const handleMonthChange = (m) => {
     setSelectedMonth(m);
   };
-
   const fetchData = async () => {
     try {
-      const response = performFetch({
+      const response = await performFetch({
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
       });
-      if (!response) {
-        throw new Error("Error fetching data: Response is undefined");
+
+      if (response === undefined) {
+        throw new Error("Error fetching data: Response iseagfw undefined");
       }
-      // console.log("Response:", response);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
       const data = await response.json();
 
-      if (data.resultArray.length > 0) {
+      if (data && data.resultArray && data.resultArray.length > 0) {
         setOption((prevOption) => ({
           ...prevOption,
           series: [
@@ -65,15 +67,18 @@ const LineChart = () => {
             },
           ],
         }));
+      } else {
+        throw new ("Error fetching data: Data structure is not as expected",
+        data)();
       }
     } catch (error) {
-      throw new Error("Error fetching data:", error);
+      throw new error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
     fetchData();
-  }, [selectedMonth, selectedYear, option]);
+  }, [selectedMonth, selectedYear]);
 
   return (
     <div style={{ width: "1000px", height: "1200px" }}>

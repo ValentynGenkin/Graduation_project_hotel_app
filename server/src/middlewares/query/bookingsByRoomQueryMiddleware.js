@@ -5,16 +5,14 @@ import BookingDetail from "../../models/BookingDetail.js";
 
 export const bookingsByRoomQueryMiddleware = asyncHandler(
   async (req, res, next) => {
-    let startDate = new Date(req.query.startDate);
-    let endDate = new Date(req.query.endDate);
-    if (isNaN(startDate) || isNaN(endDate)) {
-      startDate = new Date();
-      endDate = new Date();
-      endDate.setDate(startDate.getDate() + 15);
-    }
+    const start = req.query.startDate;
+    const [day, month, year] = start.split("/");
+    const startDate = new Date(`${year}-${month}-${day}T00:00:00.000Z`);
+    const end = req.query.endDate;
+    const [dayEnd, monthEnd, yearEnd] = end.split("/");
+    const endDate = new Date(`${yearEnd}-${monthEnd}-${dayEnd}T00:00:00.000Z`);
     req.startDate = startDate;
     req.endDate = endDate;
-
     let query = Room.find({}, { _id: 1, roomNo: 1 });
     query.sort("roomNo");
 
