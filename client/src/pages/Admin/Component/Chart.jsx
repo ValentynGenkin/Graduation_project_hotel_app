@@ -3,7 +3,13 @@ import ReactEcharts from "echarts-for-react";
 import useFetch from "../../../hooks/useFetch";
 
 const LineChart = () => {
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedYear, setSelectedYear] = useState(
+    new Date().getFullYear().toString()
+  );
+  const [selectedMonth, setSelectedMonth] = useState(
+    ("0" + (new Date().getMonth() + 1)).slice(-2)
+  );
+  const [response, setResponse] = useState();
   const [option, setOption] = useState({
     xAxis: {
       type: "category",
@@ -14,76 +20,47 @@ const LineChart = () => {
       type: "value",
       name: "Amount en €",
     },
-    series: [
-      {
-        type: "line",
-      },
-    ],
+    series: [{ type: "line", data: [] }],
     tooltip: {
       trigger: "axis",
-      formatter: "{b}:{c}",
+      formatter: "{b}: {c}€",
     },
   });
 
-  const currentMonth = new Date().getMonth();
-  const [selectedMonth, setSelectedMonth] = useState(
-    (currentMonth + 1).toString()
-  );
-
   const { performFetch } = useFetch(
-    `/admin/sum-daily-cost/${selectedMonth}/${selectedYear}`
-  );
-
-  const handleMonthChange = (m) => {
-    setSelectedMonth(m);
-  };
-  const fetchData = async () => {
-    try {
-      const response = await performFetch({
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
+    `/admin/sum-daily-cost/${selectedMonth}/${selectedYear}`,
+    (res) => {
+      setOption({
+        ...option,
+        series: [{ type: "line", data: res.resultArray }],
       });
-
-      if (response === undefined) {
-        throw new Error("Error fetching data: Response iseagfw undefined");
-      }
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data && data.resultArray && data.resultArray.length > 0) {
-        setOption((prevOption) => ({
-          ...prevOption,
-          series: [
-            {
-              ...prevOption.series[0],
-              data: data.resultArray,
-            },
-          ],
-        }));
-      } else {
-        throw new ("Error fetching data: Data structure is not as expected",
-        data)();
-      }
-    } catch (error) {
-      throw new error("Error fetching data:", error);
+      setResponse(res);
     }
-  };
+  );
 
   useEffect(() => {
-    fetchData();
+    performFetch({
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
   }, [selectedMonth, selectedYear]);
+
+  useEffect(() => {
+    if (response && Array.isArray(response.resultArray)) {
+      setOption({
+        ...option,
+        series: [{ type: "line", data: response.resultArray }],
+      });
+    }
+  }, [response]);
 
   return (
     <div style={{ width: "1000px", height: "1200px" }}>
       <select
-        onChange={(e) => handleMonthChange(e.target.value)}
+        onChange={(e) => setSelectedMonth(e.target.value)}
         value={selectedMonth}
       >
         <option value="01">January</option>

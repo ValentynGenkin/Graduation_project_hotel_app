@@ -8,6 +8,7 @@ import {
   getAllUsers,
   getDashboardAccess,
   getAmountForChart,
+  getOccupationByMonth,
 } from "../controllers/admin.js";
 import { getAdminAccess } from "../middlewares/database/databaseErrorHelpers.js";
 import { bookingsByRoomQueryMiddleware } from "../middlewares/query/bookingsByRoomQueryMiddleware.js";
@@ -28,6 +29,11 @@ adminRouter.get("/dashboard/allUsers", getAdminAccess, getAllUsers);
 
 adminRouter.get("/dashboard", getAdminAccess, getDashboardAccess);
 
-adminRouter.get("/sum-daily-cost/:month/:year", getAmountForChart);
+adminRouter.get(
+  "/sum-daily-cost/:month/:year",
+  getAdminAccess,
+  getAmountForChart
+);
+adminRouter.get("/occupation-rate", getAdminAccess, getOccupationByMonth);
 
 export default adminRouter;
