@@ -115,7 +115,7 @@ export const deleteCustomerAccount = asyncHandler(async (req, res, next) => {
     await Booking.deleteMany({ _id: customer.id });
   }
 
-  return res.status(200).json({
+  return res.status(200).clearCookie("customer_access_token").json({
     success: true,
     msg: "Account and booking history deleted successfully.",
   });
