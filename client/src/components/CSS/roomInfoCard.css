@@ -208,3 +208,15 @@
     font-size: 14px;
   }
 }
+.bundle-room-block {
+  display: flex;
+}
+.bundle-block-02 {
+  display: block;
+  background-color: rgba(13, 153, 255, 0.2);
+  border: 1px solid #0d99ff;
+  border-radius: 0.4rem;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 100px;
+}
