@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useFetch from "../../../hooks/useFetch.js";
-import { AdminBookingContext } from "../../../contexts/AdminBookingContext";
 import PropTypes from "prop-types";
 import "../CSS/Booking.css";
 
@@ -12,7 +11,6 @@ function MakeBooking({ roomId, checkIn, checkOut, className }) {
     className: PropTypes.string.isRequired,
   };
 
-  const { handleBookingContext } = useContext(AdminBookingContext);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -31,7 +29,6 @@ function MakeBooking({ roomId, checkIn, checkOut, className }) {
     (response) => {
       if (response.success === true) {
         localStorage.setItem("booking", JSON.stringify(response.booking));
-        handleBookingContext();
         setSuccess(true);
       }
     }

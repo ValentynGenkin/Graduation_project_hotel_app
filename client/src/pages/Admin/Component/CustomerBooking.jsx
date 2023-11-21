@@ -1,16 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import Accordion from "react-bootstrap/Accordion";
 import { Button, Container } from "react-bootstrap";
-import { AdminBookingContext } from "../../../contexts/AdminBookingContext";
 import "../CSS/Booking.css";
 import SearchBlockAdmin from "./SearchBlockAdmin";
 import Navbar from "./Navbar";
 
 function CustomerBooking() {
-  const { bookingContext, handleBookingContext } =
-    useContext(AdminBookingContext);
-
   const [value, setValue] = useState(new Date());
   const [date, setDate] = useState(["yyyy-mm-dd", "yyyy-mm-dd"]);
   const [isPopupVisible, setPopupVisible] = useState(false);
@@ -32,10 +28,6 @@ function CustomerBooking() {
   useEffect(() => {
     setDate([formattedCheckInDate, formattedCheckOutDate]);
   }, [value]);
-
-  useEffect(() => {
-    handleBookingContext();
-  }, [handleBookingContext, bookingContext]);
 
   return (
     <Container>
