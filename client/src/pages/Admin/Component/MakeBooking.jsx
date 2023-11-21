@@ -17,7 +17,6 @@ function MakeBooking({ roomId, checkIn, checkOut, className }) {
     firstname: "",
     lastname: "",
     phone: "",
-    password: "",
     email: "",
   });
 
@@ -37,7 +36,7 @@ function MakeBooking({ roomId, checkIn, checkOut, className }) {
       }
     }
   );
-  //   form data function
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -45,13 +44,12 @@ function MakeBooking({ roomId, checkIn, checkOut, className }) {
       [name]: value,
     }));
   };
-  //
+
   const handleSubmit = async () => {
     if (
       !formData.firstname ||
       !formData.lastname ||
       !formData.phone ||
-      !formData.password ||
       !formData.email
     ) {
       setInputError(true);
@@ -136,14 +134,7 @@ function MakeBooking({ roomId, checkIn, checkOut, className }) {
                   onChange={handleChange}
                   placeholder="Phone"
                 />
-                <input
-                  className="admin-form-input-04"
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Password"
-                />
+
                 <input
                   className="admin-form-input-04"
                   type="email"

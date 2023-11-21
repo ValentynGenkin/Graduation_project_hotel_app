@@ -15,7 +15,6 @@ import ClientCheckoutConfirmation from "./components/ClientCheckoutConfirmation"
 import RoomStatus from "./pages/Admin/pages/RoomStatus";
 import PasswordReset from "./pages/PasswordReset/PasswordReset";
 import CustomerBooking from "./pages/Admin/Component/CustomerBooking";
-import SearchBlockAdmin from "./pages/Admin/Component/SearchBlockAdmin";
 
 const App = () => {
   return (
@@ -41,7 +40,6 @@ const App = () => {
         <Route path="Admin/Login" element={<Login />} />
         <Route path="Admin/Status" element={<RoomStatus />} />
         <Route path="Admin/CustomerBooking" element={<CustomerBooking />} />
-        <Route path="Admin/SearchBlockAdmin" element={<SearchBlockAdmin />} />
       </Routes>
     </>
   );

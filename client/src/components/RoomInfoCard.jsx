@@ -9,6 +9,8 @@ import { Link, useLocation } from "react-router-dom";
 import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
 import RoomFilterCheckBoxes from "./RoomFilterCheckBoxes.jsx";
 import BookingCart from "./BookingCart.jsx";
+import { formatDateString } from "../util/formatDateString.js";
+import SearchResultsSearchBLock from "./SearchResultsSearchBlock.jsx";
 
 function RoomInfoCard() {
   const [response, setResponse] = useState(null);
@@ -23,23 +25,16 @@ function RoomInfoCard() {
     facilities: null,
     bedCount: null,
   });
-  // const [adults, setAdults] = useState(2);
-  // const [children, setChildren] = useState(0);
 
   const queryParams = new URLSearchParams(useLocation().search);
 
-  let checkIn = queryParams.get("checkIn");
-  let checkOut = queryParams.get("checkOut");
-  let adultsFromURL = queryParams.get("adults");
-  let childrenFromURL = queryParams.get("children");
-
-  adultsFromURL = adultsFromURL ? parseInt(adultsFromURL, 10) : 2;
-  childrenFromURL = childrenFromURL ? parseInt(childrenFromURL, 10) : 0;
+  let checkIn = formatDateString(queryParams.get("checkIn"));
+  let checkOut = formatDateString(queryParams.get("checkOut"));
 
   checkIn = new Date(checkIn).toString();
   checkOut = new Date(checkOut).toString();
 
-  const { isLoading, error, performFetch, cancelFetch } = useFetch(
+  const { isLoading, error, performFetch } = useFetch(
     `/rooms?checkIn=${checkIn}&checkOut=${checkOut}&roomType=${
       filters.roomType ? filters.roomType : ""
     }&facilities=${filters.facilities ? filters.facilities : ""}&bedCount=${
@@ -57,17 +52,14 @@ function RoomInfoCard() {
   );
 
   useEffect(() => {
-    // setAdults(adultsFromURL);
-    // setChildren(childrenFromURL);
     performFetch({
       method: "GET",
+      credentials: "include",
       headers: {
         "content-type": "application/json",
       },
     });
-
-    return () => cancelFetch();
-  }, [filters, adultsFromURL, childrenFromURL]);
+  }, [filters]);
 
   const nextSlide = (imageLength, roomId) => {
     setRoomIdx((prevRoomIdx) => ({
@@ -86,15 +78,13 @@ function RoomInfoCard() {
   return (
     <>
       <BookingCart />
-      <Container>
-        <br />
-        <br />
-        <br />
+      <Container className="room-info-card-container">
+        <SearchResultsSearchBLock />
+
+        <RoomFilterCheckBoxes setFilters={setFilters} />
         <Button as={Link} to={"/checkout"}>
           Checkout
         </Button>
-        <RoomFilterCheckBoxes setFilters={setFilters} />
-
         {isLoading ? (
           <p>Loading...</p>
         ) : error ? (
@@ -185,7 +175,7 @@ function RoomInfoCard() {
           <p>
             No available rooms on that date.
             <br />
-            please choose another date.
+            please choose another date :)
           </p>
         )}
         {isPopupVisible.visible && (

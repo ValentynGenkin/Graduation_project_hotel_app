@@ -5,6 +5,7 @@ import { Button, Container } from "react-bootstrap";
 import { AdminBookingContext } from "../../../contexts/AdminBookingContext";
 import "../CSS/Booking.css";
 import SearchBlockAdmin from "./SearchBlockAdmin";
+import Navbar from "./Navbar";
 
 function CustomerBooking() {
   const { bookingContext, handleBookingContext } =
@@ -38,6 +39,7 @@ function CustomerBooking() {
 
   return (
     <Container>
+      <Navbar />
       <Accordion>
         <Accordion.Item eventKey="0">
           <Accordion.Header className="header">
