@@ -20,6 +20,7 @@ import SearchResultsSearchBLock from "./SearchResultsSearchBlock.jsx";
 import FullScreenPopUp from "./FullScreenPopUp.jsx";
 import { BookingContext } from "../contexts/BookingContext.jsx";
 import PropTypes from "prop-types";
+import SearchRecommendation from "./SearchRecommendation.jsx";
 
 function RoomInfoCard() {
   const [response, setResponse] = useState(null);
@@ -70,7 +71,12 @@ function RoomInfoCard() {
     const decoratedOnClick = useAccordionButton(eventKey);
 
     return (
-      <Button variant="light" onClick={decoratedOnClick}>
+      <Button
+        variant="light"
+        onClick={() => {
+          decoratedOnClick();
+        }}
+      >
         {children}
       </Button>
     );
@@ -103,6 +109,7 @@ function RoomInfoCard() {
       <Container className="room-info-card-container">
         <SearchResultsSearchBLock />
         <RoomFilterCheckBoxes setFilters={setFilters} />
+        <SearchRecommendation />
         {isLoading ? (
           <Spinner />
         ) : error ? (
