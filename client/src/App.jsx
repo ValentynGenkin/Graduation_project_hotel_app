@@ -14,6 +14,7 @@ import ClientCheckout from "./components/ClientCheckout";
 import ClientCheckoutConfirmation from "./components/ClientCheckoutConfirmation";
 import RoomStatus from "./pages/Admin/pages/RoomStatus";
 import PasswordReset from "./pages/PasswordReset/PasswordReset";
+import CustomerBooking from "./pages/Admin/Component/CustomerBooking";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="Admin/AddRooms" element={<Rooms />} />
         <Route path="Admin/Login" element={<Login />} />
         <Route path="Admin/Status" element={<RoomStatus />} />
+        <Route path="Admin/CustomerBooking" element={<CustomerBooking />} />
       </Routes>
     </>
   );
