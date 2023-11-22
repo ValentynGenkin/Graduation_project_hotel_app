@@ -108,7 +108,8 @@ export const filterRoomsAggregation = (req) => {
 export const chooseAvailableRoomAggregation = (
   exampleRoom,
   checkIn,
-  checkOut
+  checkOut,
+  limit
 ) => {
   const stages = [
     {
@@ -159,7 +160,7 @@ export const chooseAvailableRoomAggregation = (
       },
     },
     {
-      $limit: 1,
+      $limit: limit,
     },
   ];
 
