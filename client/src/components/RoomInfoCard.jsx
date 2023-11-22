@@ -30,6 +30,8 @@ function RoomInfoCard() {
 
   let checkIn = formatDateString(queryParams.get("checkIn"));
   let checkOut = formatDateString(queryParams.get("checkOut"));
+  let personCount = queryParams.get("personCount");
+  let roomCount = queryParams.get("roomCount");
 
   checkIn = new Date(checkIn).toString();
   checkOut = new Date(checkOut).toString();
@@ -39,7 +41,9 @@ function RoomInfoCard() {
       filters.roomType ? filters.roomType : ""
     }&facilities=${filters.facilities ? filters.facilities : ""}&bedCount=${
       filters.bedCount ? filters.bedCount : ""
-    }&personCount=5&roomCount=2`,
+    }&personCount=${roomCount === 1 ? "" : personCount}&roomCount=${
+      roomCount === 1 ? "" : roomCount
+    }`,
     (response) => {
       setResponse(response);
 
@@ -276,7 +280,7 @@ function RoomInfoCard() {
           <p>
             No available rooms on that date.
             <br />
-            please choose another date :)
+            please choose another date :
           </p>
         )}
         {isPopupVisible.visible && (

@@ -149,7 +149,9 @@ const RoomSearchBlock = () => {
             </Container>
             <div className="search-btn-block">
               <Link
-                to={`/RoomInfoCard?checkIn=${formattedCheckInDate}&checkOut=${formattedCheckOutDate}`}
+                to={`/RoomInfoCard?checkIn=${formattedCheckInDate}&checkOut=${formattedCheckOutDate}&personCount=${
+                  room === 1 ? "" : adult + child
+                }&roomCount=${room === 1 ? "" : room}`}
               >
                 <Button
                   className="search-btn"
