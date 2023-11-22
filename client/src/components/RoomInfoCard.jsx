@@ -182,8 +182,10 @@ function RoomInfoCard() {
                           <p className="search-results-card-info-title">Bed:</p>
                           <p className="search-results-card-info-value">
                             {room.exampleRoom.roomType === "Single"
-                              ? "One single ben"
-                              : "Two single beds or large double bed "}
+                              ? "One single bed"
+                              : room.exampleRoom.roomType === "Suite"
+                              ? "One single bed and one large double bed"
+                              : "Two single beds or one large double bed"}
                           </p>
                         </div>
                         <div>
