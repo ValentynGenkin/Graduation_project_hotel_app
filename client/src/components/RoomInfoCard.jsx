@@ -48,9 +48,17 @@ function RoomInfoCard() {
       setResponse(response);
 
       const initialIdx = {};
-      // response.rooms.forEach((room) => {
-      //   // initialIdx[room.exampleRoom._id] = 0;
-      // });
+      if (response.resultType === "rooms") {
+        response.rooms.forEach((room) => {
+          initialIdx[room.exampleRoom._id] = 0;
+        });
+      } else {
+        response.rooms.forEach((bundle) => {
+          bundle.forEach((room) => {
+            initialIdx[room.exampleRoom._id] = 0;
+          });
+        });
+      }
       setRoomIdx(initialIdx);
     }
   );
