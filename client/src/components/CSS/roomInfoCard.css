@@ -101,7 +101,7 @@
 .search-results-carousel-img {
   border-radius: 5px;
   max-width: 370px;
-  height: 100%;
+  height: auto;
   overflow: hidden;
   object-fit: contain;
 }
@@ -185,11 +185,11 @@
     min-height: calc(100vh - 185px);
   }
   .search-results-carousel {
-    max-width: 300;
+    max-width: 300px;
   }
 
   .search-results-carousel-img {
-    max-width: 120%;
+    max-width: auto;
   }
 }
 
