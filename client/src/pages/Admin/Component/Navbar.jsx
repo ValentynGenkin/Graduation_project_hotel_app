@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../CSS/Navbar.css";
 import Manager from "../Icons/Manager.png";
+import { TbBrandBooking } from "react-icons/tb";
 import { FcStatistics } from "react-icons/fc"; // Import FcStatistics from react-icons/fc
 import { LuLogOut } from "react-icons/lu"; // Import LuLogOut from react-icons/lu
 import { MdReviews } from "react-icons/md"; // Import MdReviews from react-icons/md
@@ -45,6 +46,10 @@ const Navbar = () => {
           </div>
         </Link>
         <div className="nav-All-links">
+          <Link to="/Admin/CustomerBooking" className="nav-link-admin">
+            <TbBrandBooking className="Nav-icon" />
+            Manual booking
+          </Link>
           <Link to="/Admin/AddRooms" className="nav-link-admin">
             <MdOutlineBedroomParent className="Nav-icon" />
             Add Rooms
