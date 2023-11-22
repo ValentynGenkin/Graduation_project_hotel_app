@@ -48,13 +48,12 @@ export const checkRoomExist = asyncHandler(async (req, res, next) => {
     next(new ServerError("Please provide a room id.", 400));
   }
   const roomIds = roomId.split(",");
-  let rooms;
   if (roomIds.length > 1) {
     req.bundleRooms = await Room.find({ _id: { $in: roomIds } });
     next();
   } else {
-    rooms = await Room.findById(roomId);
-    if (!rooms[0]) {
+    const room = await Room.findById(roomId);
+    if (!room) {
       next(
         new ServerError(
           `There is not any room with this id. id: ${roomId}`,
@@ -63,7 +62,7 @@ export const checkRoomExist = asyncHandler(async (req, res, next) => {
       );
     }
 
-    req.room = rooms[0];
+    req.room = room;
 
     next();
   }
