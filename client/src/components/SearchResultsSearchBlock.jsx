@@ -1,6 +1,6 @@
 import { Button, Container } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./CSS/SearchResultsSearchBLock.css";
@@ -48,7 +48,9 @@ const SearchResultsSearchBLock = () => {
   }, [value]);
 
   const handleLinkClick = () => {
-    const newUrl = `/RoomInfoCard?checkIn=${formattedCheckInDate}&checkOut=${formattedCheckOutDate}`;
+    const newUrl = `/RoomInfoCard?checkIn=${formattedCheckInDate}&checkOut=${formattedCheckOutDate}&personCount=${
+      room === 1 ? "" : adult + child
+    }&roomCount=${room === 1 ? "" : room}`;
 
     window.location.href = newUrl;
   };
@@ -155,20 +157,16 @@ const SearchResultsSearchBLock = () => {
               </Button>
             </div>
           </div>
-          <Link
-            to={`/RoomInfoCard?checkIn=${formattedCheckInDate}&checkOut=${formattedCheckOutDate}`}
+          <Button
+            variant="success"
+            size="lg"
+            className="search-page-search-btn"
+            onClick={() => {
+              handleLinkClick();
+            }}
           >
-            <Button
-              variant="success"
-              size="lg"
-              className="search-page-search-btn"
-              onClick={() => {
-                handleLinkClick();
-              }}
-            >
-              Search
-            </Button>
-          </Link>
+            Search
+          </Button>
         </div>
       </div>
     </Container>

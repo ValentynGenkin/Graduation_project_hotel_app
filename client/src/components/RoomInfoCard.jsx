@@ -21,6 +21,7 @@ import FullScreenPopUp from "./FullScreenPopUp.jsx";
 import { BookingContext } from "../contexts/BookingContext.jsx";
 import PropTypes from "prop-types";
 import SearchRecommendation from "./SearchRecommendation.jsx";
+import { totalPriceAndNightsCalculator } from "../util/totalPriceAndNightsCalculator.js";
 
 function RoomInfoCard() {
   const [response, setResponse] = useState(null);
@@ -37,6 +38,8 @@ function RoomInfoCard() {
 
   let checkIn = formatDateString(queryParams.get("checkIn"));
   let checkOut = formatDateString(queryParams.get("checkOut"));
+  let personCount = queryParams.get("personCount");
+  let roomCount = queryParams.get("roomCount");
 
   checkIn = new Date(checkIn).toString();
   checkOut = new Date(checkOut).toString();
@@ -46,11 +49,12 @@ function RoomInfoCard() {
       filters.roomType ? filters.roomType : ""
     }&facilities=${filters.facilities ? filters.facilities : ""}&bedCount=${
       filters.bedCount ? filters.bedCount : ""
-    }`,
+    }&personCount=${roomCount === 1 ? "" : personCount}`,
     (response) => {
       setResponse(response);
 
       const initialIdx = {};
+
       response.rooms.forEach((room) => {
         initialIdx[room.exampleRoom._id] = 0;
       });
@@ -82,34 +86,13 @@ function RoomInfoCard() {
     );
   }
 
-  const totalPriceAndNights = (price) => {
-    let totalCost = 0;
-
-    const roomPrice = parseFloat(price);
-    const checkInDate = new Date(checkIn);
-    const checkOutDate = new Date(checkOut);
-
-    checkInDate.setUTCHours(14, 0, 0, 0);
-    checkOutDate.setUTCHours(12, 0, 0, 0);
-
-    const timeCorrection = 2 * 60 * 60 * 1000;
-    const numberOfNights = Math.ceil(
-      (checkOutDate - checkInDate - timeCorrection) / (1000 * 60 * 60 * 24)
-    );
-
-    const roomCost = numberOfNights * roomPrice;
-    totalCost += roomCost;
-
-    return [totalCost, numberOfNights];
-  };
-
   return (
     <>
       <BookingCart />
       <Container className="room-info-card-container">
         <SearchResultsSearchBLock />
         <RoomFilterCheckBoxes setFilters={setFilters} />
-        <SearchRecommendation />
+        {roomCount > 1 ? <SearchRecommendation filters={filters} /> : ""}
         {isLoading ? (
           <Spinner />
         ) : error ? (
@@ -243,19 +226,25 @@ function RoomInfoCard() {
                       <div className="search-results-card-body-price ">
                         <p>
                           {`Total price for ${
-                            totalPriceAndNights(
-                              room.exampleRoom.roomPrice.$numberDecimal
+                            totalPriceAndNightsCalculator(
+                              room.exampleRoom.roomPrice.$numberDecimal,
+                              checkIn,
+                              checkOut
                             )[1]
                           } ${
-                            totalPriceAndNights(
-                              room.exampleRoom.roomPrice.$numberDecimal
+                            totalPriceAndNightsCalculator(
+                              room.exampleRoom.roomPrice.$numberDecimal,
+                              checkIn,
+                              checkOut
                             )[1] > 1
                               ? "nights"
                               : "night"
                           }:
                             €${
-                              totalPriceAndNights(
-                                room.exampleRoom.roomPrice.$numberDecimal
+                              totalPriceAndNightsCalculator(
+                                room.exampleRoom.roomPrice.$numberDecimal,
+                                checkIn,
+                                checkOut
                               )[0]
                             }`}
                         </p>

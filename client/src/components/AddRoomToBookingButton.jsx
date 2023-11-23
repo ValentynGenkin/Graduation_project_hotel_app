@@ -3,12 +3,19 @@ import useFetch from "../hooks/useFetch";
 import { BookingContext } from "../contexts/BookingContext";
 import PropTypes from "prop-types";
 
-const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
+const AddRoomToBookingButton = ({
+  textContent,
+  roomId,
+  checkIn,
+  checkOut,
+  className,
+}) => {
   AddRoomToBookingButton.propTypes = {
     roomId: PropTypes.string.isRequired,
     checkIn: PropTypes.string.isRequired,
     checkOut: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
+    textContent: PropTypes.string,
   };
   const { handleBookingContext } = useContext(BookingContext);
   const [clickEvent, setClickEvent] = useState();
@@ -55,12 +62,12 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
             className={className}
             onClick={() => setClickEvent(new Date())}
           >
-            Add Room
+            {textContent ? textContent : "Add Roomss"}
           </button>
         </>
       ) : (
         <button className={className} onClick={() => setClickEvent(new Date())}>
-          Add Room
+          {textContent ? textContent : "Add Roomss"}
         </button>
       )}
     </>
