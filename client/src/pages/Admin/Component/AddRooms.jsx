@@ -40,12 +40,26 @@ const AddRoomForm = () => {
       [name]: value,
     }));
   };
+
+  const handleFacilitiesChange = (event) => {
+    const { value } = event.target;
+
+    const facilitiesArray = value
+      .split("\n")
+      .map((facility) => ({ name: facility.trim() }));
+
+    setRoomDetails((prevRoomDetails) => ({
+      ...prevRoomDetails,
+      facilities: facilitiesArray,
+    }));
+  };
+
   const handleImageInputChange = (event) => {
     const { name, files } = event.target;
 
     setRoomDetails((prevRoomDetails) => ({
       ...prevRoomDetails,
-      [name]: [...files], // Use spread operator to convert FileList to an array
+      [name]: [...files],
     }));
   };
 
@@ -61,18 +75,21 @@ const AddRoomForm = () => {
       facilities,
     } = roomDetails;
 
+    const formattedFacilities = facilities.map((facility) => facility.name);
+
     if (
       !roomNo ||
       !roomDescription ||
       !roomType ||
       !bedCount ||
       !roomPrice ||
-      !facilities.length
+      !formattedFacilities.length
     ) {
       setInputError(true);
       setInputErrorMsg("Please fill in all fields");
     } else {
-      AddRoom(roomDetails);
+      // Use the formatted facilities array when calling AddRoom
+      AddRoom({ ...roomDetails, facilities: formattedFacilities });
     }
   };
 
@@ -86,6 +103,7 @@ const AddRoomForm = () => {
       body: JSON.stringify(data),
     });
   };
+
   useEffect(() => {
     if (success || addError || inputError) {
       const timeout = setTimeout(() => {
@@ -152,11 +170,12 @@ const AddRoomForm = () => {
       </div>
       <div className="input-wrapper">
         <label className="inputLabel">Facilities:</label>
-        <input
-          type="text"
+        <textarea
           name="facilities"
-          value={roomDetails.facilities}
-          onChange={handleInputChange}
+          value={roomDetails.facilities
+            .map((facility) => facility.name)
+            .join("\n")}
+          onChange={handleFacilitiesChange}
           className="room-input"
         />
       </div>
