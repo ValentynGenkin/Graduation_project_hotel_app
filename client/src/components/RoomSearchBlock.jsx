@@ -12,6 +12,7 @@ const RoomSearchBlock = () => {
   const [adult, setAdult] = useState(2);
   const [child, setChild] = useState(0);
   const [room, setRoom] = useState(1);
+  const [dateError, setDateError] = useState("none");
 
   const onChange = (nextValue) => {
     setValue(nextValue);
@@ -148,17 +149,29 @@ const RoomSearchBlock = () => {
               />
             </Container>
             <div className="search-btn-block">
-              <Link
-                to={`/RoomInfoCard?checkIn=${formattedCheckInDate}&checkOut=${formattedCheckOutDate}`}
+              <Button
+                as={value[0] ? Link : undefined}
+                to={
+                  value[0]
+                    ? `/RoomInfoCard?checkIn=${formattedCheckInDate}&checkOut=${formattedCheckOutDate}`
+                    : undefined
+                }
+                className="search-btn"
+                variant="outline-success"
+                size="lg"
+                onClick={() => {
+                  if (!value[0]) {
+                    setDateError("block");
+                  } else {
+                    setDateError("none");
+                  }
+                }}
               >
-                <Button
-                  className="search-btn"
-                  variant="outline-success"
-                  size="lg"
-                >
-                  Search
-                </Button>
-              </Link>
+                Search
+              </Button>
+              <p style={{ color: "red", display: dateError }}>
+                Please select dates
+              </p>
             </div>
           </Accordion.Body>
         </Accordion.Item>
