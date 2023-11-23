@@ -15,9 +15,10 @@ const TaskSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  closingMessage: {
+  updateMessage: {
     type: String,
     required: false,
+    default: "open",
   },
   status: {
     type: String,

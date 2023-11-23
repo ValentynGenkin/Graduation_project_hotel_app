@@ -23,3 +23,18 @@ export const addTask = asyncHandler(async (req, res, next) => {
     task: task,
   });
 });
+export const updateTask = asyncHandler(async (req, res, next) => {
+  const { taskId, taskStatus, updateMessage } = req.body;
+  const task = await Task.findByIdAndUpdate(
+    taskId,
+    {
+      status: taskStatus,
+      updateMessage: updateMessage,
+    },
+    { new: true }
+  );
+  if (!task) {
+    next(new ServerError("There is no task associated with this id.", 404));
+  }
+  return res.status(200).json({ success: true, task: task });
+});

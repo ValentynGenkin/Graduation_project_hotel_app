@@ -33,7 +33,7 @@ export const bookingsByRoomQueryMiddleware = asyncHandler(
         { checkIn: { $lt: startDate }, checkOut: { $gte: startDate } },
         { checkIn: { $gte: startDate, $lte: endDate } },
       ],
-    });
+    }).populate("taskIds");
     req.rooms = rooms;
     req.bookings = bookings;
     req.pagination = paginationResults.pagination;
