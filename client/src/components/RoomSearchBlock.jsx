@@ -153,7 +153,9 @@ const RoomSearchBlock = () => {
                 as={value[0] ? Link : undefined}
                 to={
                   value[0]
-                    ? `/RoomInfoCard?checkIn=${formattedCheckInDate}&checkOut=${formattedCheckOutDate}`
+                    ? `/RoomInfoCard?checkIn=${formattedCheckInDate}&checkOut=${formattedCheckOutDate}&personCount=${
+                        room === 1 ? "" : adult + child
+                      }&roomCount=${room === 1 ? "" : room}`
                     : undefined
                 }
                 className="search-btn"

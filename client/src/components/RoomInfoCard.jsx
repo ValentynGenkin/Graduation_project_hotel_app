@@ -49,7 +49,9 @@ function RoomInfoCard() {
       filters.roomType ? filters.roomType : ""
     }&facilities=${filters.facilities ? filters.facilities : ""}&bedCount=${
       filters.bedCount ? filters.bedCount : ""
-    }&personCount=${roomCount === 1 ? "" : personCount}`,
+    }&personCount=${roomCount === 1 ? "" : personCount}&roomCount=${
+      roomCount === 1 ? "" : roomCount
+    }`,
     (response) => {
       setResponse(response);
 
