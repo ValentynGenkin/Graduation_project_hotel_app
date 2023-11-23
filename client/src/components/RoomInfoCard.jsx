@@ -38,7 +38,6 @@ function RoomInfoCard() {
 
   let checkIn = formatDateString(queryParams.get("checkIn"));
   let checkOut = formatDateString(queryParams.get("checkOut"));
-  let personCount = queryParams.get("personCount");
   let roomCount = queryParams.get("roomCount");
 
   checkIn = new Date(checkIn).toString();
@@ -49,8 +48,6 @@ function RoomInfoCard() {
       filters.roomType ? filters.roomType : ""
     }&facilities=${filters.facilities ? filters.facilities : ""}&bedCount=${
       filters.bedCount ? filters.bedCount : ""
-    }&personCount=${roomCount === 1 ? "" : personCount}&roomCount=${
-      roomCount === 1 ? "" : roomCount
     }`,
     (response) => {
       setResponse(response);
