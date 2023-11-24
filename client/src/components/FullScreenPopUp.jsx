@@ -4,16 +4,19 @@ import Modal from "react-bootstrap/Modal";
 import React from "react";
 import Zoom from "../assets/zoom.png";
 import PropTypes from "prop-types";
+import RoomDetailsCard from "./RoomDetailsCard";
 
-function FullScreenPopUp({ body, title }) {
+function FullScreenPopUp({ body, title, className, roomId }) {
   const [show, setShow] = useState(false);
 
   return (
     <>
       <Button
-        className="zoom-btn"
+        className={className ? className : "zoom-btn"}
         variant="light"
-        onClick={() => setShow(true)}
+        onClick={() => {
+          setShow(true);
+        }}
       >
         <img src={Zoom} alt="zoom" />
       </Button>
@@ -28,7 +31,9 @@ function FullScreenPopUp({ body, title }) {
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{body}</Modal.Body>
+        <Modal.Body>
+          {roomId ? <RoomDetailsCard roomId={roomId} /> : body}
+        </Modal.Body>
       </Modal>
     </>
   );
@@ -37,6 +42,8 @@ function FullScreenPopUp({ body, title }) {
 export default FullScreenPopUp;
 
 FullScreenPopUp.propTypes = {
-  body: PropTypes.element.isRequired,
-  title: PropTypes.element.isRequired,
+  body: PropTypes.element,
+  title: PropTypes.object,
+  className: PropTypes.string,
+  roomId: PropTypes.string,
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import useFetch from "../hooks/useFetch.js";
 import "./CSS/roomInfoCard.css";
 import {
@@ -11,16 +11,16 @@ import {
   useAccordionButton,
 } from "react-bootstrap";
 import "chart.js/auto";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
 import RoomFilterCheckBoxes from "./RoomFilterCheckBoxes.jsx";
 import BookingCart from "./BookingCart.jsx";
 import { formatDateString } from "../util/formatDateString.js";
 import SearchResultsSearchBLock from "./SearchResultsSearchBlock.jsx";
 import FullScreenPopUp from "./FullScreenPopUp.jsx";
-import { BookingContext } from "../contexts/BookingContext.jsx";
 import PropTypes from "prop-types";
 import SearchRecommendation from "./SearchRecommendation.jsx";
+import { totalPriceAndNightsCalculator } from "../util/totalPriceAndNightsCalculator.js";
 
 function RoomInfoCard() {
   const [response, setResponse] = useState(null);
@@ -31,12 +31,11 @@ function RoomInfoCard() {
     bedCount: null,
   });
 
-  const { bookingContext } = useContext(BookingContext);
-
   const queryParams = new URLSearchParams(useLocation().search);
 
   let checkIn = formatDateString(queryParams.get("checkIn"));
   let checkOut = formatDateString(queryParams.get("checkOut"));
+  let roomCount = queryParams.get("roomCount");
 
   checkIn = new Date(checkIn).toString();
   checkOut = new Date(checkOut).toString();
@@ -51,6 +50,7 @@ function RoomInfoCard() {
       setResponse(response);
 
       const initialIdx = {};
+
       response.rooms.forEach((room) => {
         initialIdx[room.exampleRoom._id] = 0;
       });
@@ -82,42 +82,22 @@ function RoomInfoCard() {
     );
   }
 
-  const totalPriceAndNights = (price) => {
-    let totalCost = 0;
-
-    const roomPrice = parseFloat(price);
-    const checkInDate = new Date(checkIn);
-    const checkOutDate = new Date(checkOut);
-
-    checkInDate.setUTCHours(14, 0, 0, 0);
-    checkOutDate.setUTCHours(12, 0, 0, 0);
-
-    const timeCorrection = 2 * 60 * 60 * 1000;
-    const numberOfNights = Math.ceil(
-      (checkOutDate - checkInDate - timeCorrection) / (1000 * 60 * 60 * 24)
-    );
-
-    const roomCost = numberOfNights * roomPrice;
-    totalCost += roomCost;
-
-    return [totalCost, numberOfNights];
-  };
-
   return (
     <>
       <BookingCart />
       <Container className="room-info-card-container">
         <SearchResultsSearchBLock />
         <RoomFilterCheckBoxes setFilters={setFilters} />
-        <SearchRecommendation />
+        {roomCount > 1 ? <SearchRecommendation filters={filters} /> : ""}
         {isLoading ? (
           <Spinner />
         ) : error ? (
           <p>Error: {error.message}</p>
         ) : response && response.rooms && response.rooms.length > 0 ? (
           response.rooms.map((room, index) => (
-            <>
+            <div key={room.exampleRoom._id}>
               <Accordion
+                key={room.exampleRoom._id}
                 defaultActiveKey="1"
                 className="search-results-accordion"
               >
@@ -157,7 +137,7 @@ function RoomInfoCard() {
                                 className="full-screen-carousel-zoomed"
                               >
                                 {room.exampleRoom.images.map((img) => (
-                                  <Carousel.Item key={img}>
+                                  <Carousel.Item key={room.exampleRoom._id + 1}>
                                     <img
                                       id={room.exampleRoom._id}
                                       src={img}
@@ -208,20 +188,12 @@ function RoomInfoCard() {
                       <div className="search-results-card-buttons">
                         <CustomToggle eventKey="0">Information</CustomToggle>
                         <AddRoomToBookingButton
+                          textContent={"Add room"}
                           checkIn={checkIn}
                           checkOut={checkOut}
                           roomId={room.exampleRoom._id}
                           className="btn btn-light"
                         />
-                        {bookingContext &&
-                        bookingContext.bookingDetails &&
-                        bookingContext.bookingDetails.length > 0 ? (
-                          <Button as={Link} to={"/checkout"} variant="light">
-                            Checkout
-                          </Button>
-                        ) : (
-                          ""
-                        )}
                       </div>
                     </div>
                   </Card.Header>
@@ -243,19 +215,25 @@ function RoomInfoCard() {
                       <div className="search-results-card-body-price ">
                         <p>
                           {`Total price for ${
-                            totalPriceAndNights(
-                              room.exampleRoom.roomPrice.$numberDecimal
+                            totalPriceAndNightsCalculator(
+                              room.exampleRoom.roomPrice.$numberDecimal,
+                              checkIn,
+                              checkOut
                             )[1]
                           } ${
-                            totalPriceAndNights(
-                              room.exampleRoom.roomPrice.$numberDecimal
+                            totalPriceAndNightsCalculator(
+                              room.exampleRoom.roomPrice.$numberDecimal,
+                              checkIn,
+                              checkOut
                             )[1] > 1
                               ? "nights"
                               : "night"
                           }:
                             €${
-                              totalPriceAndNights(
-                                room.exampleRoom.roomPrice.$numberDecimal
+                              totalPriceAndNightsCalculator(
+                                room.exampleRoom.roomPrice.$numberDecimal,
+                                checkIn,
+                                checkOut
                               )[0]
                             }`}
                         </p>
@@ -264,7 +242,7 @@ function RoomInfoCard() {
                   </Accordion.Collapse>
                 </Card>
               </Accordion>
-            </>
+            </div>
           ))
         ) : (
           <p>

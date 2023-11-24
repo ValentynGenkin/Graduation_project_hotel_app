@@ -135,3 +135,67 @@ export const removeRoomFromBookingTransaction = async (req, next) => {
     session.endSession();
   }
 };
+export const addRoomsToBookingTransaction = async (req, next) => {
+  const checkIn = new Date(req.body.checkIn);
+  const checkOut = new Date(req.body.checkOut);
+  if (isNaN(checkIn) || isNaN(checkOut) || checkOut < checkIn) {
+    next(
+      new ServerError(
+        "Please provide checkIn - checkOut dates in valid format",
+        400
+      )
+    );
+  }
+  const booking = req.booking;
+  const availableRooms = req.availableBundleRooms;
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    for (const availableRoom of availableRooms) {
+      const bookingDetail = await BookingDetail.create(
+        [
+          {
+            bookingId: booking._id,
+            roomId: availableRoom._id,
+            checkIn: checkIn,
+            checkOut: checkOut,
+          },
+        ],
+        { session }
+      );
+      booking.bookingDetails.push(bookingDetail[0]._id);
+      const diffInDays = Math.floor(
+        (checkOut - checkIn) / (1000 * 60 * 60 * 24)
+      );
+
+      booking.cost =
+        parseFloat(booking.cost.toString()) +
+        parseFloat(availableRoom.roomPrice.toString()) * diffInDays;
+      booking.updatedAt = new Date();
+      await booking.save({ session });
+    }
+
+    await session.commitTransaction();
+
+    const updatedBooking = Booking.findById(booking._id).populate({
+      path: "bookingDetails",
+      populate: {
+        path: "roomId",
+        model: "Room",
+      },
+    });
+    return updatedBooking;
+  } catch (error) {
+    await session.abortTransaction();
+    next(
+      new ServerError(
+        `Something went wrong during the transaction. Please try again later. - ${error}`,
+        error.status
+      )
+    );
+  } finally {
+    session.endSession();
+  }
+};

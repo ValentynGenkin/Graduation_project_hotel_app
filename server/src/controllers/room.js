@@ -49,10 +49,12 @@ export const deleteSingleRoom = asyncHandler(async (req, res) => {
 });
 
 export const getRooms = asyncHandler(async (req, res) => {
-  const rooms = await req.rooms.exec();
+  const rooms = req.rooms;
+  const bundleRooms = req.bundleRooms;
   return res.status(200).json({
     success: true,
-    rooms: rooms,
+    resultType: rooms ? "rooms" : "bundle",
+    rooms: rooms || bundleRooms,
   });
 });
 
