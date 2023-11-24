@@ -6,12 +6,17 @@ import "../CSS/Requests.css";
 
 const RoomTable = () => {
   const [roomRequests, setRoomRequests] = useState([]);
-
-  const { performFetch } = useFetch("/booking/roomPopulated", (res) => {
-    if (res.success) {
-      setRoomRequests(res.tasksPopulated);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalRequests, setTotalRequests] = useState(0);
+  const { performFetch } = useFetch(
+    `/booking/roomPopulated?page=${currentPage}&limit=10`, // Use a fixed limit or replace it as needed
+    (res) => {
+      if (res.success) {
+        setRoomRequests(res.tasksPopulated);
+        setTotalRequests(res.totalTasks);
+      }
     }
-  });
+  );
 
   useEffect(() => {
     performFetch({
@@ -21,10 +26,52 @@ const RoomTable = () => {
       credentials: "include",
       method: "GET",
     });
-  }, []);
+  }, [currentPage]);
 
-  const handleStatusChange = (roomId, newStatus) => {
-    toast.success(`Room ID ${roomId} - Status changed to ${newStatus}`);
+  const handleStatusChange = (requestId, newStatus) => {
+    const updatedRoomRequests = [...roomRequests];
+    const index = updatedRoomRequests.findIndex(
+      (request) => request._id === requestId
+    );
+
+    // If the request is found, update its status
+    if (index !== -1) {
+      updatedRoomRequests[index] = {
+        ...updatedRoomRequests[index],
+        status: newStatus,
+      };
+
+      // Update state with the modified array
+      setRoomRequests(updatedRoomRequests);
+
+      // Display a success toast
+      toast.success(`Request ID ${requestId} - Status changed to ${newStatus}`);
+    } else {
+      throw new Error(`Request with ID ${requestId} not found.`);
+    }
+  };
+
+  const onBtNext = () => {
+    if (currentPage < Math.ceil(totalRequests / 10)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const onBtPrevious = () => {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handlePageChange = (e) => {
+    const newPage = e.target.value;
+    if (
+      !isNaN(newPage) &&
+      newPage > 0 &&
+      newPage <= Math.ceil(totalRequests / 10)
+    ) {
+      setCurrentPage(newPage);
+    }
   };
 
   return (
@@ -71,11 +118,68 @@ const RoomTable = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="7">No data available</td>
+              <td colSpan="4">No data available</td>
             </tr>
           )}
         </tbody>
       </table>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        <button
+          onClick={onBtPrevious}
+          style={{ outline: "none", width: "30px", border: "none" }}
+        >
+          <p style={{ margin: "0px" }}>-</p>
+        </button>
+        <input
+          type="number"
+          value={currentPage}
+          onChange={(e) => handlePageChange(e)}
+          style={{ width: "40px", border: "none", outline: "none" }}
+        />
+        <button
+          style={{ outline: "none", width: "30px", border: "none" }}
+          onClick={onBtNext}
+        >
+          +
+        </button>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "10px",
+          marginRight: "10px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <p style={{ margin: "0px" }}>Total Requests :</p>
+          <p style={{ margin: "0px" }}>{totalRequests}</p>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <p style={{ margin: "0px" }}>Total Page :</p>
+          <p style={{ margin: "0px" }}>{Math.ceil(totalRequests / 10)}</p>
+        </div>
+      </div>
     </div>
   );
 };
