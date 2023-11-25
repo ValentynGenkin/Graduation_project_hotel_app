@@ -3,15 +3,18 @@ import Requests from "../Component/Requests";
 import RoomsTimeTable from "../Component/RoomsTimeTable";
 import Navbar from "../Component/Navbar";
 import Footer from "../Component/Footer";
+import { Container } from "react-bootstrap";
 
 const Status = () => {
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <>
       <Navbar />
-      <RoomsTimeTable />
-      <Requests />
+      <Container>
+        <RoomsTimeTable />
+        <Requests />
+      </Container>
       <Footer />
-    </div>
+    </>
   );
 };
 
