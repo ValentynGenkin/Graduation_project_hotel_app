@@ -7,6 +7,7 @@ import { Badge, Button } from "react-bootstrap";
 import { dateFormatter } from "../util/dateFormatter";
 import { totalPriceAndNightsCalculator } from "../util/totalPriceAndNightsCalculator";
 import TimerImg from "../assets/schedule.png";
+import { Link } from "react-router-dom";
 const BookingCart = () => {
   const { bookingContext } = useContext(BookingContext);
 
@@ -84,10 +85,15 @@ const BookingCart = () => {
             : null}
         </Badge>
         <br />
-        <Button variant="primary" className="checkout-cart-btn">
+        <Button
+          variant="primary"
+          className="checkout-cart-btn"
+          as={Link}
+          to={"/checkout"}
+        >
           Book <span className="visually-hidden">unread messages</span>
         </Button>
-        {bookingContext.updatedAt && (
+        {bookingContext && bookingContext.updatedAt ? (
           <div style={{ display: "flex", alignItems: "center" }}>
             <img
               src={TimerImg}
@@ -98,7 +104,7 @@ const BookingCart = () => {
               updatedAt={bookingContext && bookingContext.updatedAt}
             />
           </div>
-        )}
+        ) : null}
       </div>
 
       <div className="cart-details">{cartItems}</div>

@@ -21,6 +21,7 @@ const RemoveRoomFromBookingButton = ({
       }
     }
   );
+
   const handleClick = () => {
     performFetch({
       method: "POST",
