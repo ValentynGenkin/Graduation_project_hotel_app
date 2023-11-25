@@ -72,7 +72,7 @@ function RoomInfoCard() {
 
     return (
       <Button
-        variant="light"
+        variant="secondary"
         onClick={() => {
           decoratedOnClick();
         }}
@@ -192,7 +192,7 @@ function RoomInfoCard() {
                           checkIn={checkIn}
                           checkOut={checkOut}
                           roomId={room.exampleRoom._id}
-                          className="btn btn-light"
+                          className="btn btn-secondary"
                         />
                       </div>
                     </div>

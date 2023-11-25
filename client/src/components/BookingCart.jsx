@@ -3,41 +3,58 @@ import { BookingContext } from "../contexts/BookingContext";
 import "./CSS/BookingCart.css";
 import RemoveRoomFromBookingButton from "./RemoveRoomFromBookingButton";
 import BookingTimeCounter from "./BookingTimeCounter";
-import { BsBox2Heart } from "react-icons/bs";
+import { Badge, Button } from "react-bootstrap";
+import { dateFormatter } from "../util/dateFormatter";
+import { totalPriceAndNightsCalculator } from "../util/totalPriceAndNightsCalculator";
+import TimerImg from "../assets/schedule.png";
 const BookingCart = () => {
   const { bookingContext } = useContext(BookingContext);
 
   const cartItems = bookingContext?.bookingDetails
     ? bookingContext.bookingDetails.map((bookingDetail) => {
-        const diffInDays = Math.floor(
-          (new Date(bookingDetail.checkOut) - new Date(bookingDetail.checkIn)) /
-            (1000 * 60 * 60 * 24)
-        );
         return (
           <div key={bookingDetail._id} className="cart-booking-detail">
-            <RemoveRoomFromBookingButton
-              className="remove-room-button-in-cart"
-              roomId={bookingDetail.roomId._id}
-              bookingDetailId={bookingDetail._id}
-            />
-            <ul>
-              <li>Room Number: {bookingDetail.roomId.roomNo}</li>
-              <li>Room Type: {bookingDetail.roomId.roomType}</li>
-              <li>Bed Count: {bookingDetail.roomId.bedCount}</li>
-              <li>
-                Room Cost:{" "}
-                {`${diffInDays} night(s) x ${
-                  bookingDetail.roomId.roomPrice.$numberDecimal
-                } / per night = ${
-                  diffInDays *
-                  parseFloat(bookingDetail.roomId.roomPrice.$numberDecimal)
-                }`}
-              </li>
-            </ul>
-
-            <BookingTimeCounter
-              updatedAt={bookingContext && bookingContext.updatedAt}
-            />
+            <div className="cart-booking-detail-info">
+              <p>{`Check-in: ${dateFormatter(
+                new Date(bookingDetail.checkIn)
+              )}`}</p>
+              <p>{`Check-out: ${dateFormatter(
+                new Date(bookingDetail.checkOut)
+              )}`}</p>
+              <p>Room Type: {bookingDetail.roomId.roomType}</p>
+              <p>
+                {" "}
+                {`Price for 1 room for ${
+                  totalPriceAndNightsCalculator(
+                    bookingDetail.roomId.roomPrice.$numberDecimal,
+                    bookingDetail.checkIn,
+                    bookingDetail.checkOut
+                  )[1]
+                } ${
+                  totalPriceAndNightsCalculator(
+                    bookingDetail.roomId.roomPrice.$numberDecimal,
+                    bookingDetail.checkIn,
+                    bookingDetail.checkOut
+                  )[1] > 1
+                    ? "nights"
+                    : "night"
+                }:
+                            €${
+                              totalPriceAndNightsCalculator(
+                                bookingDetail.roomId.roomPrice.$numberDecimal,
+                                bookingDetail.checkIn,
+                                bookingDetail.checkOut
+                              )[0]
+                            }`}
+              </p>
+            </div>
+            <div>
+              <RemoveRoomFromBookingButton
+                className="btn  btn-danger delete-room-btn-cart"
+                roomId={bookingDetail.roomId._id}
+                bookingDetailId={bookingDetail._id}
+              />
+            </div>
           </div>
         );
       })
@@ -57,11 +74,33 @@ const BookingCart = () => {
         }}
         className="cart-button"
       >
-        <BsBox2Heart className="box-icon-03" />
-        <BookingTimeCounter
-          updatedAt={bookingContext && bookingContext.updatedAt}
-        />
+        <Badge bg="secondary">
+          {bookingContext && bookingContext.bookingDetails
+            ? `${bookingContext.bookingDetails.length} ${
+                bookingContext.bookingDetails.length > 1
+                  ? "rooms are ready for booking"
+                  : "room is ready for booking"
+              }`
+            : null}
+        </Badge>
+        <br />
+        <Button variant="primary" className="checkout-cart-btn">
+          Book <span className="visually-hidden">unread messages</span>
+        </Button>
+        {bookingContext.updatedAt && (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={TimerImg}
+              alt="timer"
+              style={{ width: "20px", height: "20px", marginRight: "5px" }}
+            />
+            <BookingTimeCounter
+              updatedAt={bookingContext && bookingContext.updatedAt}
+            />
+          </div>
+        )}
       </div>
+
       <div className="cart-details">{cartItems}</div>
     </div>
   );

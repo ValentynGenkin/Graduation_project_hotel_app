@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { BookingContext } from "../contexts/BookingContext";
 import PropTypes from "prop-types";
+import { Spinner } from "react-bootstrap";
 
 const RemoveRoomFromBookingButton = ({
   roomId,
@@ -43,21 +44,39 @@ const RemoveRoomFromBookingButton = ({
   }, [clickEvent]);
   return (
     <>
-      {isLoading ? (
-        <p>loading</p>
-      ) : error ? (
+      {error ? (
         <>
           <p>Something went wrong. Error:{error.toString()}</p>
           <button
             className={className}
             onClick={() => setClickEvent(new Date())}
           >
-            Remove
+            {isLoading ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : (
+              "X"
+            )}
           </button>
         </>
       ) : (
         <button className={className} onClick={() => setClickEvent(new Date())}>
-          Remove
+          {isLoading ? (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+          ) : (
+            "X"
+          )}
         </button>
       )}
     </>
