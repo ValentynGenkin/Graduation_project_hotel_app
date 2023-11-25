@@ -18,6 +18,15 @@ const RoomTable = () => {
     }
   );
 
+  const { performFetch: performUpdateFetch } = useFetch(
+    "/task/update",
+    (res) => {
+      if (res.success) {
+        toast.success("Update task is  successful");
+      }
+    }
+  );
+
   useEffect(() => {
     performFetch({
       headers: {
@@ -28,26 +37,26 @@ const RoomTable = () => {
     });
   }, [currentPage]);
 
-  const handleStatusChange = (requestId, newStatus) => {
-    const updatedRoomRequests = [...roomRequests];
-    const index = updatedRoomRequests.findIndex(
-      (request) => request._id === requestId
-    );
+  const performUpdateStatus = async (requestId, newStatus) => {
+    try {
+      const response = await performUpdateFetch({
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          taskId: requestId,
+          taskStatus: newStatus,
+          updateMessage: "Status updated from the client",
+        }),
+      });
 
-    // If the request is found, update its status
-    if (index !== -1) {
-      updatedRoomRequests[index] = {
-        ...updatedRoomRequests[index],
-        status: newStatus,
-      };
-
-      // Update state with the modified array
-      setRoomRequests(updatedRoomRequests);
-
-      // Display a success toast
-      toast.success(`Request ID ${requestId} - Status changed to ${newStatus}`);
-    } else {
-      throw new Error(`Request with ID ${requestId} not found.`);
+      if (!response.success) {
+        throw new Error("Update status failed:", response.error);
+      }
+    } catch (error) {
+      throw new Error("Fetch error:", error);
     }
   };
 
@@ -99,7 +108,7 @@ const RoomTable = () => {
                     className="custom-select"
                     value={request.status}
                     onChange={(e) =>
-                      handleStatusChange(request._id, e.target.value)
+                      performUpdateStatus(request._id, e.target.value)
                     }
                   >
                     {["open", "in-process", "closed"].map((statusOption) => (
