@@ -191,6 +191,9 @@
   .search-results-carousel-img {
     max-width: auto;
   }
+  .search-results-card-info-value {
+    width: 250px;
+  }
 }
 
 .recommended-results-card-header {
