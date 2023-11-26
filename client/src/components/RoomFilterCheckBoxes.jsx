@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import PropTypes from "prop-types";
+import "./CSS/roomFilterCheckboxes.css";
 
 const RoomFilterCheckBoxes = ({ setFilters }) => {
   RoomFilterCheckBoxes.propTypes = {
@@ -85,7 +86,7 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
     ? filterItems.facilities.map((facility) => {
         return (
           <label key={facility}>
-            {facility}:
+            {facility}
             <input
               type="checkbox"
               group="facilities"
@@ -101,7 +102,7 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
     ? filterItems.roomTypes.map((type) => {
         return (
           <label key={type}>
-            {type}:
+            {type}
             <input
               type="checkbox"
               group="roomType"
@@ -117,7 +118,7 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
     ? filterItems.bedCounts.map((count) => {
         return (
           <label key={count}>
-            {count}:
+            {count}
             <input
               type="checkbox"
               group="bedCount"
@@ -135,18 +136,17 @@ const RoomFilterCheckBoxes = ({ setFilters }) => {
   ) : (
     <>
       {error ? <p>{error.message}</p> : ""}
-      <div className="room-filters">
-        <div className="filter-group">
-          <span className="filter-group-title">Room Types:</span>
-
+      <div className="room-filters-0-7">
+        <div className="filter-group-0-7">
+          <span className="filter-group-title-0-7">Room Type:</span>
           {roomTypes}
         </div>
-        <div className="filter-group">
-          <span className="filter-group-title">Facilities:</span>
+        <div className="filter-group-0-7">
+          <span className="filter-group-title-0-7">Facilities:</span>
           {facilities}{" "}
         </div>
-        <div className="filter-group">
-          <span className="filter-group-title">Bed Count:</span>
+        <div className="filter-group-0-7">
+          <span className="filter-group-title-0-7">Bed Count:</span>
           {bedCounts}{" "}
         </div>
       </div>

@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import {
   addRoomToBookingTransaction,
+  addRoomsToBookingTransaction,
   removeRoomFromBookingTransaction,
 } from "../util/query/bookingTransactionHelper.js";
 import { createMolliePayment } from "../util/checkout/createMolliePayment.js";
@@ -19,7 +20,13 @@ import { createMollieClient } from "@mollie/api-client";
 import Task from "../models/Task.js";
 
 export const addRoomToBooking = asyncHandler(async (req, res, next) => {
-  const updatedBooking = await addRoomToBookingTransaction(req, next);
+  let updatedBooking;
+  if (req.availableRoom) {
+    updatedBooking = await addRoomToBookingTransaction(req, next);
+  }
+  if (req.availableBundleRooms) {
+    updatedBooking = await addRoomsToBookingTransaction(req, next);
+  }
 
   return res
     .status(200)

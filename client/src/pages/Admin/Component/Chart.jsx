@@ -58,10 +58,11 @@ const LineChart = () => {
   }, [response]);
 
   return (
-    <div style={{ width: "1000px", height: "1200px" }}>
+    <div style={{ width: "auto", height: "auto" }}>
       <select
         onChange={(e) => setSelectedMonth(e.target.value)}
         value={selectedMonth}
+        style={{ margin: "5px" }}
       >
         <option value="01">January</option>
         <option value="02">February</option>
@@ -76,8 +77,11 @@ const LineChart = () => {
         <option value="11">November</option>
         <option value="12">December</option>
       </select>
-      <label htmlFor="year">Year: </label>
+      <label htmlFor="year" style={{ margin: "5px" }}>
+        Year:{" "}
+      </label>
       <select
+        style={{ margin: "5px" }}
         id="year"
         onChange={(e) => setSelectedYear(e.target.value)}
         value={selectedYear}
