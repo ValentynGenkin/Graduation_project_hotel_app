@@ -30,45 +30,47 @@ function CustomerBooking() {
   }, [value]);
 
   return (
-    <Container>
+    <>
       <Navbar />
-      <Accordion>
-        <Accordion.Item eventKey="0">
-          <Accordion.Header className="header">
-            <div className="search-dates">
-              <p>{value.length === 2 ? date[0] : "Check-in date"} </p>
-              <p>{value.length === 2 ? date[1] : "Check-out date"} </p>
-            </div>
-          </Accordion.Header>
-          <Accordion.Body>
-            <Container className="search-block-container">
-              <Calendar
-                selectRange={true}
-                goToRangeStartOnSelect={false}
-                onChange={onChange}
-                value={value}
-                minDate={new Date()}
-                minDetail={"year"}
-                locale={"en-EN"}
-              />
-            </Container>
-            <div className="search-btn-block">
-              <Button
-                className="search-btn"
-                variant="outline-success"
-                size="lg"
-                onClick={() => setPopupVisible(true)}
-              >
-                Search
-              </Button>
-            </div>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-      {isPopupVisible && (
-        <SearchBlockAdmin checkIn={value[0]} checkOut={value[1]} />
-      )}
-    </Container>
+      <Container>
+        <Accordion>
+          <Accordion.Item eventKey="0">
+            <Accordion.Header className="header">
+              <div className="search-dates">
+                <p>{value.length === 2 ? date[0] : "Check-in date"} </p>
+                <p>{value.length === 2 ? date[1] : "Check-out date"} </p>
+              </div>
+            </Accordion.Header>
+            <Accordion.Body>
+              <Container className="search-block-container">
+                <Calendar
+                  selectRange={true}
+                  goToRangeStartOnSelect={false}
+                  onChange={onChange}
+                  value={value}
+                  minDate={new Date()}
+                  minDetail={"year"}
+                  locale={"en-EN"}
+                />
+              </Container>
+              <div className="search-btn-block">
+                <Button
+                  className="search-btn"
+                  variant="outline-success"
+                  size="lg"
+                  onClick={() => setPopupVisible(true)}
+                >
+                  Search
+                </Button>
+              </div>
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
+        {isPopupVisible && (
+          <SearchBlockAdmin checkIn={value[0]} checkOut={value[1]} />
+        )}
+      </Container>
+    </>
   );
 }
 

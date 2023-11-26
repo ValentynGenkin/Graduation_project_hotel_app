@@ -1,21 +1,12 @@
 /* BookingCart.css */
 
 .cart-container {
-  position: sticky;
+  position: fixed;
   top: 25%;
-  float: right;
+  right: 0;
   z-index: 10;
-  color: #444444;
-  display: block;
-  justify-content: center;
-  align-items: center;
-  width: 140px;
 }
-.box-icon-03 {
-  font-size: 46px;
-  color: #444444;
-  align-items: center;
-}
+
 .time-left-03 {
   margin-top: 12px;
   font-size: 14px;
@@ -28,9 +19,6 @@
   flex-direction: column;
   cursor: pointer;
   border-radius: 0.5rem;
-  background-color: white;
-  border: 1px solid #0d99ff;
-  margin-left: 22px;
   z-index: 100;
 }
 
@@ -38,14 +26,8 @@
   display: none;
   position: absolute;
   right: 0;
-  background-color: white;
   min-width: 300px;
-  max-height: 300px; /* Set a maximum height for the details container */
-  overflow-y: auto; /* Enables vertical scrolling if content overflows */
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  font-size: 14px;
-  border-radius: 0.5rem;
+  overflow-y: auto;
 }
 
 .cart-container:hover .cart-details {
@@ -53,39 +35,31 @@
 }
 
 .cart-booking-detail {
-  padding: 26px 6px;
-  padding-right: 36px;
-  border-bottom: 4px solid rgba(13, 153, 255, 0.2);
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  margin: 10px;
+  background-color: white;
+  box-shadow: 0 0 8px 2px rgb(185, 185, 185);
 }
 
-.remove-room-button-in-cart {
-  float: right;
-  padding: 0.3rem;
-  border: none;
-  border-radius: 0.3rem;
-  cursor: pointer;
-  background-color: rgba(13, 153, 255, 0.2);
-  margin-left: 40px;
+.cart-booking-detail-info p {
+  font-size: 13px;
+  margin: 0;
 }
-@media screen and (max-width: 991px) {
-  .cart-button {
-    padding: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background: blue;
-    cursor: pointer;
-    border-radius: 0.5rem;
-    background-color: white;
-    border: 1px solid #0d99ff;
-  }
-  .box-icon-03 {
-    font-size: 40px;
-    color: #444444;
-    align-items: center;
-  }
-  .cart-container {
-    width: 100px;
-  }
+
+.cart-booking-detail-info {
+  margin: 7px;
+}
+.delete-room-btn-cart {
+  font-size: 13px;
+  border-radius: 25px;
+  font-weight: bold;
+  margin: 5px;
+}
+
+.checkout-cart-btn {
+  width: 100px;
+  margin-top: 10px;
 }
