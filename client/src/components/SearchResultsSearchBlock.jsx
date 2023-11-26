@@ -9,13 +9,15 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import { formatDateString } from "../util/formatDateString";
 
 const SearchResultsSearchBLock = () => {
+  const queryParams = new URLSearchParams(useLocation().search);
   const [value, setValue] = useState(new Date());
-  const [date, setDate] = useState(["yyyy-mm-dd", "yyyy-mm-dd"]);
+  const [date, setDate] = useState([
+    formatDateString(queryParams.get("checkIn")),
+    formatDateString(queryParams.get("checkOut")),
+  ]);
   const [adult, setAdult] = useState(2);
   const [child, setChild] = useState(0);
   const [room, setRoom] = useState(1);
-
-  const queryParams = new URLSearchParams(useLocation().search);
 
   let checkIn = formatDateString(queryParams.get("checkIn"));
   let checkOut = formatDateString(queryParams.get("checkOut"));
@@ -49,9 +51,11 @@ const SearchResultsSearchBLock = () => {
 
   const handleLinkClick = () => {
     const newUrl = `/RoomInfoCard?checkIn=${
-      !isNaN(formattedCheckInDate) ? formattedCheckInDate : checkIn
+      !isNaN(formattedCheckInDate) ? formattedCheckInDate : formattedCheckInDate
     }&checkOut=${
-      !isNaN(formattedCheckOutDate) ? formattedCheckOutDate : checkOut
+      !isNaN(formattedCheckOutDate)
+        ? formattedCheckOutDate
+        : formattedCheckOutDate
     }&personCount=${room === 1 ? "" : adult + child}&roomCount=${
       room === 1 ? "" : room
     }`;
