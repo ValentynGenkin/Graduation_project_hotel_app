@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/RoomTable.css";
 import useFetch from "../../../hooks/useFetch";
+import Requests from "../Component/Requests";
 
 const RoomTable = () => {
   const [roomAvailability, setAvailability] = useState([]);
@@ -26,6 +27,7 @@ const RoomTable = () => {
     (res) => {
       setAvailability(res.rooms);
       setPagination(res.pagination);
+      localStorage.setItem("roomsWithStatusAndTasks", res.rooms);
     }
   );
 
@@ -197,6 +199,7 @@ const RoomTable = () => {
         <button onClick={handleNextPage}>+</button>
         Total Rooms : {pagination.total}
       </div>
+      <Requests rooms={roomAvailability ? roomAvailability : []} />
     </div>
   );
 };

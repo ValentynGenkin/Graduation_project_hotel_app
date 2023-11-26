@@ -16,8 +16,6 @@ import {
   registrationEmail,
 } from "../util/mailer/mailTemplates.js";
 import { createMollieClient } from "@mollie/api-client";
-// import BookingDetail from "../models/BookingDetail.js";
-import Task from "../models/Task.js";
 
 export const addRoomToBooking = asyncHandler(async (req, res, next) => {
   let updatedBooking;
@@ -220,24 +218,4 @@ export const mollieHook = asyncHandler(async (req, res) => {
     await booking.save();
   }
   return res.status(200).json({ success: true });
-});
-export const getBookingDetailedTasks = asyncHandler(async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const pageSize = parseInt(req.query.pageSize) || 10;
-  const startIndex = (page - 1) * pageSize;
-  const endIndex = page * pageSize;
-
-  let tasksPopulated = await Task.find().populate({
-    path: "bookingDetailId",
-    populate: {
-      path: "roomId",
-    },
-  });
-  let totalTasks = tasksPopulated.length;
-  let resData = tasksPopulated.slice(startIndex, endIndex);
-  return res.status(200).json({
-    success: true,
-    totalTasks,
-    tasksPopulated: resData,
-  });
 });

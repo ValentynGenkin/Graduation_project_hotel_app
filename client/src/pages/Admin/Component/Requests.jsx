@@ -1,24 +1,35 @@
 import React, { useState, useEffect } from "react";
 import useFetch from "../../../hooks/useFetch";
 import { toast } from "react-toastify";
+import PropTypes from "prop-types";
 
 import "../CSS/Requests.css";
 
-const RoomTable = () => {
-  const [roomRequests, setRoomRequests] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalRequests, setTotalRequests] = useState(0);
-  const { performFetch } = useFetch(
-    `/booking/roomPopulated?page=${currentPage}&limit=10`, // Use a fixed limit or replace it as needed
-    (res) => {
-      if (res.success) {
-        setRoomRequests(res.tasksPopulated);
-        setTotalRequests(res.totalTasks);
-      }
-    }
-  );
+const RoomTable = ({ rooms }) => {
+  const computeInitialTasks = () => {
+    return rooms?.reduce((acc, room) => {
+      room.bookings.forEach((booking) => {
+        booking.taskIds.forEach((task) =>
+          acc[room.roomNo]
+            ? acc[room.roomNo].push(task)
+            : (acc[room.roomNo] = [task])
+        );
+      });
+      return acc;
+    }, {});
+  };
 
-  const { performFetch: performUpdateFetch } = useFetch(
+  const [tasks, setTasks] = useState(computeInitialTasks);
+  const [taskUpdateInfo, setTaskUpdateInfo] = useState();
+
+  useEffect(() => {}, [tasks]);
+  useEffect(() => {
+    // This will recompute tasks when rooms prop changes
+    const newInitialTasks = computeInitialTasks();
+    setTasks(newInitialTasks);
+  }, [rooms]);
+
+  const { error: updateError, performFetch: performUpdateFetch } = useFetch(
     "/task/update",
     (res) => {
       if (res.success) {
@@ -28,61 +39,45 @@ const RoomTable = () => {
   );
 
   useEffect(() => {
-    performFetch({
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      method: "GET",
-    });
-  }, [currentPage]);
-
-  const performUpdateStatus = async (requestId, newStatus) => {
-    try {
-      const response = await performUpdateFetch({
+    if (taskUpdateInfo) {
+      performUpdateFetch({
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
         body: JSON.stringify({
-          taskId: requestId,
-          taskStatus: newStatus,
+          taskId: taskUpdateInfo[0],
+          taskStatus: taskUpdateInfo[1],
           updateMessage: "Status updated from the client",
         }),
       });
-
-      if (!response.success) {
-        throw new Error("Update status failed:", response.error);
-      }
-    } catch (error) {
-      throw new Error("Fetch error:", error);
     }
-  };
 
-  const onBtNext = () => {
-    if (currentPage < Math.ceil(totalRequests / 10)) {
-      setCurrentPage(currentPage + 1);
+    if (!updateError && taskUpdateInfo) {
+      setTasks((prevState) => {
+        // Creating a deep copy of the state
+        const updatedTasks = JSON.parse(JSON.stringify(prevState));
+
+        // Finding the correct task and updating its status
+        if (updatedTasks[taskUpdateInfo[2]]) {
+          const taskIndex = updatedTasks[taskUpdateInfo[2]].findIndex(
+            (t) => t._id === taskUpdateInfo[0]
+          );
+          if (taskIndex !== -1) {
+            updatedTasks[taskUpdateInfo[2]][taskIndex].status =
+              taskUpdateInfo[1];
+          }
+        }
+
+        return updatedTasks;
+      });
     }
-  };
+  }, [taskUpdateInfo]);
 
-  const onBtPrevious = () => {
-    if (currentPage !== 1) {
-      setCurrentPage(currentPage - 1);
-    }
+  const handleStatusChange = (roomNo, taskId, newStatus) => {
+    setTaskUpdateInfo([taskId, newStatus, roomNo]);
   };
-
-  const handlePageChange = (e) => {
-    const newPage = e.target.value;
-    if (
-      !isNaN(newPage) &&
-      newPage > 0 &&
-      newPage <= Math.ceil(totalRequests / 10)
-    ) {
-      setCurrentPage(newPage);
-    }
-  };
-
   return (
     <div className="custom-body-request">
       <table className="custom-table" border="1">
@@ -95,36 +90,42 @@ const RoomTable = () => {
           </tr>
         </thead>
         <tbody>
-          {roomRequests.length > 0 ? (
-            roomRequests.map((request) => (
-              <tr key={request._id}>
-                <td className="custom-td">
-                  {request.bookingDetailId?.roomId?.roomNo || "No Number"}
-                </td>
-                <td className="custom-td">{request.bookingId}</td>
-                <td className="custom-td">{request.task}</td>
-                <td className="custom-td">
-                  <select
-                    className="custom-select"
-                    value={request.status}
-                    onChange={(e) =>
-                      performUpdateStatus(request._id, e.target.value)
-                    }
-                  >
-                    {["open", "in-process", "closed"].map((statusOption) => (
-                      <option
-                        key={statusOption}
-                        value={statusOption}
-                        className={`custom-${statusOption}`}
+          {tasks && Object.keys(tasks).length > 0 ? (
+            Object.keys(tasks).map((roomNo) => {
+              const tasksOfRoom = tasks[roomNo];
+              const tasksByRoom = tasksOfRoom.map((task) => {
+                return (
+                  <tr key={task._id}>
+                    <td className="custom-td">{roomNo || "No Number"}</td>
+                    <td className="custom-td">{task.updateMessage}</td>
+                    <td className="custom-td">{task.task}</td>
+                    <td className="custom-td">
+                      <select
+                        className="custom-select"
+                        value={task.status}
+                        onChange={(e) => {
+                          handleStatusChange(roomNo, task._id, e.target.value);
+                        }}
                       >
-                        {statusOption.charAt(0).toUpperCase() +
-                          statusOption.slice(1)}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-              </tr>
-            ))
+                        {["open", "in-process", "closed"].map(
+                          (statusOption) => (
+                            <option
+                              key={statusOption}
+                              value={statusOption}
+                              className={`custom-${statusOption}`}
+                            >
+                              {statusOption.charAt(0).toUpperCase() +
+                                statusOption.slice(1)}
+                            </option>
+                          )
+                        )}
+                      </select>
+                    </td>
+                  </tr>
+                );
+              });
+              return tasksByRoom;
+            })
           ) : (
             <tr>
               <td colSpan="4">No data available</td>
@@ -132,65 +133,10 @@ const RoomTable = () => {
           )}
         </tbody>
       </table>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "10px",
-        }}
-      >
-        <button
-          onClick={onBtPrevious}
-          style={{ outline: "none", width: "30px", border: "none" }}
-        >
-          <p style={{ margin: "0px" }}>-</p>
-        </button>
-        <input
-          type="number"
-          value={currentPage}
-          onChange={(e) => handlePageChange(e)}
-          style={{ width: "40px", border: "none", outline: "none" }}
-        />
-        <button
-          style={{ outline: "none", width: "30px", border: "none" }}
-          onClick={onBtNext}
-        >
-          +
-        </button>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "10px",
-          marginRight: "10px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <p style={{ margin: "0px" }}>Total Requests :</p>
-          <p style={{ margin: "0px" }}>{totalRequests}</p>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <p style={{ margin: "0px" }}>Total Page :</p>
-          <p style={{ margin: "0px" }}>{Math.ceil(totalRequests / 10)}</p>
-        </div>
-      </div>
     </div>
   );
 };
-
+RoomTable.propTypes = {
+  rooms: PropTypes.array.isRequired,
+};
 export default RoomTable;
