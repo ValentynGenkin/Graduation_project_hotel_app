@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import useFetch from "../../../hooks/useFetch";
+import PropTypes from "prop-types";
+
 import { toast } from "react-toastify";
 
 import "../CSS/Requests.css";
 
-const RoomTable = () => {
+const RoomTable = ({ reload }) => {
   const [roomRequests, setRoomRequests] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRequests, setTotalRequests] = useState(0);
@@ -23,6 +25,7 @@ const RoomTable = () => {
     (res) => {
       if (res.success) {
         toast.success("Update task is  successful");
+        performFetch();
       }
     }
   );
@@ -35,7 +38,7 @@ const RoomTable = () => {
       credentials: "include",
       method: "GET",
     });
-  }, [currentPage]);
+  }, [currentPage, reload]);
 
   const performUpdateStatus = async (requestId, newStatus) => {
     try {
@@ -85,7 +88,7 @@ const RoomTable = () => {
 
   return (
     <div className="custom-body-request">
-      <table className="custom-table" border="1">
+      <table key={reload} className="custom-table" border="1">
         <thead>
           <tr>
             <th className="custom-th">Room Number</th>
@@ -192,5 +195,7 @@ const RoomTable = () => {
     </div>
   );
 };
-
+RoomTable.propTypes = {
+  reload: PropTypes.bool.isRequired,
+};
 export default RoomTable;
