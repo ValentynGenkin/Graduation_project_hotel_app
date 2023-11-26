@@ -49,9 +49,9 @@ const SearchResultsSearchBLock = () => {
 
   const handleLinkClick = () => {
     const newUrl = `/RoomInfoCard?checkIn=${
-      !isNaN(formattedCheckInDate) ? formattedCheckInDate : checkIn
+      value.length === 2 ? formattedCheckInDate : checkIn
     }&checkOut=${
-      !isNaN(formattedCheckOutDate) ? formattedCheckOutDate : checkOut
+      value.length === 2 ? formattedCheckOutDate : checkOut
     }&personCount=${room === 1 ? "" : adult + child}&roomCount=${
       room === 1 ? "" : room
     }`;
