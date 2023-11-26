@@ -88,6 +88,19 @@ export const filterRoomsAggregation = (req) => {
     // Remove 'bookings' and 'overlappingBookings' fields
     stages.push({ $project: { bookings: 0, overlappingBookings: 0 } });
   } //TODO: after create bookingDetails model add here else condition which returns an error
+  // we group same rooms here.
+  stages.push({
+    $group: {
+      _id: {
+        roomType: "$roomType",
+        bedCount: "$bedCount",
+        facilities: "$facilities",
+        roomPrice: "$roomPrice",
+      },
+      count: { $sum: 1 },
+      exampleRoom: { $first: "$$ROOT" },
+    },
+  });
 
   return stages;
 };
@@ -95,7 +108,8 @@ export const filterRoomsAggregation = (req) => {
 export const chooseAvailableRoomAggregation = (
   exampleRoom,
   checkIn,
-  checkOut
+  checkOut,
+  limit
 ) => {
   const stages = [
     {
@@ -146,7 +160,7 @@ export const chooseAvailableRoomAggregation = (
       },
     },
     {
-      $limit: 1,
+      $limit: limit,
     },
   ];
 
@@ -161,7 +175,9 @@ export const paginationHelper = async (model, query, req) => {
   const endIndex = page * limit;
 
   const pagination = {};
-  const total = await model.countDocuments(query.getQuery());
+  const total = !model
+    ? query.length
+    : await model.countDocuments(query.getQuery());
 
   if (startIndex > 0) {
     pagination.previous = {
@@ -181,3 +197,36 @@ export const paginationHelper = async (model, query, req) => {
     pagination: pagination,
   };
 };
+export function* generateCombinations(rooms, roomCount, personCount) {
+  const seenCombinations = new Set();
+
+  const getCombinationKey = (combination) => {
+    const sortedIds = combination.map((room) => room.exampleRoom._id).sort();
+    return sortedIds.join(",");
+  };
+
+  function* combine(tempArray, start, bedCount) {
+    if (tempArray.length === roomCount) {
+      if (bedCount >= personCount) {
+        const key = getCombinationKey(tempArray);
+        if (!seenCombinations.has(key)) {
+          seenCombinations.add(key);
+          yield [...tempArray];
+        }
+      }
+      return;
+    }
+
+    for (let i = start; i < rooms.length; i++) {
+      tempArray.push(rooms[i]);
+      yield* combine(
+        tempArray,
+        i + 1,
+        bedCount + rooms[i].exampleRoom.bedCount
+      );
+      tempArray.pop();
+    }
+  }
+
+  yield* combine([], 0, 0);
+}

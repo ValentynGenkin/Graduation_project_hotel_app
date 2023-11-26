@@ -2,16 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { BookingContext } from "../contexts/BookingContext";
 import PropTypes from "prop-types";
+import { Spinner } from "react-bootstrap";
 
-const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
-  AddRoomToBookingButton.propTypes = {
-    roomId: PropTypes.string.isRequired,
-    checkIn: PropTypes.string.isRequired,
-    checkOut: PropTypes.string.isRequired,
-    className: PropTypes.string.isRequired,
-  };
+const AddRoomToBookingButton = ({
+  textContent,
+  roomId,
+  checkIn,
+  checkOut,
+  className,
+}) => {
   const { handleBookingContext } = useContext(BookingContext);
   const [clickEvent, setClickEvent] = useState();
+
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
     "/booking/addRoomToBooking",
     (response) => {
@@ -36,6 +38,7 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
       }),
     });
   };
+
   useEffect(() => {
     if (clickEvent) {
       handleClick();
@@ -46,21 +49,43 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
   }, [clickEvent]);
   return (
     <>
-      {isLoading ? (
-        <p>loading</p>
-      ) : error ? (
+      {error ? (
         <>
           <p>Something went wrong. Error:{error.toString()}</p>
           <button
             className={className}
             onClick={() => setClickEvent(new Date())}
           >
-            Add Room
+            {isLoading ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : textContent ? (
+              textContent
+            ) : (
+              "Add Rooms"
+            )}
           </button>
         </>
       ) : (
         <button className={className} onClick={() => setClickEvent(new Date())}>
-          Add Room
+          {isLoading ? (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+          ) : textContent ? (
+            textContent
+          ) : (
+            "Add Rooms"
+          )}
         </button>
       )}
     </>
@@ -68,3 +93,11 @@ const AddRoomToBookingButton = ({ roomId, checkIn, checkOut, className }) => {
 };
 
 export default AddRoomToBookingButton;
+
+AddRoomToBookingButton.propTypes = {
+  roomId: PropTypes.string.isRequired,
+  checkIn: PropTypes.string.isRequired,
+  checkOut: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
+  textContent: PropTypes.string,
+};

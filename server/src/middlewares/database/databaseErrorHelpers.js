@@ -47,17 +47,25 @@ export const checkRoomExist = asyncHandler(async (req, res, next) => {
   if (!roomId) {
     next(new ServerError("Please provide a room id.", 400));
   }
-  const room = await Room.findById(roomId);
+  const roomIds = roomId.split(",");
+  if (roomIds.length > 1) {
+    req.bundleRooms = await Room.find({ _id: { $in: roomIds } });
+    next();
+  } else {
+    const room = await Room.findById(roomId);
+    if (!room) {
+      next(
+        new ServerError(
+          `There is not any room with this id. id: ${roomId}`,
+          404
+        )
+      );
+    }
 
-  if (!room) {
-    next(
-      new ServerError(`There is not any room with this id. id: ${roomId}`, 404)
-    );
+    req.room = room;
+
+    next();
   }
-
-  req.room = room;
-
-  next();
 });
 
 export const getAdminAccess = (req, res, next) => {
