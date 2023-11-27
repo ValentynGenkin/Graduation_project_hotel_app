@@ -48,7 +48,7 @@ const RoomTable = ({ rooms }) => {
         body: JSON.stringify({
           taskId: taskUpdateInfo[0],
           taskStatus: taskUpdateInfo[1],
-          updateMessage: "Status updated from the client",
+          updateMessage: taskUpdateInfo[1],
         }),
       });
     }
@@ -82,10 +82,16 @@ const RoomTable = ({ rooms }) => {
       <table className="custom-table" border="1">
         <thead>
           <tr>
-            <th className="custom-th">Room Number</th>
-            <th className="custom-th">Booking ID</th>
+            <th className="custom-th" style={{ width: "80px" }}>
+              Room #
+            </th>
+            <th className="custom-th" style={{ width: "250px" }}>
+              Booking ID
+            </th>
             <th className="custom-th">Task</th>
-            <th className="custom-th">Status</th>
+            <th className="custom-th" style={{ width: "120px" }}>
+              Status
+            </th>
           </tr>
         </thead>
         <tbody>

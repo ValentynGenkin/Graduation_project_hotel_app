@@ -27,14 +27,14 @@
   margin: 0px;
 }
 
-.table-wrapper {
-  width: 90%;
-  margin: auto; /* Center the table on the page */
-}
+/* .table-wrapper { */
+/* width: 90%;
+  margin: auto; Center the table on the page */
+/* } */
 
 .table-header {
   display: flex;
-  /* height: 100%; */
+  height: 50px;
 
   font-weight: bold; /* Optional: Make header text bold */
   background-color: #00a8cc; /* Optional: Add background color to header row */
@@ -53,7 +53,7 @@
   box-sizing: border-box; /* Include padding and border in the total width */
   width: 12.5%;
   background-color: reds;
-  height: 60px;
+  /* height: 60px; */
   white-space: nowrap; /* Prevent text from wrapping */
   overflow: hidden; /* Hide overflow text */
   text-overflow: ellipsis; /* Show ellipsis (...) for overflow text */
