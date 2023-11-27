@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "react-circular-progressbar/dist/styles.css";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "../CSS/Circle.css";
+import useFetch from "../../../hooks/useFetch";
 
 const HotelRoomCircle = () => {
-  const occupiedPercentage = 70;
+  const [occupiedPercentage, setOccupiedPercentage] = useState(null);
+  const { performFetch } = useFetch("/admin/occupation-rate", async (res) => {
+    setOccupiedPercentage(res.occupation * 100);
+  });
+  useEffect(() => {
+    performFetch({
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+  }, []);
+
+  if (occupiedPercentage === null) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container-global">
@@ -13,11 +30,13 @@ const HotelRoomCircle = () => {
           value={occupiedPercentage}
           styles={{
             path: { stroke: "red" },
-            trail: { stroke: "rgb(222, 184, 184)" },
+            trail: { stroke: "white" },
           }}
           strokeWidth={10}
         >
-          <div className="text-inside">{occupiedPercentage}% Occupied</div>
+          <div className="text-inside">{`${occupiedPercentage.toFixed(
+            2
+          )}% Of rooms are occupied`}</div>
         </CircularProgressbarWithChildren>
         <div className="legend-container">
           <div className="legend-circle">

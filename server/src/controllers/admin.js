@@ -188,7 +188,6 @@ export const getOccupationByMonth = asyncHandler(async (req, res) => {
     ) * totalRoomCount;
 
   const occupationRateOfMonth = totalBookedDaysOfMonth / totalAvailableDays;
-
   return res.status(200).json({
     success: true,
     occupation: occupationRateOfMonth,

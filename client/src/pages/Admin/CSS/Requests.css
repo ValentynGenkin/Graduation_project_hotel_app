@@ -2,9 +2,9 @@
 
 .custom-body-request {
   font-family: Arial, sans-serif;
-  margin: 20px;
   border: 2px solid #023e8a;
-  margin-top: 200px;
+  width: 80%;
+  margin: 30px auto;
 }
 
 .custom-table {

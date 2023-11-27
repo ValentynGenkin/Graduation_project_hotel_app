@@ -68,6 +68,10 @@
   margin: 14px;
 }
 
+.u-list-02-06 {
+  width: 500px;
+}
+
 .info-02-06 {
   display: flex;
   justify-content: center;
@@ -141,6 +145,7 @@
   }
   .info-02-06 {
     font-size: 14px;
+    flex-direction: column;
   }
   .block-02-06 {
     display: flex;

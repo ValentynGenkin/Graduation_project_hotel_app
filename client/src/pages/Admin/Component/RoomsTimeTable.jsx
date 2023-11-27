@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/RoomTable.css";
 import useFetch from "../../../hooks/useFetch";
+import Requests from "../Component/Requests";
 
 const RoomTable = () => {
   const [roomAvailability, setAvailability] = useState([]);
@@ -26,13 +27,14 @@ const RoomTable = () => {
     (res) => {
       setAvailability(res.rooms);
       setPagination(res.pagination);
+      localStorage.setItem("roomsWithStatusAndTasks", res.rooms);
     }
   );
 
   let [dateHeaders, setDateHeaders] = useState([]);
   useEffect(() => {
     let res = [];
-    if (startDate) {
+    if (startDate && endDate) {
       res.push(startDate);
       for (let i = 1; i <= 6; i++) {
         const forDate = new Date(
@@ -99,7 +101,7 @@ const RoomTable = () => {
     const formattedEndDateString = formattedEnd.toLocaleDateString("en-GB");
     setStartDate(formattedStartDayString);
     setEndDate(formattedEndDateString);
-    setCurrentPage(1);
+    // setCurrentPage(1);
   };
   const handlePrevPage = () => {
     if (currentPage - 1 !== 0) {
@@ -120,7 +122,7 @@ const RoomTable = () => {
       </div>
       <div className="table-wrapper">
         <div className="table-header">
-          <p className="header-title">Room Number</p>
+          <p className="header-title">Room #</p>
           {dateHeaders &&
             dateHeaders.length > 6 &&
             dateHeaders.map((date, index) => (
@@ -134,12 +136,15 @@ const RoomTable = () => {
               </div>
             ))}
         </div>
+
         <div className="table-body">
           {roomAvailability.length > 0 &&
             roomAvailability.map((room) => (
               <div className="table-row" key={room._id}>
-                <div className="table-column1">
-                  <p>{room.roomNo}</p>
+                <div className={"table-column1"}>
+                  <div>
+                    <p>{room.roomNo}</p>
+                  </div>
                 </div>
                 {Array.from({ length: 7 }, (_, index) => (
                   <div
@@ -197,6 +202,7 @@ const RoomTable = () => {
         <button onClick={handleNextPage}>+</button>
         Total Rooms : {pagination.total}
       </div>
+      <Requests rooms={roomAvailability ? roomAvailability : []} />
     </div>
   );
 };
