@@ -23,6 +23,7 @@ import SearchRecommendation from "./SearchRecommendation.jsx";
 import { totalPriceAndNightsCalculator } from "../util/totalPriceAndNightsCalculator.js";
 
 function RoomInfoCard() {
+  const serverDomain = window.location.origin;
   const [response, setResponse] = useState(null);
 
   const [filters, setFilters] = useState({
@@ -113,7 +114,7 @@ function RoomInfoCard() {
                           <Carousel.Item key={img}>
                             <img
                               id={room.exampleRoom._id}
-                              src={img}
+                              src={serverDomain + img}
                               alt="Room photo"
                               className="search-results-carousel-img"
                             />
@@ -140,7 +141,7 @@ function RoomInfoCard() {
                                   <Carousel.Item key={room.exampleRoom._id + 1}>
                                     <img
                                       id={room.exampleRoom._id}
-                                      src={img}
+                                      src={serverDomain + img}
                                       alt="Room photo"
                                       className="search-results-carousel-img-zoomed"
                                     />
