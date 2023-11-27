@@ -7,6 +7,7 @@ import MakeBooking from "./MakeBooking";
 import "../CSS/Booking.css";
 
 function SearchBlockAdmin() {
+  const serverDomain = window.location.origin;
   const [response, setResponse] = useState(null);
 
   const [roomIdx, setRoomIdx] = useState({});
@@ -83,7 +84,7 @@ function SearchBlockAdmin() {
                   <img
                     className="img-slider-02"
                     src={
-                      room.exampleRoom && room.exampleRoom.images
+                      serverDomain + room.exampleRoom && room.exampleRoom.images
                         ? room.exampleRoom.images[
                             roomIdx[room.exampleRoom._id] || 0
                           ]

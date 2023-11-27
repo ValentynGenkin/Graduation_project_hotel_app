@@ -349,7 +349,7 @@ const ClientCheckout = () => {
                       {item.roomId.images.map((img) => (
                         <Carousel.Item key={img}>
                           <img
-                            src={img}
+                            src={serverDomain + img}
                             alt="Room photo"
                             className="checkout-carousel-img"
                           />
