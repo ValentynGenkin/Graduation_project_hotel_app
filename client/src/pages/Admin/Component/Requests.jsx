@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useFetch from "../../../hooks/useFetch";
-import { toast } from "react-toastify";
 import PropTypes from "prop-types";
-
+import { toast } from "react-toastify";
 import "../CSS/Requests.css";
 
 const RoomTable = ({ rooms }) => {
