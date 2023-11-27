@@ -3,11 +3,9 @@ import useFetch from "../hooks/useFetch";
 import "./CSS/roomDetailsCard.css";
 import PropTypes from "prop-types";
 import { Container } from "react-bootstrap";
-import AddRoomToBookingButton from "../components/AddRoomToBookingButton";
 
-function RoomDetailsCard({ roomId, checkIn, checkOut }) {
+function RoomDetailsCard({ roomId }) {
   const [sliderData, setSliderData] = useState([]);
-  const [extraBed, setExtraBed] = useState("");
   const [response, setResponse] = useState(null);
 
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
@@ -82,45 +80,6 @@ function RoomDetailsCard({ roomId, checkIn, checkOut }) {
               </ul>
             </div>
           </div>
-          <div className="right-bar-01">
-            <div>
-              {checkIn && checkOut ? (
-                <div className="bed-option-01">
-                  <h4 className="bed-option-01-h4">Extra bed</h4>
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="ExtraBedYes"
-                      checked={extraBed === "Yes"}
-                      onChange={() => setExtraBed("Yes")}
-                    />
-                    Yes
-                  </label>
-
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="ExtraBedNo"
-                      checked={extraBed === "No"}
-                      onChange={() => setExtraBed("No")}
-                    />
-                    No
-                  </label>
-                </div>
-              ) : null}
-            </div>
-          </div>
-
-          <div className="book-buttons-01">
-            {checkIn && checkOut ? (
-              <AddRoomToBookingButton
-                roomId={roomId}
-                checkIn={checkIn}
-                checkOut={checkOut}
-                className="button-02"
-              />
-            ) : null}
-          </div>
         </div>
       ) : (
         <p>No data to display</p>
@@ -134,6 +93,4 @@ export default RoomDetailsCard;
 RoomDetailsCard.propTypes = {
   data: PropTypes.array,
   roomId: PropTypes.string.isRequired,
-  checkIn: PropTypes.string,
-  checkOut: PropTypes.string,
 };

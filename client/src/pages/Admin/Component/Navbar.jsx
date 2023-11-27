@@ -5,7 +5,6 @@ import Manager from "../Icons/Manager.png";
 import { TbBrandBooking } from "react-icons/tb";
 import { FcStatistics } from "react-icons/fc"; // Import FcStatistics from react-icons/fc
 import { LuLogOut } from "react-icons/lu"; // Import LuLogOut from react-icons/lu
-import { MdReviews } from "react-icons/md"; // Import MdReviews from react-icons/md
 import { HiOutlineUsers } from "react-icons/hi"; // Import HiOutlineUsers from react-icons/hi
 import { MdOutlineBedroomParent } from "react-icons/md"; // Import MdOutlineBedroomParent from react-icons/md
 import useFetch from "../../../hooks/useFetch";
@@ -64,10 +63,6 @@ const Navbar = () => {
             <Link to="/Admin/Status" className="nav-link-admin">
               <FcStatistics className="Nav-icon" />
               Room Status
-            </Link>
-            <Link to="/Admin/Reviews" className="nav-link-admin">
-              <MdReviews className="Nav-icon" />
-              Reviews
             </Link>
 
             <p onClick={handleLogout} className="nav-link-admin">
