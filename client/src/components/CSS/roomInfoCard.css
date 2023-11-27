@@ -100,7 +100,7 @@
 
 .search-results-carousel-img {
   border-radius: 5px;
-  max-width: 370px;
+  max-width: 395px;
   height: auto;
   overflow: hidden;
   object-fit: contain;
@@ -181,7 +181,6 @@
 
 @media screen and (max-width: 1200px) {
   .room-info-card-container {
-    margin-top: 0;
     min-height: calc(100vh - 185px);
   }
   .search-results-carousel {
@@ -189,7 +188,7 @@
   }
 
   .search-results-carousel-img {
-    max-width: auto;
+    max-width: 430px;
   }
   .search-results-card-info-value {
     width: 250px;
