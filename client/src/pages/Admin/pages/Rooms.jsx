@@ -20,6 +20,7 @@ const Rooms = () => {
           alignItems: "start",
           justifyContent: "space-around",
           position: "relative",
+          minHeight: "calc(100vh - 204px)",
         }}
       >
         <RoomsList

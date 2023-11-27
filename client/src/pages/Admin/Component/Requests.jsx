@@ -48,7 +48,7 @@ const RoomTable = ({ rooms }) => {
         body: JSON.stringify({
           taskId: taskUpdateInfo[0],
           taskStatus: taskUpdateInfo[1],
-          updateMessage: "Done",
+          updateMessage: taskUpdateInfo[1],
         }),
       });
     }

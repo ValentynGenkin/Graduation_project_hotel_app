@@ -9,7 +9,7 @@ const Status = () => {
     <>
       <Navbar />
 
-      <Container>
+      <Container style={{ minHeight: "calc(100vh - 204px)" }}>
         <RoomsTimeTable />
       </Container>
       <Footer />

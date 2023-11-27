@@ -5,6 +5,7 @@ import { Button, Container } from "react-bootstrap";
 import "../CSS/Booking.css";
 import SearchBlockAdmin from "./SearchBlockAdmin";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 function CustomerBooking() {
   const [value, setValue] = useState(new Date());
@@ -32,7 +33,7 @@ function CustomerBooking() {
   return (
     <>
       <Navbar />
-      <Container>
+      <Container style={{ minHeight: "calc(100vh - 204px)" }}>
         <Accordion>
           <Accordion.Item eventKey="0">
             <Accordion.Header className="header">
@@ -70,6 +71,7 @@ function CustomerBooking() {
           <SearchBlockAdmin checkIn={value[0]} checkOut={value[1]} />
         )}
       </Container>
+      <Footer />
     </>
   );
 }
