@@ -100,7 +100,7 @@
 
 .search-results-carousel-img {
   border-radius: 5px;
-  max-width: 370px;
+  max-width: 395px;
   height: auto;
   overflow: hidden;
   object-fit: contain;
@@ -188,7 +188,7 @@
   }
 
   .search-results-carousel-img {
-    max-width: auto;
+    max-width: 430;
   }
   .search-results-card-info-value {
     width: 250px;
