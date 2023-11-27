@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/RoomTable.css";
 import useFetch from "../../../hooks/useFetch";
+import Requests from "../Component/Requests";
 
 const RoomTable = () => {
   const [roomAvailability, setAvailability] = useState([]);
@@ -26,13 +27,14 @@ const RoomTable = () => {
     (res) => {
       setAvailability(res.rooms);
       setPagination(res.pagination);
+      localStorage.setItem("roomsWithStatusAndTasks", res.rooms);
     }
   );
 
   let [dateHeaders, setDateHeaders] = useState([]);
   useEffect(() => {
     let res = [];
-    if (startDate) {
+    if (startDate && endDate) {
       res.push(startDate);
       for (let i = 1; i <= 6; i++) {
         const forDate = new Date(
@@ -99,7 +101,7 @@ const RoomTable = () => {
     const formattedEndDateString = formattedEnd.toLocaleDateString("en-GB");
     setStartDate(formattedStartDayString);
     setEndDate(formattedEndDateString);
-    setCurrentPage(1);
+    // setCurrentPage(1);
   };
   const handlePrevPage = () => {
     if (currentPage - 1 !== 0) {
@@ -197,6 +199,7 @@ const RoomTable = () => {
         <button onClick={handleNextPage}>+</button>
         Total Rooms : {pagination.total}
       </div>
+      <Requests rooms={roomAvailability ? roomAvailability : []} />
     </div>
   );
 };
