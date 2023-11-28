@@ -67,10 +67,10 @@ function SearchBlockAdmin() {
           <p>Error: {error.message}</p>
         ) : response && response.rooms && response.rooms.length > 0 ? (
           response.rooms.map((room, index) => (
-            <div key={index} className="block-02">
-              <div className="carousel-02">
+            <div key={index} className="block-02-06">
+              <div className="carousel-02-06">
                 <BsArrowLeftCircleFill
-                  className="arrow-02 arrow-left-02"
+                  className="arrow-02-06 arrow-left-02-06"
                   onClick={() =>
                     prevSlide(
                       room.exampleRoom && room.exampleRoom.images
@@ -80,9 +80,9 @@ function SearchBlockAdmin() {
                     )
                   }
                 />
-                <div className="div-slider-02-02">
+                <div className="div-slider-02-02-06">
                   <img
-                    className="img-slider-02"
+                    className="img-slider-02-06"
                     src={
                       serverDomain + room.exampleRoom && room.exampleRoom.images
                         ? room.exampleRoom.images[
@@ -94,7 +94,7 @@ function SearchBlockAdmin() {
                   />
                 </div>
                 <BsArrowRightCircleFill
-                  className="arrow-02 arrow-right-02"
+                  className="arrow-02-06 arrow-right-02-06"
                   onClick={() =>
                     nextSlide(
                       room.exampleRoom && room.exampleRoom.images
@@ -106,9 +106,9 @@ function SearchBlockAdmin() {
                 />
               </div>
 
-              <div className="info-02">
-                <div className="info-02-02">
-                  <ul className="u-list-02">
+              <div className="info-02-06">
+                <div className="info-02-02-06">
+                  <ul className="u-list-02-06">
                     <li>Count:{room.count}</li>
                     <li>Room Type: {room.exampleRoom.roomType}</li>
                     <li>
@@ -117,7 +117,7 @@ function SearchBlockAdmin() {
                     <li>Bed Count: {room.exampleRoom.bedCount}</li>
                     <li>Price: {room.exampleRoom.roomPrice.$numberDecimal}</li>
                     <li>Facilities:</li>
-                    <ul className="u-list-02">
+                    <ul className="u-list-02-06">
                       {room.exampleRoom.facilities.map((facility, idx) => (
                         <li key={facility + idx}>{facility}</li>
                       ))}

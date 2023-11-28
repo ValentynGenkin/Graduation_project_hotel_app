@@ -1,12 +1,16 @@
-`TODO: Add a nice screenshot of the app!`
+[![smartmockups-lpb3rpsl-2.jpg](https://i.postimg.cc/Jhy1kckC/smartmockups-lpb3rpsl-2.jpg)](https://postimg.cc/f3Nn4dC8)
 
-# Class XX final project
+# Class 44 final project
 
 This is the final project for the HackYourFuture curriculum we did as a class using the MERN stack by following the agile methodology with our team and a group of mentors. A quick guide to what we built:
 
-> TODO: Add short description of the app
+Our MERN stack-based application features two distinct interfaces. The first interface caters to guests, offering them a straightforward way to search and book hotel rooms. Users can create an account, enabling them to save and manage their reservations.
 
-`[Click here for the Demo version](TODO: add link)`
+The second interface is designed for hotel administration, providing tools for monitoring and managing the reservation process. Administrators can easily view, modify, and confirm bookings, as well as monitor room occupancy. Built-in analytics functions assist in making informed decisions to optimize hotel operations.
+
+Utilizing MongoDB as the database, Express.js for efficient interaction between client and server, React for crafting a dynamic and user-friendly interface, and Node.js to run the server-side, our MERN application provides a reliable solution for hotel administration.
+
+[Click here for the Demo version](https://c44-group-c-5ea6be59db5d.herokuapp.com/)
 
 ## 1. Setup
 

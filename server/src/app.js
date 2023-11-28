@@ -12,10 +12,10 @@ import serverErrorHandler from "./middlewares/error/serverErrorHandler.js";
 import bookingRouter from "./routes/booking.js";
 import { checkCustomerIdentity } from "./middlewares/cookie/cookieHelpers.js";
 import customerRouter from "./routes/customer.js";
-import path from "path";
-import { fileURLToPath } from "url";
 import morgan from "morgan";
 import taskRouter from "./routes/task.js";
+import imageRouter from "./routes/image.js";
+
 // Create an express server
 const app = express();
 process.env.NODE_ENV === "production" && app.use(morgan("dev"));
@@ -34,14 +34,7 @@ app.use(cookieParser());
 
 // Image serving
 
-app.get("/public/images/:imageName", (req, res) => {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  const imageName = req.params.imageName;
-  const imagePath = path.join(__dirname, "public", "images", imageName);
-  res.setHeader("Content-Type", "image/jpeg");
-  return res.sendFile(imagePath);
-});
+app.use("/public/images", imageRouter);
 // Swagger documentation endpoint
 const specs = swaggerJsdoc(swaggerOptions(process.env.BASE_SERVER_URL));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
