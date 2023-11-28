@@ -133,7 +133,7 @@ const RoomTable = ({ rooms }) => {
             })
           ) : (
             <tr>
-              <td colSpan="4">No data available</td>
+              <td colSpan="4">No task </td>
             </tr>
           )}
         </tbody>
