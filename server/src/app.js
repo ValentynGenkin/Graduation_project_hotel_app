@@ -20,8 +20,10 @@ import imageRouter from "./routes/image.js";
 const app = express();
 process.env.NODE_ENV === "production" && app.use(morgan("dev"));
 // Tell express to use the json middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "50mb" }));
+
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
 // Allow everyone to access our API. In a real application, we would need to restrict this!
 dotenv.config();
 process.env.NODE_ENV === "production"
