@@ -9,10 +9,10 @@ const AddRoomForm = () => {
     roomType: "",
     bedCount: "",
     roomPrice: "",
-    facilities: "",
   });
 
   const [roomImages, setRoomImages] = useState([]);
+  const [facilities, setFacilities] = useState([]);
   const [feedback, setFeedback] = useState({ error: false, message: "" });
 
   const { performFetch } = useFetch("/rooms/add", () => {
@@ -27,9 +27,17 @@ const AddRoomForm = () => {
       roomType: "",
       bedCount: "",
       roomPrice: "",
-      facilities: "",
     });
+    setFacilities([]);
     setRoomImages([]);
+  };
+  const [newFacility, setNewFacility] = useState("");
+
+  const handleAddFacility = () => {
+    if (newFacility) {
+      setFacilities((prevFac) => [...prevFac, newFacility]);
+      setNewFacility("");
+    }
   };
 
   const handleInputChange = (event) => {
@@ -59,6 +67,7 @@ const AddRoomForm = () => {
     Object.entries(roomDetails).forEach(([key, value]) => {
       formData.append(key, value);
     });
+    facilities.forEach((fac) => formData.append("facilities", fac));
     roomImages.forEach((file) => {
       formData.append("roomImages", file);
     });
@@ -127,13 +136,18 @@ const AddRoomForm = () => {
         </div>
         <div className="input-wrapper">
           <label className="inputLabel">Facilities:</label>
-          <textarea
-            name="facilities"
-            value={roomDetails.facilities}
-            onChange={handleInputChange}
+          <p>{facilities.map((fac) => fac + ", ")}</p>
+          <input
+            type="text"
+            value={newFacility}
+            onChange={(e) => setNewFacility(e.target.value)}
             className="room-input"
           />
+          <button type="button" onClick={handleAddFacility}>
+            Add Facility
+          </button>
         </div>
+
         <div className="input-wrapper">
           <label className="inputLabel">Images:</label>
           <input
