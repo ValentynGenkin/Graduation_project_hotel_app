@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import useFetch from "../../../hooks/useFetch";
 import "../CSS/AddRooms.css";
 
@@ -9,209 +9,151 @@ const AddRoomForm = () => {
     roomType: "",
     bedCount: "",
     roomPrice: "",
-    facilities: [],
-    roomImages: [],
+    facilities: "",
   });
 
-  const [inputError, setInputError] = useState(false);
-  const [inputErrorMsg, setInputErrorMsg] = useState();
-  const [addError, setAddError] = useState(false);
-
-  const [success, setSuccess] = useState(false);
+  const [roomImages, setRoomImages] = useState([]);
+  const [feedback, setFeedback] = useState({ error: false, message: "" });
 
   const { performFetch } = useFetch("/rooms/add", () => {
-    setSuccess(true);
+    setFeedback({ error: false, message: "Room added successfully!" });
+    resetForm();
+  });
+
+  const resetForm = () => {
     setRoomDetails({
       roomNo: "",
       roomDescription: "",
       roomType: "",
       bedCount: "",
       roomPrice: "",
-      facilities: [],
-      roomImages: [],
+      facilities: "",
     });
-  });
+    setRoomImages([]);
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-
-    setRoomDetails((prevRoomDetails) => ({
-      ...prevRoomDetails,
-      [name]: value,
-    }));
-  };
-
-  const handleFacilitiesChange = (event) => {
-    const { value } = event.target;
-
-    const facilitiesArray = value
-      .split("\n")
-      .map((facility) => ({ name: facility.trim() }));
-
-    setRoomDetails((prevRoomDetails) => ({
-      ...prevRoomDetails,
-      facilities: facilitiesArray,
-    }));
+    setRoomDetails({ ...roomDetails, [name]: value });
   };
 
   const handleImageInputChange = (event) => {
-    const { name, files } = event.target;
-
-    setRoomDetails((prevRoomDetails) => ({
-      ...prevRoomDetails,
-      [name]: [...files],
-    }));
+    setRoomImages([...event.target.files]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const {
-      roomNo,
-      roomDescription,
-      roomType,
-      bedCount,
-      roomPrice,
-      facilities,
-    } = roomDetails;
-
-    const formattedFacilities = facilities.map((facility) => facility.name);
-
     if (
-      !roomNo ||
-      !roomDescription ||
-      !roomType ||
-      !bedCount ||
-      !roomPrice ||
-      !formattedFacilities.length
+      Object.values(roomDetails).some((val) => val === "") ||
+      roomImages.length === 0
     ) {
-      setInputError(true);
-      setInputErrorMsg("Please fill in all fields");
-    } else {
-      // Use the formatted facilities array when calling AddRoom
-      AddRoom({ ...roomDetails, facilities: formattedFacilities });
+      setFeedback({
+        error: true,
+        message: "Please fill in all fields and add at least one image.",
+      });
+      return;
     }
-  };
 
-  const AddRoom = (data) => {
+    const formData = new FormData();
+    Object.entries(roomDetails).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    roomImages.forEach((file) => {
+      formData.append("roomImages", file);
+    });
+
     performFetch({
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       credentials: "include",
-      body: JSON.stringify(data),
+
+      body: formData,
+      headers: {},
     });
   };
 
-  useEffect(() => {
-    if (success || addError || inputError) {
-      const timeout = setTimeout(() => {
-        setSuccess(false);
-        setInputError(false);
-        setAddError(false);
-      }, 3000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [success, addError, inputError]);
-
   return (
-    <form onSubmit={handleSubmit} className="room-registrationForm">
-      <div className="input-wrapper">
-        <label className="inputLabel">Room Number:</label>
-        <input
-          type="text"
-          name="roomNo"
-          value={roomDetails.roomNo}
-          onChange={handleInputChange}
-          className="room-input"
-        />
-      </div>
-      <div className="input-wrapper">
-        <label className="inputLabel">Room Description:</label>
-        <input
-          type="text"
-          name="roomDescription"
-          value={roomDetails.roomDescription}
-          onChange={handleInputChange}
-          className="room-input"
-        />
-      </div>
-      <div className="input-wrapper">
-        <label className="inputLabel">Room Type:</label>
-        <input
-          type="text"
-          name="roomType"
-          value={roomDetails.roomType}
-          onChange={handleInputChange}
-          className="room-input"
-        />
-      </div>
-      <div className="input-wrapper">
-        <label className="inputLabel">Bed Count:</label>
-        <input
-          type="number"
-          name="bedCount"
-          value={roomDetails.bedCount}
-          onChange={handleInputChange}
-          className="room-input"
-        />
-      </div>
-      <div className="input-wrapper">
-        <label className="inputLabel">Room Price:</label>
-        <input
-          type="number"
-          name="roomPrice"
-          value={roomDetails.roomPrice}
-          onChange={handleInputChange}
-          className="room-input"
-        />
-      </div>
-      <div className="input-wrapper">
-        <label className="inputLabel">Facilities:</label>
-        <textarea
-          name="facilities"
-          value={roomDetails.facilities
-            .map((facility) => facility.name)
-            .join("\n")}
-          onChange={handleFacilitiesChange}
-          className="room-input"
-        />
-      </div>
-      <div className="input-wrapper">
-        <label className="inputLabel">Images:</label>
-        <input
-          type="file"
-          name="roomImages"
-          onChange={(e) => handleImageInputChange(e)}
-          className="room-input"
-          multiple={true}
-        />
-      </div>
-
-      <button
-        type="submit"
-        className="room-register-button"
-        style={{
-          backgroundColor: inputError
-            ? "red"
-            : success
-            ? "green"
-            : addError
-            ? "orange"
-            : "blue",
-        }}
-      >
-        {inputError
-          ? inputErrorMsg
-          : success
-          ? "Success"
-          : addError
-          ? "Failed"
-          : "Add Room"}
-      </button>
-    </form>
+    <div className="add-room-form-container">
+      <form onSubmit={handleSubmit} className="room-registrationForm">
+        <div className="input-wrapper">
+          <label className="inputLabel">Room Number:</label>
+          <input
+            type="text"
+            name="roomNo"
+            value={roomDetails.roomNo}
+            onChange={handleInputChange}
+            className="room-input"
+          />
+        </div>
+        <div className="input-wrapper">
+          <label className="inputLabel">Room Description:</label>
+          <input
+            type="text"
+            name="roomDescription"
+            value={roomDetails.roomDescription}
+            onChange={handleInputChange}
+            className="room-input"
+          />
+        </div>
+        <div className="input-wrapper">
+          <label className="inputLabel">Room Type:</label>
+          <input
+            type="text"
+            name="roomType"
+            value={roomDetails.roomType}
+            onChange={handleInputChange}
+            className="room-input"
+          />
+        </div>
+        <div className="input-wrapper">
+          <label className="inputLabel">Bed Count:</label>
+          <input
+            type="number"
+            name="bedCount"
+            value={roomDetails.bedCount}
+            onChange={handleInputChange}
+            className="room-input"
+          />
+        </div>
+        <div className="input-wrapper">
+          <label className="inputLabel">Room Price:</label>
+          <input
+            type="number"
+            name="roomPrice"
+            value={roomDetails.roomPrice}
+            onChange={handleInputChange}
+            className="room-input"
+          />
+        </div>
+        <div className="input-wrapper">
+          <label className="inputLabel">Facilities:</label>
+          <textarea
+            name="facilities"
+            value={roomDetails.facilities}
+            onChange={handleInputChange}
+            className="room-input"
+          />
+        </div>
+        <div className="input-wrapper">
+          <label className="inputLabel">Images:</label>
+          <input
+            type="file"
+            name="roomImages"
+            onChange={handleImageInputChange}
+            className="room-input"
+            multiple
+          />
+        </div>
+        <button type="submit" className="room-register-button">
+          Add Room
+        </button>
+        {feedback.message && (
+          <p style={{ color: feedback.error ? "red" : "green" }}>
+            {feedback.message}
+          </p>
+        )}
+      </form>
+    </div>
   );
 };
 
