@@ -86,7 +86,7 @@ const RoomTable = ({ rooms }) => {
               Room #
             </th>
             <th className="custom-th" style={{ width: "250px" }}>
-              Booking ID
+              Update message
             </th>
             <th className="custom-th">Task</th>
             <th className="custom-th" style={{ width: "120px" }}>
@@ -133,7 +133,7 @@ const RoomTable = ({ rooms }) => {
             })
           ) : (
             <tr>
-              <td colSpan="4">No data available</td>
+              <td colSpan="4">No task </td>
             </tr>
           )}
         </tbody>
