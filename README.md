@@ -10,7 +10,18 @@ The second interface is designed for hotel administration, providing tools for m
 
 Utilizing MongoDB as the database, Express.js for efficient interaction between client and server, React for crafting a dynamic and user-friendly interface, and Node.js to run the server-side, our MERN application provides a reliable solution for hotel administration.
 
+Customer side
 [Click here for the Demo version](https://c44-group-c-5ea6be59db5d.herokuapp.com/)
+
+
+Admin side
+[Click here for the Demo version](https://c44-group-c-5ea6be59db5d.herokuapp.com/admin/)
+
+`Ligin: admin@admin.com`
+
+`Password: 123456`
+
+
 
 ## 1. Setup
 
