@@ -17,7 +17,7 @@ Customer side
 Admin side
 [Click here for the Demo version](https://c44-group-c-5ea6be59db5d.herokuapp.com/admin/)
 
-`Ligin: admin@admin.com`
+`Login: admin@admin.com`
 
 `Password: 123456`
 
